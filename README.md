@@ -1,4 +1,4 @@
-**demo**: [http://http://web.unidms.com:88/dms/index.html](http://http://web.unidms.com:88/dms/index.html)
+**demo**: [http://web.unidms.com:88/dms/index.html](http://web.unidms.com:88/dms/index.html)
 
 # To start
 
