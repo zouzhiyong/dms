@@ -1,23 +1,26 @@
 <template>
   <layout>
-    <Tools slot="toolbar"></Tools>
-    <Table slot="table" ref="table"></Table>
-    <Form slot="form" ref="form"></Form>
+    <custTools slot="toolbar"></custTools>
+    <custTree slot="tree"></custTree>
+    <custTable slot="table" ref="table"></custTable>
+    <custForm slot="form" ref="form"></custForm>
   </layout>
 </template>
 
 <script>
-  import layout from "./../../layout/layout_left_right";
-  import Tools from "./comoditietype_tools";
-  import Table from "./comoditietype_table";
-  import Form from "./comoditietype_form";
+import layout from "./../../layout/layout_left_right";
+import custTools from "./comoditietype_tools";
+import custTable from "./comoditietype_table";
+import custForm from "./comoditietype_form";
+import custTree from "./comoditietype_tree";
 
-  export default {
-    components: {
-      layout,
-      Tools,
-      Form,
-      Table
-    }
-  };
+export default {
+  components: {
+    layout,
+    custTools,
+    custForm,
+    custTable,
+    custTree
+  }
+};
 </script>

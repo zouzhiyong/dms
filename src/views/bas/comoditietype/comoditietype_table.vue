@@ -17,7 +17,7 @@ export default {
       columns: [
         { prop: "TypeCode", label: "类别编码", width: "", align: "" },
         { prop: "TypeName", label: "类别名称", width: "", align: "" },
-        { prop: "ParentID", label: "上级类别", width: "", align: "" },
+        { prop: "ParentName", label: "上级类别", width: "", align: "" },
         {
           prop: "IsValid",
           label: "有效否",
@@ -27,7 +27,6 @@ export default {
             return row.IsValid == 0 ? "无效" : "有效";
           }
         },
-        { prop: "ModifyDate", label: "修改时间", width: "", align: "" },
         { prop: "Remark", label: "说明", width: "", align: "" }
       ],
       api: {
@@ -35,9 +34,6 @@ export default {
         DeleteRow: DeleteBasComoditieTypeRow
       }
     };
-  },
-  mounted() {
-    this.$refs.table.GetData();
   }
 };
 </script>

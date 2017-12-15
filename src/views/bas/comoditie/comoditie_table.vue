@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { FindSysMoudleTable, DeleteSysMoudleRow } from "../../../api/api";
+import { FindBasComoditieTable, DeleteBasComoditieRow } from "../../../api/api";
 import custtable from "./../../layout/layout_table";
 export default {
   components: {
@@ -12,9 +12,11 @@ export default {
   data() {
     return {
       columns: [
-        { prop: "MenuName", label: "模块名称", width: "180", align: "" },
-        { prop: "MenuPath", label: "模块路径", width: "180", align: "" },
-        { prop: "MenuIcon", label: "图标", width: "", align: "" },
+        { prop: "Code", label: "商品编码", width: "180", align: "" },
+        { prop: "FullName", label: "商品全称", width: "180", align: "" },
+        { prop: "ShorName", label: "商品简称", width: "180", align: "" },
+        { prop: "BrandID", label: "品牌", width: "", align: "" },
+        { prop: "RecPrice", label: "进货价", width: "", align: "" },
         {
           prop: "IsValid",
           label: "有效否",
@@ -26,8 +28,8 @@ export default {
         }
       ],
       api: {
-        FindTable: FindSysMoudleTable,
-        DeleteRow: DeleteSysMoudleRow
+        FindTable: FindBasComoditieTable,
+        DeleteRow: DeleteBasComoditieRow
       }
     };
   }

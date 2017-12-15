@@ -1,26 +1,26 @@
 ﻿<template>
   <layout>
-    <moduleTools slot="toolbar"></moduleTools>
-    <moduleTree slot="tree"></moduleTree>
-    <moduleTable slot="table" ref="table"></moduleTable>
-    <moduleForm slot="form" ref="form"></moduleForm>
+    <comoditieTools slot="toolbar"></comoditieTools>
+    <comoditieTree slot="tree"></comoditieTree>
+    <comoditieTable slot="table" ref="table"></comoditieTable>
+    <comoditieForm slot="form" ref="form"></comoditieForm>
   </layout>
 </template>
 
 <script>
 import layout from "./../../layout/layout_left_right";
-import moduleTools from "./module_tools";
-import moduleTree from "./module_tree";
-import moduleTable from "./module_table";
-import moduleForm from "./module_form";
+import comoditieTools from "./comoditie_tools";
+import comoditieTree from "./comoditie_tree";
+import comoditieTable from "./comoditie_table";
+import comoditieForm from "./comoditie_form";
 
 export default {
   components: {
     layout,
-    moduleTools,
-    moduleForm,
-    moduleTree,
-    moduleTable
+    comoditieTools,
+    comoditieForm,
+    comoditieTree,
+    comoditieTable
   }
 };
 </script>
