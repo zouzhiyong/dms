@@ -3,36 +3,39 @@
     <span slot="title">{{$route.name}}</span>
     <span>
       <el-form @submit.native.prevent :rules="rules" size="small" :inline="true" ref="ruleForm" :model="formData" label-width='80px' class="demo-form-inline">
-        <el-form-item label="模块名称" prop="MenuName">
-          <el-input v-model="formData.MenuName" placeholder="模块名称"></el-input>
+        <el-form-item label="商品编码" prop="Code">
+          <el-input v-model="formData.Code" placeholder="商品编码"></el-input>
         </el-form-item>
-        <el-form-item label="上级模块" prop="MenuParentID">
-          <el-select v-model="formData.MenuParentID" placeholder="上级模块">
-            <el-option v-for="item in formData.MenuParentIDList" :key="item.value" :label="item.label" :value="item.value">
+        <el-form-item label="商品名称" prop="FullName">
+          <el-input v-model="formData.FullName" placeholder="商品名称"></el-input>
+        </el-form-item>
+        <el-form-item label="商品简称" prop="ShorName">
+          <el-input v-model="formData.ShorName" placeholder="商品简称"></el-input>
+        </el-form-item>
+        <el-form-item label="商品类型" prop="TypeID">
+          <el-select v-model="formData.TypeID" placeholder="商品类型">
+            <el-option v-for="item in formData.TypeIDList" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="模块地址" prop="MenuPath">
-          <el-input v-model="formData.MenuPath" placeholder="模块地址"></el-input>
-        </el-form-item>
-        <el-form-item label="图标" prop="MenuIcon">
-          <el-input v-model="formData.MenuIcon" placeholder="图标"></el-input>
-        </el-form-item>
+        <el-form-item label="品牌" prop="BrandID">
+          <el-select v-model="formData.BrandID" placeholder="品牌">
+            <el-option v-for="item in formData.BrandIDList" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>    
         <el-form-item label="有效否" prop="IsValid">
           <el-select v-model="formData.IsValid" placeholder="有效否">
             <el-option v-for="item in formData.IsValidList" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
+        </el-form-item>           
+        <el-form-item label="进货价" prop="RecPrice">
+          <el-input v-model.number="formData.RecPrice" placeholder="进货价"></el-input>
         </el-form-item>
-        <el-form-item label="平台类型" prop="ApplicationNo">
-          <el-select v-model="formData.ApplicationNo" placeholder="平台类型">
-            <el-option v-for="item in formData.ApplicationNoList" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="顺序号" prop="Xh">
-          <el-input v-model="formData.Xh" placeholder="顺序号"></el-input>
-        </el-form-item>
+        <el-form-item label="销售价" prop="SalPrice">
+          <el-input v-model.number="formData.SalPrice" placeholder="销售价"></el-input>
+        </el-form-item> 
       </el-form>
     </span>
     <span slot="footer">
@@ -45,7 +48,7 @@
 </template>
 
 <script>
-import { FindSysMoudleForm, SaveSysMoudleForm } from "../../../api/api";
+import { FindBasComoditieForm, SaveBasComoditieForm } from "../../../api/api";
 import custBotton from "./../../layout/layout_button";
 export default {
   data() {
@@ -53,7 +56,9 @@ export default {
       dialogVisible: false,
       formData: {},
       rules: {
-        MenuName: [{ required: true, message: "模块名称不能为空" }]
+        FullName: [{ required: true, message: "商品名称不能为空" }],
+        RecPrice: [{ type: "number", message: "格式不对" }],
+        SalPrice: [{ type: "number", message: "格式不对" }]
       }
     };
   },
@@ -62,7 +67,7 @@ export default {
   },
   methods: {
     GetData(row) {
-      FindSysMoudleForm(row).then(result => {
+      FindBasComoditieForm(row).then(result => {
         this.formData = result.data;
         this.dialogVisible = true;
       });
@@ -70,7 +75,7 @@ export default {
     handleSave() {
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
-          SaveSysMoudleForm(this.formData).then(result => {
+          SaveBasComoditieForm(this.formData).then(result => {
             this.dialogVisible = false;
             this.$parent.$parent.$refs.table.$refs.table.GetData();
             this.$refs.ruleForm.resetFields();

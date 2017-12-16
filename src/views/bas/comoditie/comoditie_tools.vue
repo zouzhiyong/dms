@@ -5,7 +5,7 @@
 export default {
   methods: {
     handleClickNew() {
-      let row = { MenuID: 0 };
+      let row = { ComoditiesID: 0 };
       this.$parent.$parent.$parent.$parent.$refs.form.GetData(row);
     }
   }
