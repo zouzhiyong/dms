@@ -28,7 +28,14 @@
       </el-form>
       </el-col>
       <el-col :span="9">
-          <el-upload ref="upload" class="avatar-uploader" accept="image/png,image/jpeg" :headers="headers" action="/WebAppDms/api/customer/ImgUpload" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+          <el-upload ref="upload" 
+          class="avatar-uploader" 
+          accept="image/png,image/jpeg" 
+          :headers="headers" 
+          action="/WebAppDms/api/customer/ImgUpload" 
+          :show-file-list="false" 
+          :on-success="handleAvatarSuccess" 
+          :before-upload="beforeAvatarUpload">
             <img v-if="imageUrl" :src="imageUrl" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
@@ -94,8 +101,9 @@ export default {
       });
     },
     handleCanle() {
-      this.dialogVisible = false;
       this.$refs.ruleForm.resetFields();
+      this.dialogVisible = false;
+      this.$refs.upload.clearFiles();
     },
     handleClose(done) {
       this.$refs.ruleForm.resetFields();
@@ -109,7 +117,6 @@ export default {
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
       this.formData.Photo = file.response.url;
-      console.log(file);
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === "image/png" || file.type === "image/jpeg";
@@ -119,7 +126,7 @@ export default {
         this.$message.error("上传头像图片只能是 JPG、PNG 格式!");
       }
       if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
+        this.$message.error("上传头像图片大小不能超过500kb!");
       }
       return isJPG && isLt2M;
     }
