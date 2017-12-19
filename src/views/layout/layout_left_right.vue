@@ -3,7 +3,7 @@
     <el-row class="toolbar">
       <el-col :span="24" class="condition"><slot name="bill"></slot></el-col>     
       <el-col :span="12" class="condition"><slot name="condition"></slot></el-col>
-      <el-col :span="$slots.condition?12:24" class="button"><slot name="toolbar"></slot></el-col>
+      <el-col v-if="!$slots.bill" :span="$slots.condition?12:24" class="button"><slot name="toolbar"></slot></el-col>
     </el-row>
     <el-row class="content">
     <el-col class='left' v-if="$slots.tree">
