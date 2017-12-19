@@ -1,6 +1,6 @@
 <template>
 <div style="height:100%">
-  <el-table :data="tableData" ref="table" border height="100%">
+  <el-table :data="tableData" ref="table" size="small" border height="100%">
       <el-table-column type="index" width="80" header-align="center" align="center">
         <template slot-scope="scope">
           {{scope.$index + 1 + (pageSize * (currentPage - 1))}}
@@ -78,6 +78,9 @@ export default {
 }
 .el-pagination {
   margin-top: 8px;
+}
+.el-button {
+  padding: 5px 20px;
 }
 </style>
 

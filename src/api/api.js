@@ -135,3 +135,5 @@ export const FindBasComoditieTable = params => { return axios.post(`/api/Comodit
 export const DeleteBasComoditieRow = params => { return axios.post(`/api/Comoditie/DeleteBasComoditieRow`, params).then(res => res.data); };
 export const FindBasComoditieForm = params => { return axios.post(`/api/Comoditie/FindBasComoditieForm`, params).then(res => res.data); };
 export const SaveBasComoditieForm = params => { return axios.post(`/api/Comoditie/SaveBasComoditieForm`, params).then(res => res.data); };
+//进货管理页面
+export const FindDmsPurallComoditie = params => { return axios.post(`/api/Purall/FindDmsPurallComoditie?str=` + params).then(res => res.data); };

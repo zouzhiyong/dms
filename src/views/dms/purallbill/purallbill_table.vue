@@ -1,37 +1,31 @@
 <template>
-  <el-table
-    ref="singleTable"
-    :data="tableData"
-    border
-    style="width: 100%">
-    <el-table-column
-      type="index"
-      width="50">
+  <el-table ref="singleTable" :data="tableData" border style="width: 100%" size="small">
+    <el-table-column type="index" width="50">
     </el-table-column>
-    <el-table-column
-      label="商品编号"
-      width="260">
+    <el-table-column label="商品编号" width="200">
       <template slot-scope="scope">
-        <el-autocomplete
-          clearable
-          class="inline-input"
-          v-model="scope.row.code"
-          :fetch-suggestions="querySearch"
-          placeholder="请输入内容"
-          :trigger-on-focus="false"
-          @select="x=>{handleSelect(x,scope.row)}"
-          style="width:100%">
+        <el-autocomplete clearable class="inline-input" valueKey="FullName" v-model="scope.row.code" :fetch-suggestions="querySearch" placeholder="请输入内容" :trigger-on-focus="false" @select="x=>{handleSelect(x,scope.row)}" style="width:100%">
         </el-autocomplete>
       </template>
     </el-table-column>
-    <el-table-column
-      property="name"
-      label="商品名称"
-      width="200">
-    </el-table-column>    
+    <el-table-column prop="name" label="商品名称" width="300">
+    </el-table-column>
+    <el-table-column prop="barcode" label="条码" width="100">
+    </el-table-column>
+    <el-table-column prop="dw" label="单位" width="100">
+    </el-table-column>
+    <el-table-column prop="kc" label="库存" width="100">
+    </el-table-column>
+    <el-table-column prop="sl" label="数量" width="100">
+    </el-table-column>
+    <el-table-column prop="je" label="金额" width="100">
+    </el-table-column>
+    <el-table-column prop="bz" label="备注" width="">
+    </el-table-column>
   </el-table>
 </template>
 <script>
+import { FindDmsPurallComoditie } from "../../../api/api";
 export default {
   data() {
     return {
@@ -39,11 +33,13 @@ export default {
       tableData: [
         {
           code: "",
-          name: ""
+          name: "",
+          barcode: ""
         },
         {
           code: "",
-          name: ""
+          name: "",
+          barcode: ""
         }
       ],
       currentRow: null
@@ -109,25 +105,31 @@ export default {
       ];
     },
     querySearch(queryString, cb) {
-      var restaurants = this.restaurants;
-      var results = queryString
-        ? restaurants.filter(this.createFilter(queryString))
-        : restaurants;
-      // 调用 callback 返回建议列表的数据
-      cb(results);
+      // var restaurants = this.restaurants;
+      // var results = queryString
+      //   ? restaurants.filter(this.createFilter(queryString))
+      //   : restaurants;
+      // // 调用 callback 返回建议列表的数据
+      // console.log(results);
+      if (queryString) {
+        FindDmsPurallComoditie(queryString).then(result => {
+          cb(result.data);
+        });
+      }
     },
-    createFilter(queryString) {
-      return restaurant => {
-        return (
-          restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) ===
-          0
-        );
-      };
-    },
+    // createFilter(queryString) {
+    //   return restaurant => {
+    //     return (
+    //       restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) ===
+    //       0
+    //     );
+    //   };
+    // },
     handleSelect(value, item) {
-      console.log(value, item);
-      item.code = value.value;
-      item.name = value.address;
+      console.log(value);
+      item.code = value.Code;
+      item.name = value.FullName;
+      item.barcode = value.Barcode;
     }
   }
 };
@@ -136,6 +138,14 @@ export default {
 .el-autocomplete>>>.el-input__inner {
   border: none;
 }
+
+.el-table--enable-row-hover>>>.el-table__body-wrapper
+  .el-table__body
+  tr:hover
+  > td {
+  background-color: #fff;
+}
+.el-table--small>>>.el-table__body-wrapper td {
+  padding: 0;
+}
 </style>
-
-

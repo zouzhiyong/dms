@@ -135,7 +135,7 @@ export default {
     },
     dialogClose() {
       this.fileList = [];
-      this.formData = [];
+      this.formData = {};
       this.$refs.ruleForm.resetFields();
       this.$refs.upload.clearFiles();
       this.dialogVisible = false;

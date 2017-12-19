@@ -68,18 +68,18 @@ html {
   line-height: 36px;
 }
 
-.el-table th {
-  padding: 2px 0px;
-  height: 40px;
-  line-height: 40px;
-  background-color: #eef1f6;
-}
+// .el-table th {
+//   padding: 2px 0px;
+//   height: 40px;
+//   line-height: 40px;
+//   background-color: #eef1f6;
+// }
 
-.el-table td {
-  padding: 2px 0px;
-  height: 40px;
-  line-height: 40px;
-}
+// .el-table td {
+//   padding: 2px 0px;
+//   height: 40px;
+//   line-height: 40px;
+// }
 
 .el-pagination {
   font-weight: normal;
@@ -89,8 +89,8 @@ html {
   width: 50px;
 }
 
-.el-table__footer-wrapper thead div,
-.el-table__header-wrapper thead div {
+.el-table__footer-wrapper thead tr th,
+.el-table__header-wrapper thead tr th {
   background-color: #eef1f6;
   color: #1f2d3d;
 }
