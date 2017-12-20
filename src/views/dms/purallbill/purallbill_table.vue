@@ -101,11 +101,9 @@ export default {
       item.dwList = value.UnitList;
       item.dw = 1;
 
-      // this.$nextTick(() => {
       if (this.tableData.length >= index) {
         this.tableData.push(JSON.parse(JSON.stringify(this.iniData)));
       }
-      // });
     }
   }
 };
