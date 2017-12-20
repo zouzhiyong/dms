@@ -13,6 +13,8 @@
     <el-date-picker
       v-model="formInline.jhrq"
       type="date"
+      :editable="false"
+      :clearable="false"
       placeholder="交货日期" style="width: 150px;">
     </el-date-picker>   
   </el-form-item> 
@@ -28,13 +30,12 @@ export default {
       formInline: {
         CustomerName: "",
         RegionName: [],
-        Region: ""
+        Region: "",
+        jhrq: new Date()
       }
     };
   },
-  created() {
-    this.formInline.jhrq = new Date();
-  },
+  created() {},
   mounted() {},
   methods: {}
 };

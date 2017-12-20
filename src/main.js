@@ -20,6 +20,8 @@ Vue.use(ElementUI)
 Vue.use(VueRouter)
 Vue.use(Vuex)
 
+
+
 // Vue.prototype.ExportJsonExcel = ExportJsonExcel;
 // Vue.use(VueProgressBar, {
 //     color: 'rgb(143, 255, 199)',
