@@ -26,7 +26,7 @@ axios.interceptors.request.use(function(config) {
     // new Vue().$Progress.start()
     let ticket = 'BasicAuth ' + sessionStorage.getItem('Ticket') || '';
     config.baseURL = '/WebAppDms';
-    config.timeout = 10000;
+    config.timeout = 30000;
     config.headers = { 'Authorization': ticket };
 
     _time = setTimeout(() => {

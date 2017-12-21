@@ -11,12 +11,12 @@
         placeholder="商品编码、名称" 
         :trigger-on-focus="false" 
         @select="x=>{handleSelect(x,scope.row,scope.$index)}" 
-        v-enter="'dw'+scope.$index"
-        :ref="'code'+scope.$index"
+        v-enter="'sl'+scope.$index"
+        :ref="'code'+scope.$index" 
         style="width:100%">
-          <template slot-scope="props">            
+          <template slot-scope="props">
             <div>{{ props.item.Code+" "+props.item.FullName }}</div>
-        </template>
+          </template>
         </el-autocomplete>
       </template>
     </el-table-column>
@@ -26,12 +26,8 @@
     </el-table-column>
     <el-table-column label="单位" width="100" header-align="center">
       <template slot-scope="scope">
-        <el-select v-model="scope.row.dw" placeholder="单位" :ref="'dw'+scope.$index" v-enter="'sl'+scope.$index" >
-          <el-option
-            v-for="item in scope.row.dwList"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
+        <el-select v-model="scope.row.dw" popper-class="popper" placeholder="单位" :ref="'dw'+scope.$index" v-enter="'sl'+scope.$index">
+          <el-option v-for="item in scope.row.dwList" :key="item.value" :label="item.label" :value="item.value">
           </el-option>
         </el-select>
       </template>
@@ -75,6 +71,7 @@ export default {
         el.addEventListener("keyup", ev => {
           if (ev.keyCode === 13) {
             let nextInput = vnode.context.$refs[value];
+            console.log(value);
             if (nextInput && typeof nextInput.focus === "function") {
               nextInput.focus();
             }
@@ -113,6 +110,13 @@ export default {
 .el-input>>>.el-input__inner,
 .el-select>>>.el-input .el-input__inner {
   border: none;
+  padding: 0 10px;
+}
+
+.el-autocomplete>>>.el-input__inner:focus,
+.el-input>>>.el-input__inner:focus,
+.el-select>>>.el-input .el-input__inner:focus {
+  background: rgb(245, 239, 230);
 }
 
 .el-table--enable-row-hover>>>.el-table__body-wrapper
@@ -121,13 +125,16 @@ export default {
   > td {
   background-color: #fff;
 }
-.el-table--small>>>.el-table__body-wrapper td {
+
+.el-table--small>>>.el-table__body-wrapper td,
+.el-table--small>>>.el-table__body-wrapper td .cell {
   padding: 0;
 }
 
 .el-select>>>.el-input {
   width: auto;
 }
+
 .el-table {
   height: calc(100% - 40px);
 }
@@ -135,5 +142,11 @@ export default {
 <style>
 .popperpurallbillautocomplete {
   width: auto !important;
+}
+.el-popper[x-placement^="bottom"].popper .popper__arrow {
+  display: none;
+}
+.el-popper[x-placement^="bottom"].popper {
+  margin-top: 0;
 }
 </style>
