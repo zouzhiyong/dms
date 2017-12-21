@@ -1,5 +1,5 @@
 <template>
-  <el-table ref="singleTable" :data="tableData" border style="width: 100%" size="small">
+  <el-table ref="table" :data="tableData" border style="width: 100%" height="100%" size="small">
     <el-table-column type="index" width="50" header-align="center">
     </el-table-column>
     <el-table-column label="商品编号" width="200" header-align="center">
@@ -127,6 +127,9 @@ export default {
 
 .el-select>>>.el-input {
   width: auto;
+}
+.el-table {
+  height: calc(100% - 40px);
 }
 </style>
 <style>
