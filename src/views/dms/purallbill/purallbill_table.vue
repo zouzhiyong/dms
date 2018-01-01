@@ -1,5 +1,5 @@
 <template>
-  <cust-table ref="table" :columns="columns" :api="api" keys="FullName" :isOperate="true" @handleSelect="handleSelect"></cust-table>
+  <cust-table ref="table" :columns="columns" :api="api" keys="Code" :isOperate="true" @handleSelect="handleSelect" @onblur="onblur"></cust-table>
 </template>
 <script>
 import { FindDmsPurallComoditie } from "../../../api/api";
@@ -12,16 +12,29 @@ export default {
     return {
       columns: [
         {
-          prop: "Code",
+          prop: "CodeName",
           label: "商品编码",
-          width: "200",
+          width: "150",
           align: "",
           types: "autocomplete",
           api: FindDmsPurallComoditie,
           placeholder: "商品编码、名称",
           next: "sl"
         },
-        { prop: "FullName", label: "商品名称", width: "300", align: "" },
+        {
+          prop: "Code",
+          label: "商品名称",
+          width: "300",
+          align: "",
+          visible: false
+        },
+        {
+          prop: "FullName",
+          label: "商品名称",
+          width: "300",
+          align: ""
+          // visible: false
+        },
         { prop: "Barcode", label: "商品条码", width: "100", align: "" },
         {
           prop: "UnitID",
@@ -48,7 +61,7 @@ export default {
           width: "",
           align: "",
           types: "input",
-          next: "Code",
+          next: "CodeName",
           lastNext: true,
           placeholder: "备注"
         }
@@ -60,11 +73,15 @@ export default {
     this.$refs.table.GetData();
   },
   methods: {
-    handleSelect(value, item, index) {
+    handleSelect(value, row, index, item) {
       for (var i in value) {
-        item[i] = value[i];
+        row[i] = value[i];
       }
-      item.UnitID = 1;
+      row.CodeName = value.Code;
+      row.UnitID = 1;
+    },
+    onblur(row) {
+      row.CodeName = row.Code;
     }
   }
 };
