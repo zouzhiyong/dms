@@ -1,24 +1,30 @@
-<template> 
+<template>
   <div class='body'>
     <el-row class="toolbar">
-      <el-col :span="24" class="condition"><slot name="bill"></slot></el-col>     
-      <el-col :span="12" class="condition"><slot name="condition"></slot></el-col>
-      <el-col v-if="!$slots.bill" :span="$slots.condition?12:24" class="button"><slot name="toolbar"></slot></el-col>
+      <el-col :span="24" class="condition">
+        <slot name="bill"></slot>
+      </el-col>
+      <el-col :span="12" class="condition">
+        <slot name="condition"></slot>
+      </el-col>
+      <el-col v-if="!$slots.bill" :span="$slots.condition?12:24" class="button">
+        <slot name="toolbar"></slot>
+      </el-col>
     </el-row>
     <el-row class="content">
-    <el-col class='left' v-if="$slots.tree">
-      <div class="leftbox">
-        <slot name="tree"></slot>  
-      </div>    
-    </el-col>
-    <el-col class='right' v-if="$slots.tree">
-        <slot name="table"></slot>      
-    </el-col>
-    <el-col class="table" v-if="!$slots.tree">
-        <slot name="table"></slot>      
-    </el-col>
-  </el-row>
-  <slot name="form"></slot>      
+      <el-col class='left' v-if="$slots.tree">
+        <div class="leftbox">
+          <slot name="tree"></slot>
+        </div>
+      </el-col>
+      <el-col class='right' v-if="$slots.tree">
+        <slot name="table"></slot>
+      </el-col>
+      <el-col class="table" v-if="!$slots.tree">
+        <slot name="table"></slot>
+      </el-col>
+    </el-row>
+    <slot name="form"></slot>
   </div>
 </template>
 
@@ -27,6 +33,7 @@
   padding: 10px;
   height: 100%;
   background: #fff;
+  border: 1px solid #e6e6e6;
   // /deep/ .cust-el-dialog {
   //   width: 650px;
   //   height: 400px;

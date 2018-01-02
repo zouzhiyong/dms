@@ -1,28 +1,28 @@
 <template>
-<div style="height:100%">
-  <el-table :data="tableData" ref="table" size="small" border height="100%">
-      <el-table-column type="index" width="80" header-align="center" align="center">
+  <div style="height:100%">
+    <el-table :data="tableData" ref="table" size="small" border height="100%">
+      <el-table-column type="index" width="50" header-align="center" align="center">
         <template slot-scope="scope">
           {{scope.$index + 1 + (pageSize * (currentPage - 1))}}
         </template>
       </el-table-column>
       <el-table-column :prop="item.prop" :width="item.width" :formatter="item.formatter" :label="item.label" header-align="center" :align="item.align" v-for="item in columns" :key="item.id">
       </el-table-column>
-      <el-table-column label="操作" width="150" align="center" header-align="center" v-if="isOperate">
+      <el-table-column label="操作" width="120" align="center" header-align="center" v-if="isOperate">
         <template slot-scope="scope">
           <span style="width:32px;display:inline-block">
-          <el-button type="text" icon="el-icon-edit" @click="handleEditClick(scope.row)"></el-button>
+            <el-button type="text" icon="el-icon-edit" @click="handleEditClick(scope.row)"></el-button>
           </span>
           <span style="width:32px;display:inline-block">
-          <el-button :disabled="parseInt(scope.row.isRole)!=0" type="text" icon="el-icon-delete" @click="handleDeleteClick(scope.row)"></el-button>
-        </span>
+            <el-button :disabled="parseInt(scope.row.isRole)!=0" type="text" icon="el-icon-delete" @click="handleDeleteClick(scope.row)"></el-button>
+          </span>
         </template>
       </el-table-column>
     </el-table>
     <el-pagination background prev-text="上一页" next-text="下一页" @current-change="handleCurrentChange" :current-page.sync="currentPage" :page-size="pageSize" layout="slot,->,prev, pager, next" :total="total">
       <span class="demonstration">显示第 {{pageSize * currentPage - pageSize + (total==0?0:1)}} 到第 {{((pageSize * currentPage) > total ? total : (pageSize * currentPage))}} 条记录，总共 {{total}} 条记录</span>
     </el-pagination>
-</div>
+  </div>
 </template>
 <script>
 export default {
@@ -75,12 +75,13 @@ export default {
 <style scoped lang="scss">
 .el-table {
   height: calc(100% - 40px);
+  box-sizing: content-box;
 }
 .el-pagination {
   margin-top: 8px;
 }
 .el-button {
-  padding: 5px 20px;
+  padding: 5px 15px;
 }
 </style>
 

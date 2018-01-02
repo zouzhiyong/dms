@@ -1,5 +1,5 @@
 <template>
-  <cust-table ref="table" :columns="columns" :api="api" keys="Code" :isOperate="true" @handleSelect="handleSelect" @onblur="onblur"></cust-table>
+  <cust-table ref="table" :columns="columns" :api="api" keys="Code" :isOperate="true" @summaries="getSummaries" @handleSelect="handleSelect" @onblur="onblur"></cust-table>
 </template>
 <script>
 import { FindDmsPurallComoditie } from "../../../api/api";
@@ -49,7 +49,7 @@ export default {
           label: "数量",
           width: "100",
           align: "right",
-          types: "input",
+          types: "input-number",
           placeholder: "",
           next: "bz",
           placeholder: "数量"
@@ -82,6 +82,47 @@ export default {
     },
     onblur(row) {
       row.CodeName = row.Code;
+    },
+    getSummaries(param, callback) {
+      const { columns, data } = param;
+      const sums = [];
+      columns.forEach((column, index) => {
+        let prop = column.property;
+        if (prop == "CodeName") {
+          let arr = data.filter(item => {
+            return item.Code != "";
+          });
+          sums[index] = "合计 " + arr.length + " 种商品";
+          return;
+        }
+
+        if (prop == "sl") {
+          const values = data.map(item => Number(item[prop]));
+          sums[index] = values.reduce((prev, curr) => {
+            const value = Number(curr);
+            if (!isNaN(value)) {
+              return prev + curr;
+            } else {
+              return prev;
+            }
+          }, 0);
+          sums[index] = sums[index].toFixed(2);
+        }
+
+        if (prop == "je") {
+          const values = data.map(item => Number(item[prop]));
+          sums[index] = values.reduce((prev, curr) => {
+            const value = Number(curr);
+            if (!isNaN(value)) {
+              return prev + curr;
+            } else {
+              return prev;
+            }
+          }, 0);
+          sums[index] = "￥" + sums[index].toFixed(2);
+        }
+      });
+      callback(sums);
     }
   }
 };

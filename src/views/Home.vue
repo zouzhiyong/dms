@@ -278,7 +278,7 @@ export default {
         height: calc(100% - 40px);
         .breadcrumb-container {
           padding: 10px;
-          border-bottom: solid 1px #eee; //margin-bottom: 15px;
+          border-bottom: 1px solid #e6e6e6; //margin-bottom: 15px;
           .title {
             width: 200px;
             float: left;
@@ -290,7 +290,7 @@ export default {
         }
       }
       .content-wrapper {
-        background: #f0f0f0;
+        background: #f5f7fa;
         box-sizing: border-box;
         height: calc(100% - 38px);
         padding: 20px;

@@ -12,15 +12,15 @@ export default {
   data() {
     return {
       columns: [
-        { prop: "Code", label: "商品编码", width: "180", align: "" },
-        { prop: "FullName", label: "商品全称", width: "180", align: "" },
-        { prop: "ShorName", label: "商品简称", width: "180", align: "" },
-        { prop: "BrandID", label: "品牌", width: "", align: "" },
-        { prop: "RecPrice", label: "进货价", width: "", align: "" },
+        { prop: "Code", label: "商品编码", width: "100", align: "" },
+        { prop: "FullName", label: "商品全称", width: "", align: "" },
+        { prop: "ShorName", label: "商品简称", width: "260", align: "" },
+        { prop: "BrandID", label: "品牌", width: "90", align: "" },
+        { prop: "RecPrice", label: "进货价", width: "90", align: "" },
         {
           prop: "IsValid",
           label: "有效否",
-          width: "",
+          width: "90",
           align: "center",
           formatter: function(row, column) {
             return row.IsValid == 0 ? "无效" : "有效";
