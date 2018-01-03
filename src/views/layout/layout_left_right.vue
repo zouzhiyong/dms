@@ -1,9 +1,7 @@
 <template>
   <div class='body'>
+    <slot name="bill"></slot>
     <el-row class="toolbar">
-      <el-col :span="24" class="condition">
-        <slot name="bill"></slot>
-      </el-col>
       <el-col :span="12" class="condition">
         <slot name="condition"></slot>
       </el-col>
@@ -11,7 +9,7 @@
         <slot name="toolbar"></slot>
       </el-col>
     </el-row>
-    <el-row class="content">
+    <el-row v-if="$slots.table" class="content">
       <el-col class='left' v-if="$slots.tree">
         <div class="leftbox">
           <slot name="tree"></slot>
@@ -25,6 +23,7 @@
       </el-col>
     </el-row>
     <slot name="form"></slot>
+
   </div>
 </template>
 

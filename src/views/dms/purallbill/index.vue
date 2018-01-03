@@ -1,7 +1,8 @@
 ﻿<template>
   <layout>
-   <purallbillFrom slot="bill" ref="bill"></purallbillFrom>
-   <purallbillTable slot="table" ref="table"></purallbillTable>
+    <purallbillFrom slot="bill" ref="bill">
+      <purallbillTable slot="tablebill" ref="tablebill"></purallbillTable>
+    </purallbillFrom>
   </layout>
 </template>
 
