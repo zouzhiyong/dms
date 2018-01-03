@@ -41,22 +41,10 @@
           </el-tab-pane>
           <el-tab-pane label="单位管理" name="tab2">单位管理</el-tab-pane>
           <el-tab-pane label="商品照片管理" name="tab3">
-            <el-upload
-                ref="upload"
-                class="upload-demo"
-                multiple
-                :limit="3" 
-                :on-exceed="handleExceed"
-                :headers="headers"
-                accept="image/png,image/jpeg"
-                action="/WebAppDms/api/customer/ImgUpload"
-                :on-preview="handlePreview"
-                :on-remove="handleRemove"
-                :file-list="fileList"
-                list-type="picture">
-                <el-button size="small" type="primary">点击上传</el-button>
-                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-          </el-upload>
+            <el-upload ref="upload" class="upload-demo" multiple :limit="3" :on-exceed="handleExceed" :headers="headers" accept="image/png,image/jpeg" action="/WebAppDms/api/customer/ImgUpload" :on-preview="handlePreview" :on-remove="handleRemove" :file-list="fileList" list-type="picture">
+              <el-button size="small" type="primary">点击上传</el-button>
+              <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+            </el-upload>
           </el-tab-pane>
         </el-tabs>
       </el-form>
@@ -100,10 +88,12 @@ export default {
   methods: {
     GetData(row) {
       FindBasComoditieForm(row).then(result => {
-        var arr = result.data.Photo.split(",");
-        arr.map(item => {
-          this.fileList.push({ name: item, url: UploadPath + item });
-        });
+        if (result.data.Photo != "" && result.data.Photo != null) {
+          var arr = result.data.Photo.split(",");
+          arr.map(item => {
+            this.fileList.push({ name: item, url: UploadPath + item });
+          });
+        }
         this.formData = result.data;
         this.dialogVisible = true;
       });
