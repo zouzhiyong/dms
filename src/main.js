@@ -80,6 +80,25 @@ router.beforeEach((to, from, next) => {
 //router.afterEach(transition => {
 //NProgress.done();
 //});
+//回车跳转v-enter=""
+Vue.directive('enter', {
+    bind: function(el, { value }, vnode) {
+        el.addEventListener("keydown", ev => {
+            el.addEventListener("keyup", ev => {
+                if (ev.keyCode === 13) {
+                    let nextInput = vnode.context.$refs[value];
+                    if (nextInput) {
+                        if (nextInput[0] && typeof nextInput[0].focus === "function") {
+                            nextInput[0].focus();
+                        } else {
+                            nextInput.focus();
+                        }
+                    }
+                }
+            });
+        });
+    }
+})
 
 new Vue({
     //el: '#app',

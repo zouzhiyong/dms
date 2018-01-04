@@ -36,26 +36,6 @@ export default {
       tableData: []
     };
   },
-  directives: {
-    enter: {
-      bind: function(el, { value }, vnode) {
-        el.addEventListener("keydown", ev => {
-          el.addEventListener("keyup", ev => {
-            if (ev.keyCode === 13) {
-              let nextInput = vnode.context.$refs[value];
-              if (
-                nextInput &&
-                nextInput[0] &&
-                typeof nextInput[0].focus === "function"
-              ) {
-                nextInput[0].focus();
-              }
-            }
-          });
-        });
-      }
-    }
-  },
   props: {
     keys: { type: String },
     api: { type: Object },
