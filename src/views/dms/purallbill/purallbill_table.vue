@@ -79,6 +79,7 @@ export default {
       }
       row.CodeName = value.Code;
       row.UnitID = 1;
+      this.$refs.table.$refs[item.next + index][0].focus();
     },
     onblur(row) {
       row.CodeName = row.Code;

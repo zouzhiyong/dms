@@ -5,7 +5,7 @@
       </el-table-column>
       <el-table-column :prop="item.prop" :width="item.width" :formatter="item.formatter" :label="item.label" header-align="center" :align="item.align" v-if="item.visible!=false" v-for="item in columns" :key="item.id">
         <template slot-scope="scope">
-          <el-autocomplete size="small" @blur="handleBlur(scope.row)" v-if="item.types && item.types.toLowerCase()=='autocomplete'" clearable popper-class="popperpurallbillautocomplete" v-model="scope.row[item.prop]" :fetch-suggestions="(x,y)=>{querySearch(item.prop+scope.$index,item.api,x,y)}" :placeholder="item.placeholder" :trigger-on-focus="false" @select="x=>{handleSelect(x,scope.row,scope.$index,item)}" v-enter="item.next+scope.$index" :ref="item.prop+scope.$index" style="width:100%">
+          <el-autocomplete size="small" @blur="handleBlur(scope.row)" v-if="item.types && item.types.toLowerCase()=='autocomplete'" clearable popper-class="popperpurallbillautocomplete" v-model="scope.row[item.prop]" :fetch-suggestions="(x,y)=>{querySearch(item.prop+scope.$index,item.api,x,y)}" :placeholder="item.placeholder" :trigger-on-focus="false" @select="x=>{handleSelect(x,scope.row,scope.$index,item)}" :ref="item.prop+scope.$index" style="width:100%">
             <template slot-scope="props">
               <div>{{ props.item.CodeTemplate }}</div>
             </template>
@@ -39,17 +39,19 @@ export default {
   directives: {
     enter: {
       bind: function(el, { value }, vnode) {
-        el.addEventListener("keyup", ev => {
-          if (ev.keyCode === 13) {
-            let nextInput = vnode.context.$refs[value];
-            if (
-              nextInput &&
-              nextInput[0] &&
-              typeof nextInput[0].focus === "function"
-            ) {
-              nextInput[0].focus();
+        el.addEventListener("keydown", ev => {
+          el.addEventListener("keyup", ev => {
+            if (ev.keyCode === 13) {
+              let nextInput = vnode.context.$refs[value];
+              if (
+                nextInput &&
+                nextInput[0] &&
+                typeof nextInput[0].focus === "function"
+              ) {
+                nextInput[0].focus();
+              }
             }
-          }
+          });
         });
       }
     }
