@@ -1,7 +1,7 @@
 ﻿<template>
   <layout>
     <purallbillFrom slot="bill" ref="bill">
-      <purallbillTable slot="tablebill" ref="tablebill"></purallbillTable>
+      <!-- <purallbillTable slot="tablebill" ref="tablebill"></purallbillTable> -->
     </purallbillFrom>
   </layout>
 </template>
@@ -13,8 +13,8 @@ import purallbillTable from "./purallbill_table";
 export default {
   components: {
     layout,
-    purallbillFrom,
-    purallbillTable
+    purallbillFrom
+    // purallbillTable
   }
 };
 </script>

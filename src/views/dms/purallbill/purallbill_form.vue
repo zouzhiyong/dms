@@ -8,7 +8,7 @@
         <el-input ref="shck" v-model="formInline.shck" placeholder="收货仓库" v-enter="'jhrq'" style="width: 150px;"></el-input>
       </el-form-item>
       <el-form-item label="收货日期">
-        <el-date-picker ref="jhrq" v-model="formInline.jhrq" type="date" :editable="false" :clearable="false" placeholder="交货日期" style="width: 150px;">
+        <el-date-picker ref="jhrq" v-model="formInline.jhrq" type="date" @blur="blur" :editable="false" :clearable="false" placeholder="交货日期" style="width: 150px;">
         </el-date-picker>
       </el-form-item>
       <el-form-item label="单据类型">
@@ -25,7 +25,8 @@
       </el-form-item>
     </div>
     <div style="height:calc(100% - 130px)">
-      <slot name="tablebill"></slot>
+      <!-- <slot name="tablebill"></slot> -->
+      <purallbillTable ref="tablebill"></purallbillTable>
     </div>
     <div style="padding: 5px 0;">
       <el-form-item label="供货单位">
@@ -41,7 +42,11 @@
 
 <script>
 import { FindBasRegionList } from "../../../api/api";
+import purallbillTable from "./purallbill_table";
 export default {
+  components: {
+    purallbillTable
+  },
   data() {
     return {
       RegionList: [],
@@ -59,7 +64,14 @@ export default {
   },
   created() {},
   mounted() {},
-  methods: {}
+  methods: {
+    blur() {
+      //日期跳至表格中控件
+      let nextInput = this.$refs.tablebill.$refs.table.$refs["CodeName0"][0];
+      nextInput.focus();
+      nextInput.$refs.input.$refs.input.select();
+    }
+  }
 };
 </script>
 <style scoped>

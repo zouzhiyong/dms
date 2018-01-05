@@ -79,7 +79,10 @@ export default {
       }
       row.CodeName = value.Code;
       row.UnitID = 1;
-      this.$refs.table.$refs[item.next + index][0].focus();
+
+      let nextInput = this.$refs.table.$refs[item.next + index][0];
+      nextInput.focus();
+      nextInput.$refs.input.$refs.input.select();
     },
     onblur(row) {
       row.CodeName = row.Code;
