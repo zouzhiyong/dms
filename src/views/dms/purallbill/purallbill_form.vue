@@ -29,13 +29,16 @@
       <purallbillTable ref="tablebill"></purallbillTable>
     </div>
     <div style="padding: 5px 0;">
-      <el-form-item label="供货单位">
-        <el-input v-model="formInline.ghdw" placeholder="供货单位" style="width: 150px;"></el-input>
+      <el-form-item label="制单人:">
+        <span style="width: 150px;">{{formInline.zdr}}</span>
+      </el-form-item>
+      <el-form-item label="备注">
+        <el-input v-model="formInline.bz" placeholder="供货单位" style="width: 500px;"></el-input>
       </el-form-item>
     </div>
     <div style="padding: 5px 0;text-align:center">
-      <el-button size="medium">中等按钮</el-button>
-      <el-button size="medium">中等按钮</el-button>
+      <el-button type="primary" size="medium" accesskey="S" @click="handleSave">保存 (S)</el-button>
+      <el-button type="primary" size="medium" accesskey="G">审核 (G)</el-button>
     </div>
   </el-form>
 </template>
@@ -65,6 +68,7 @@ export default {
   created() {},
   mounted() {},
   methods: {
+    handleSave() {},
     enter(vnode) {
       //日期跳至表格中控件
       // let nextInput = this.$refs.tablebill.$refs.table.$refs["CodeName0"][0];
