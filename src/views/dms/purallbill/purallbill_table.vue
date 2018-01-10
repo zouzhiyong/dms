@@ -51,7 +51,8 @@ export default {
           align: "right",
           types: "input-number",
           placeholder: "",
-          next: "bz",
+          next: "CodeName",
+          lastNext: true,
           placeholder: "数量"
         },
         { prop: "je", label: "金额", width: "100", align: "right" },
@@ -61,8 +62,8 @@ export default {
           width: "",
           align: "",
           types: "input",
-          next: "CodeName",
-          lastNext: true,
+          // next: "CodeName",
+          // lastNext: true,
           placeholder: "备注"
         }
       ],
@@ -80,9 +81,9 @@ export default {
       row.CodeName = value.Code;
       row.UnitID = 1;
 
-      let nextInput = this.$refs.table.$refs[item.next + index][0];
-      nextInput.focus();
-      nextInput.$refs.input.$refs.input.select();
+      // let nextInput = this.$refs.table.$refs[item.next + index][0];
+      // nextInput.focus();
+      // nextInput.$refs.input.$refs.input.select();
     },
     onblur(row) {
       row.CodeName = row.Code;

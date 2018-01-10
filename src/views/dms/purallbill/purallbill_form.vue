@@ -5,10 +5,10 @@
         <el-input ref="ghdw" v-model="formInline.ghdw" placeholder="供货单位" :autofocus="true" v-enter="'shck'" style="width: 150px;"></el-input>
       </el-form-item>
       <el-form-item label="收货仓库">
-        <el-input ref="shck" v-model="formInline.shck" placeholder="收货仓库" v-enter="'jhrq'" style="width: 150px;"></el-input>
+        <el-input ref="shck" v-model="formInline.shck" placeholder="收货仓库" @keyup.native.13="keyup" style="width: 150px;"></el-input>
       </el-form-item>
       <el-form-item label="收货日期">
-        <el-date-picker ref="jhrq" v-model="formInline.jhrq" type="date" @blur="blur" :editable="false" :clearable="false" placeholder="交货日期" style="width: 150px;">
+        <el-date-picker ref="jhrq" v-model="formInline.jhrq" type="date" :editable="false" :clearable="false" placeholder="交货日期" style="width: 150px;">
         </el-date-picker>
       </el-form-item>
       <el-form-item label="单据类型">
@@ -65,7 +65,7 @@ export default {
   created() {},
   mounted() {},
   methods: {
-    blur() {
+    keyup() {
       //日期跳至表格中控件
       let nextInput = this.$refs.tablebill.$refs.table.$refs["CodeName0"][0];
       nextInput.focus();

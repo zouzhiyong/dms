@@ -90,8 +90,8 @@ Vue.directive('enter', {
                     if (nextInput) {
                         if (nextInput[0] && typeof nextInput[0].focus === "function") {
                             nextInput[0].focus();
-                            if (nextInput[0].$refs.input && typeof nextInput[0].$refs.input.select === "function") {
-                                nextInput[0].$refs.input.select();
+                            if (nextInput[0].$refs.input.$refs.input && typeof nextInput[0].$refs.input.$refs.input.select === "function") {
+                                nextInput[0].$refs.input.$refs.input.select();
                             }
                         } else {
                             nextInput.focus();
