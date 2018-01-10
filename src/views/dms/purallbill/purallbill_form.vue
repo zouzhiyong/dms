@@ -5,7 +5,7 @@
         <el-input ref="ghdw" v-model="formInline.ghdw" placeholder="供货单位" :autofocus="true" @keyup.enter.native="enter($refs['shck'])" style="width: 150px;"></el-input>
       </el-form-item>
       <el-form-item label="收货仓库">
-        <el-input ref="shck" v-model="formInline.shck" placeholder="收货仓库" @keyup.enter.native="enter($refs.tablebill.$refs.table.$refs['CodeName0'][0])" style="width: 150px;"></el-input>
+        <el-input ref="shck" v-model="formInline.shck" placeholder="收货仓库" @keyup.enter.native="enter($refs['bz'])" style="width: 150px;"></el-input>
       </el-form-item>
       <el-form-item label="收货日期">
         <el-date-picker ref="jhrq" v-model="formInline.jhrq" type="date" :editable="false" :clearable="false" placeholder="交货日期" style="width: 150px;">
@@ -24,19 +24,16 @@
         </el-select>
       </el-form-item>
     </div>
-    <div style="height:calc(100% - 130px)">
+    <div style="padding: 5px 0;">
+      <el-form-item label="备　　注">
+        <el-input ref="bz" v-model="formInline.bz" placeholder="备注" @keyup.enter.native="enter($refs.tablebill.$refs.table.$refs['CodeName0'][0])" style="width: 606px;"></el-input>
+      </el-form-item>
+    </div>
+    <div style="height:calc(100% - 150px)">
       <!-- <slot name="tablebill"></slot> -->
       <purallbillTable ref="tablebill"></purallbillTable>
     </div>
-    <div style="padding: 5px 0;">
-      <el-form-item label="制单人:">
-        <span style="width: 150px;">{{formInline.zdr}}</span>
-      </el-form-item>
-      <el-form-item label="备注">
-        <el-input v-model="formInline.bz" placeholder="供货单位" style="width: 500px;"></el-input>
-      </el-form-item>
-    </div>
-    <div style="padding: 5px 0;text-align:center">
+    <div style="padding: 20px 0;text-align:center">
       <el-button type="primary" size="medium" accesskey="S" @click="handleSave">保存 (S)</el-button>
       <el-button type="primary" size="medium" accesskey="G">审核 (G)</el-button>
     </div>
