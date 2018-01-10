@@ -2,10 +2,10 @@
   <el-form :inline="true" size="small" :model="formInline" class="demo-form-inline" style="height:100%">
     <div style="padding: 5px 0;">
       <el-form-item label="供货单位">
-        <el-input ref="ghdw" v-model="formInline.ghdw" placeholder="供货单位" :autofocus="true" v-enter="'shck'" style="width: 150px;"></el-input>
+        <el-input ref="ghdw" v-model="formInline.ghdw" placeholder="供货单位" :autofocus="true" @keyup.enter.native="enter($refs['shck'])" style="width: 150px;"></el-input>
       </el-form-item>
       <el-form-item label="收货仓库">
-        <el-input ref="shck" v-model="formInline.shck" placeholder="收货仓库" @keyup.native.13="keyup" style="width: 150px;"></el-input>
+        <el-input ref="shck" v-model="formInline.shck" placeholder="收货仓库" @keyup.enter.native="enter($refs.tablebill.$refs.table.$refs['CodeName0'][0])" style="width: 150px;"></el-input>
       </el-form-item>
       <el-form-item label="收货日期">
         <el-date-picker ref="jhrq" v-model="formInline.jhrq" type="date" :editable="false" :clearable="false" placeholder="交货日期" style="width: 150px;">
@@ -65,11 +65,21 @@ export default {
   created() {},
   mounted() {},
   methods: {
-    keyup() {
+    enter(vnode) {
       //日期跳至表格中控件
-      let nextInput = this.$refs.tablebill.$refs.table.$refs["CodeName0"][0];
-      nextInput.focus();
-      nextInput.$refs.input.$refs.input.select();
+      // let nextInput = this.$refs.tablebill.$refs.table.$refs["CodeName0"][0];
+      // nextInput.focus();
+      // nextInput.$refs.input.$refs.input.select();
+      let nextInput = vnode;
+      if (nextInput) {
+        nextInput.focus();
+        if (
+          nextInput.$refs.input &&
+          typeof nextInput.$refs.input.select === "function"
+        ) {
+          nextInput.$refs.input.select();
+        }
+      }
     }
   }
 };
