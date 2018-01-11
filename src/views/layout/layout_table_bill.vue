@@ -5,17 +5,17 @@
       </el-table-column>
       <el-table-column :prop="item.prop" :width="item.width" :formatter="item.formatter" :label="item.label" header-align="center" :align="item.align" v-if="item.visible!=false" v-for="item in columns" :key="item.id">
         <template slot-scope="scope">
-          <el-autocomplete size="small" @blur="handleBlur(scope.row)" v-if="item.types && item.types.toLowerCase()=='autocomplete'" clearable popper-class="popperpurallbillautocomplete" v-model="scope.row[item.prop]" :fetch-suggestions="(x,y)=>{querySearch(item.prop+scope.$index,item.api,x,y)}" :placeholder="item.placeholder" :trigger-on-focus="false" @select="x=>{handleSelect(x,scope.row,scope.$index,item)}" @keyup.enter.native="enter($refs[item.next+(item.lastNext?scope.$index+1:scope.$index)])" :ref="item.prop+scope.$index" style="width:100%">
+          <el-autocomplete :disabled="disabled" size="small" @blur="handleBlur(scope.row)" v-if="item.types && item.types.toLowerCase()=='autocomplete'" clearable popper-class="popperpurallbillautocomplete" v-model="scope.row[item.prop]" :fetch-suggestions="(x,y)=>{querySearch(item.prop+scope.$index,item.api,x,y)}" :placeholder="item.placeholder" :trigger-on-focus="false" @select="x=>{handleSelect(x,scope.row,scope.$index,item)}" @keyup.enter.native="enter($refs[item.next+(item.lastNext?scope.$index+1:scope.$index)])" :ref="item.prop+scope.$index" style="width:100%">
             <template slot-scope="props">
               <div>{{ props.item.CodeTemplate }}</div>
             </template>
           </el-autocomplete>
-          <el-select size="small" v-else-if="item.types && item.types.toLowerCase()=='select'" v-model="scope.row[item.prop]" popper-class="popper" :placeholder="item.placeholder" :ref="item.prop+scope.$index">
+          <el-select :disabled="disabled" size="small" v-else-if="item.types && item.types.toLowerCase()=='select'" v-model="scope.row[item.prop]" popper-class="popper" :placeholder="item.placeholder" @keyup.enter.native="enter($refs[item.next+(item.lastNext?scope.$index+1:scope.$index)])" :ref="item.prop+scope.$index">
             <el-option v-for="item in scope.row[item.prop+'List']" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
-          <el-input size="small" v-else-if="item.types && item.types.toLowerCase()=='input'" v-model="scope.row[item.prop]" :placeholder="item.placeholder" :ref="item.prop+scope.$index" @keyup.enter.native="enter($refs[item.next+(item.lastNext?scope.$index+1:scope.$index)])"></el-input>
-          <el-input-number :controls="false" style="width:100%" size="small" v-else-if="item.types && item.types.toLowerCase()=='input-number'" v-model="scope.row[item.prop]" :placeholder="item.placeholder" :ref="item.prop+scope.$index" @keyup.enter.native="enter($refs[item.next+(item.lastNext?scope.$index+1:scope.$index)])"></el-input-number>
+          <el-input :disabled="disabled" size="small" v-else-if="item.types && item.types.toLowerCase()=='input'" v-model="scope.row[item.prop]" :placeholder="item.placeholder" :ref="item.prop+scope.$index" @keyup.enter.native="enter($refs[item.next+(item.lastNext?scope.$index+1:scope.$index)])"></el-input>
+          <el-input-number :disabled="disabled" :min="0" :controls="false" style="width:100%" size="small" v-else-if="item.types && item.types.toLowerCase()=='input-number'" v-model="scope.row[item.prop]" :placeholder="item.placeholder" :ref="item.prop+scope.$index" @keyup.enter.native="enter($refs[item.next+(item.lastNext?scope.$index+1:scope.$index)])"></el-input-number>
           <div class="cell-div" v-else>{{scope.row[item.prop]}}</div>
         </template>
       </el-table-column>
@@ -40,7 +40,8 @@ export default {
     keys: { type: String },
     api: { type: Object },
     columns: { type: Array },
-    isOperate: { default: false }
+    isOperate: { default: false },
+    disabled: { type: Boolean }
   },
   methods: {
     enter(vnode) {
@@ -55,16 +56,6 @@ export default {
             nextInput[0].$refs.input.$refs.input.select();
           }
         }
-
-        // if (nextInput[0].$refs.reference) {
-        //   if (
-        //     nextInput[0].$refs.reference.$refs.input &&
-        //     typeof nextInput[0].$refs.reference.$refs.input.select ===
-        //       "function"
-        //   ) {
-        //     nextInput[0].$refs.reference.$refs.input.select();
-        //   }
-        // }
       }
     },
     GetData() {
@@ -84,6 +75,7 @@ export default {
       //   })
       //   .catch(() => {});
     },
+    //离开焦点时将原来正确值重新赋值，避免出现错误的值
     handleBlur(row) {
       this.$emit("onblur", row);
     },
@@ -163,6 +155,7 @@ export default {
 
 .el-table {
   height: 100%;
+  box-sizing: content-box;
 }
 </style>
 
