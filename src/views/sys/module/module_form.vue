@@ -3,20 +3,23 @@
     <span slot="title">{{$route.name}}</span>
     <span>
       <el-form @submit.native.prevent :rules="rules" size="small" :inline="true" ref="ruleForm" :model="formData" label-width='80px' class="demo-form-inline">
-        <el-form-item label="模块名称" prop="MenuName">
-          <el-input v-model="formData.MenuName" placeholder="模块名称"></el-input>
+        <el-form-item label="模块编码" prop="Code">
+          <el-input v-model="formData.Code" placeholder="模块编码"></el-input>
         </el-form-item>
-        <el-form-item label="上级模块" prop="MenuParentID">
-          <el-select v-model="formData.MenuParentID" placeholder="上级模块">
-            <el-option v-for="item in formData.MenuParentIDList" :key="item.value" :label="item.label" :value="item.value">
+        <el-form-item label="模块名称" prop="Name">
+          <el-input v-model="formData.Name" placeholder="模块名称"></el-input>
+        </el-form-item>
+        <el-form-item label="上级模块" prop="ParentCode">
+          <el-select v-model="formData.ParentCode" placeholder="上级模块">
+            <el-option v-for="item in formData.ParentCodeList" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="模块地址" prop="MenuPath">
-          <el-input v-model="formData.MenuPath" placeholder="模块地址"></el-input>
+        <el-form-item label="模块地址" prop="URL">
+          <el-input v-model="formData.URL" placeholder="模块地址"></el-input>
         </el-form-item>
-        <el-form-item label="图标" prop="MenuIcon">
-          <el-input v-model="formData.MenuIcon" placeholder="图标"></el-input>
+        <el-form-item label="图标" prop="ICON">
+          <el-input v-model="formData.ICON" placeholder="图标"></el-input>
         </el-form-item>
         <el-form-item label="有效否" prop="IsValid">
           <el-select v-model="formData.IsValid" placeholder="有效否">
@@ -24,14 +27,14 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="平台类型" prop="ApplicationNo">
-          <el-select v-model="formData.ApplicationNo" placeholder="平台类型">
-            <el-option v-for="item in formData.ApplicationNoList" :key="item.value" :label="item.label" :value="item.value">
+        <el-form-item label="平台类型" prop="PlatformType">
+          <el-select v-model="formData.PlatformType" placeholder="平台类型">
+            <el-option v-for="item in formData.PlatformTypeList" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="顺序号" prop="Xh">
-          <el-input v-model="formData.Xh" placeholder="顺序号"></el-input>
+        <el-form-item label="顺序号" prop="Sequence">
+          <el-input v-model="formData.Sequence" placeholder="顺序号"></el-input>
         </el-form-item>
       </el-form>
     </span>

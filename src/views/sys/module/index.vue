@@ -1,7 +1,7 @@
 ﻿<template>
   <layout>
     <moduleTools slot="toolbar"></moduleTools>
-    <moduleTree slot="tree"></moduleTree>
+    <moduleTree slot="tree" ref="tree"></moduleTree>
     <moduleTable slot="table" ref="table"></moduleTable>
     <moduleForm slot="form" ref="form"></moduleForm>
   </layout>

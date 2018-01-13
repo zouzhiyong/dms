@@ -12,9 +12,9 @@ export default {
   data() {
     return {
       columns: [
-        { prop: "MenuName", label: "模块名称", width: "180", align: "" },
-        { prop: "MenuPath", label: "模块路径", width: "180", align: "" },
-        { prop: "MenuIcon", label: "图标", width: "", align: "" },
+        { prop: "Name", label: "模块名称", width: "180", align: "" },
+        { prop: "URL", label: "模块路径", width: "180", align: "" },
+        { prop: "ICON", label: "图标", width: "", align: "" },
         {
           prop: "IsValid",
           label: "有效否",

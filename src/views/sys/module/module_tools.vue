@@ -5,7 +5,8 @@
 export default {
   methods: {
     handleClickNew() {
-      let row = { MenuID: 0 };
+      let node = this.$parent.$parent.$parent.$parent.$refs.tree.$refs.tree.getCurrentNode();
+      let row = { FID: 0, Code: "00", ParentCode: node.Code };
       this.$parent.$parent.$parent.$parent.$refs.form.GetData(row);
     }
   }
