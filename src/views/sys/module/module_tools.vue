@@ -6,7 +6,7 @@ export default {
   methods: {
     handleClickNew() {
       let node = this.$parent.$parent.$parent.$parent.$refs.tree.$refs.tree.getCurrentNode();
-      let row = { FID: 0, Code: "00", ParentCode: node.Code };
+      let row = { FID: 0, ParentCode: node.Code.substring(0, 2) };
       this.$parent.$parent.$parent.$parent.$refs.form.GetData(row);
     }
   }
