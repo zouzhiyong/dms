@@ -4,7 +4,7 @@
     <span>
       <el-form @submit.native.prevent :rules="rules" size="small" :inline="true" ref="ruleForm" :model="formData" label-width='80px' class="demo-form-inline">
         <el-form-item label="模块编码" prop="Code">
-          <el-input v-model="formData.Code" placeholder="模块编码"></el-input>
+          <el-input v-focus v-model="formData.Code" placeholder="模块编码"></el-input>
         </el-form-item>
         <el-form-item label="模块名称" prop="Name">
           <el-input v-model="formData.Name" placeholder="模块名称"></el-input>

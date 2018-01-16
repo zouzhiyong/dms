@@ -3,18 +3,12 @@
     <span slot="title">{{$route.name}}</span>
     <span>
       <el-form @submit.native.prevent :rules="rules" size="small" ref="ruleForm" :model="formData" label-width='80px' class="demo-form-inline">
-        <el-form-item label="角色名称" prop="RoleName">
-          <el-input v-model="formData.RoleName" placeholder="角色名称"></el-input>
-        </el-form-item>        
+        <el-form-item label="角色名称" prop="Name">
+          <el-input v-focus v-model="formData.Name" placeholder="角色名称"></el-input>
+        </el-form-item>
         <el-form-item label="有效否" prop="IsValid">
-          <el-select v-model="formData.IsValid" placeholder="有效否">
-            <el-option v-for="item in formData.IsValidList" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </el-form-item>   
-        <el-form-item label="说明" prop="RoleDesc">
-          <el-input v-model="formData.RoleDesc" placeholder="说明"></el-input>
-        </el-form-item>      
+          <el-switch v-model="formData.IsValid" :active-value="1" :inactive-value="0"></el-switch>
+        </el-form-item>
       </el-form>
     </span>
     <span slot="footer">
@@ -35,7 +29,7 @@ export default {
       dialogVisible: false,
       formData: {},
       rules: {
-        RoleName: [{ required: true, message: "角色名称不能为空" }]
+        Name: [{ required: true, message: "角色名称不能为空" }]
       }
     };
   },
