@@ -4,7 +4,7 @@
     <span>
       <el-form @submit.native.prevent :rules="rules" size="small" ref="ruleForm" :model="formData" label-width='80px' class="demo-form-inline">
         <el-form-item label="角色名称" prop="Name">
-          <el-input v-focus v-model="formData.Name" placeholder="角色名称"></el-input>
+          <el-input v-model="formData.Name" placeholder="角色名称"></el-input>
         </el-form-item>
         <el-form-item label="有效否" prop="IsValid">
           <el-switch v-model="formData.IsValid" :active-value="1" :inactive-value="0"></el-switch>

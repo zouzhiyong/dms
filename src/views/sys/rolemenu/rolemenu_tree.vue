@@ -1,8 +1,8 @@
 <template>
-<div style="height:100%">
-  <div class="title">角色</div>
-  <el-tree ref="tree" :data="treeData" :props="defaultProps" node-key="RoleID" :current-node-key="0" :highlight-current="true" :default-expanded-keys="[0]" @node-click="handleNodeClick"></el-tree>
-</div>
+  <div style="height:100%">
+    <div class="title">角色</div>
+    <el-tree ref="tree" :data="treeData" :props="defaultProps" node-key="RightsID" :current-node-key="0" :highlight-current="true" :default-expanded-keys="[0]" @node-click="handleNodeClick"></el-tree>
+  </div>
 </template>
 
 <script>
@@ -26,7 +26,7 @@ export default {
         this.treeData = result.data;
         if (this.treeData.length > 0) {
           this.$nextTick(() => {
-            this.$refs.tree.setCurrentKey(this.treeData[0].RoleID);
+            this.$refs.tree.setCurrentKey(this.treeData[0].RightsID);
             this.handleNodeClick(this.treeData[0]);
           });
         }

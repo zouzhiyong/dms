@@ -5,18 +5,27 @@
       </el-table-column>
       <el-table-column label="一级模块" width="180" header-align="center">
         <template slot-scope="scope">
-          <i :class="scope.row.MenuIcon"></i>
-          <el-checkbox :indeterminate="scope.row.isIndeterminate" v-model="scope.row.isMenuRole" @change="handleCheckAllChange(scope.row)">{{scope.row.MenuName}}</el-checkbox>
+          <i :class="scope.row.ICON"></i>
+          <el-checkbox :indeterminate="scope.row.isIndeterminate" v-model="scope.row.isMenuRole" @change="handleCheckAllChange(scope.row)">{{scope.row.Name}}</el-checkbox>
         </template>
       </el-table-column>
-      <el-table-column label="二级模块" width="180" header-align="center">
+      <el-table-column label="二级模块" width="550" header-align="center">
         <template slot-scope="scope">
           <el-checkbox-group v-model="scope.row.MenuRolesData" @change="handleCheckedDataChange(scope.row)">
-            <el-checkbox v-for="item in scope.row.chilDren" :label="item.MenuID" :key="item.MenuID">{{item.MenuName}}</el-checkbox>
+            <el-row v-for="item in scope.row.chilDren" :label="item.Code" :key="item.Code">
+              <el-col :span="6">
+                <el-checkbox :label="item.Code" :key="item.Code">{{item.Name}}</el-checkbox>
+              </el-col>
+              <el-col :span="18">
+                <el-button size="mini">超小按钮</el-button>
+                <el-button size="mini">超小按钮</el-button>
+                <el-button size="mini">超小按钮</el-button>
+              </el-col>
+            </el-row>
           </el-checkbox-group>
         </template>
       </el-table-column>
-      <el-table-column label="说明" prop="Comment" header-align="center">
+      <el-table-column label="说明" prop="Descript" header-align="center">
       </el-table-column>
     </el-table>
   </div>
@@ -38,17 +47,12 @@ export default {
       this.tableData.map(item => {
         arr = arr.concat(item.MenuRolesData);
         if (item.isMenuRole == true || item.isIndeterminate == true) {
-          arr.push(item.MenuID);
+          arr.push(item.Code);
         }
       });
-      // arr.map(item => {
-      //   obj.push({
-      //     RoleID: this.conditionData.RoleID,
-      //     MenuID: item
-      //   });
-      // });
-      obj.RoleID = this.conditionData.RoleID;
-      obj.MenuID = arr;
+
+      obj.RightsID = this.conditionData.RightsID;
+      obj.arr = arr;
       return obj;
     }
   },
@@ -68,7 +72,7 @@ export default {
     handleCheckAllChange(row) {
       var tempArr = [];
       row.chilDren.map(item => {
-        tempArr.push(item.MenuID);
+        tempArr.push(item.Code);
       });
       row.MenuRolesData = row.isMenuRole ? tempArr : [];
       row.isIndeterminate = false;
