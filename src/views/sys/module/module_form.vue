@@ -21,11 +21,11 @@
         <el-form-item label="图标" prop="ICON">
           <el-input v-model="formData.ICON" placeholder="图标"></el-input>
         </el-form-item>
+        <el-form-item label="是否菜单" prop="IsMenu">
+          <el-switch v-model="formData.IsMenu" :active-value="1" :inactive-value="0"></el-switch>
+        </el-form-item>
         <el-form-item label="有效否" prop="IsValid">
-          <el-select v-model="formData.IsValid" placeholder="有效否">
-            <el-option v-for="item in formData.IsValidList" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
+          <el-switch v-model="formData.IsValid" :active-value="1" :inactive-value="0"></el-switch>
         </el-form-item>
         <el-form-item label="平台类型" prop="PlatformType">
           <el-select v-model="formData.PlatformType" placeholder="平台类型">
