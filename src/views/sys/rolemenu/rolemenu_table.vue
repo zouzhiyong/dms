@@ -17,9 +17,9 @@
                 <el-checkbox :label="item.Code" :key="item.Code">{{item.Name}}</el-checkbox>
               </el-col>
               <el-col :span="18">
-                <el-button size="mini">超小按钮</el-button>
-                <el-button size="mini">超小按钮</el-button>
-                <el-button size="mini">超小按钮</el-button>
+                <el-checkbox-group v-model="item.MenuRolesData" size="mini">
+                  <el-checkbox v-for="_item in item.chilDren" :label="_item.ButtonID" :key="_item.ButtonID">{{_item.Name}}</el-checkbox>
+                </el-checkbox-group>
               </el-col>
             </el-row>
           </el-checkbox-group>
@@ -43,16 +43,33 @@ export default {
   computed: {
     checkedData() {
       var arr = [];
+      var buttonArr = [];
       var obj = {};
       this.tableData.map(item => {
         arr = arr.concat(item.MenuRolesData);
         if (item.isMenuRole == true || item.isIndeterminate == true) {
           arr.push(item.Code);
         }
+        item.chilDren.map(_item => {
+          _item.chilDren.map(__item => {
+            let arrTemp = [];
+            arrTemp = _item.MenuRolesData.filter(filterItem => {
+              return filterItem == __item.ButtonID;
+            });
+
+            buttonArr.push({
+              ModButtonID: __item.ModButtonID,
+              IsVisible: arrTemp.length > 0 ? 1 : 0
+            });
+
+            console.log(buttonArr);
+          });
+        });
       });
 
       obj.RightsID = this.conditionData.RightsID;
       obj.arr = arr;
+      obj.buttonArr = buttonArr;
       return obj;
     }
   },
@@ -65,6 +82,16 @@ export default {
           item.isIndeterminate =
             item.MenuRolesData.length > 0 &&
             item.MenuRolesData.length < item.chilDren.length;
+          item.chilDren.map(_item => {
+            var arr = [];
+            _item.MenuRolesData = [];
+            _item.chilDren.map(__item => {
+              if (__item.IsVisible != 0) {
+                arr.push(__item.ButtonID);
+              }
+            });
+            _item.MenuRolesData = arr;
+          });
         });
         this.tableData = result.data;
       });

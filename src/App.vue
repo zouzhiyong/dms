@@ -88,7 +88,9 @@ html {
 .el-pagination button {
   width: 50px;
 }
-
+.el-table {
+  box-sizing: content-box;
+}
 .el-table__footer-wrapper thead tr th,
 .el-table__header-wrapper thead tr th {
   background-color: #eef1f6;
