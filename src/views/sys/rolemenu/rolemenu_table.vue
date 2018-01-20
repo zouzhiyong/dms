@@ -62,7 +62,7 @@ export default {
               IsVisible: arrTemp.length > 0 ? 1 : 0
             });
 
-            console.log(buttonArr);
+            //console.log(buttonArr);
           });
         });
       });

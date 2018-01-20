@@ -36,8 +36,11 @@
         <el-form-item label="顺序号" prop="Sequence">
           <el-input v-model="formData.Sequence" placeholder="顺序号"></el-input>
         </el-form-item>
+        <el-form-item label="控件器名称" prop="ControllerName">
+          <el-input v-model="formData.ControllerName" placeholder="控件器名称"></el-input>
+        </el-form-item>
         <el-form-item label="说明" prop="Descript">
-          <el-input v-model="formData.Descript" placeholder="说明" style="width:495px"></el-input>
+          <el-input v-model="formData.Descript" placeholder="说明"></el-input>
         </el-form-item>
       </el-form>
     </span>

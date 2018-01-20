@@ -5,7 +5,7 @@
       <el-col :span="12" class="condition">
         <slot name="condition"></slot>
       </el-col>
-      <el-col v-if="!$slots.bill" :span="$slots.condition?12:24" class="button">
+      <el-col v-if="!$slots.bill && $slots.toolbar" :span="$slots.condition?12:24" class="button">
         <slot name="toolbar"></slot>
       </el-col>
     </el-row>

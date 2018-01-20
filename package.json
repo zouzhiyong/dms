@@ -69,7 +69,8 @@
         "webpack-hot-middleware": "^2.20.0",
         "webpack-merge": "^4.1.1",
         "uglifyjs": "^2.4.11",
-        "js-export-excel": "^1.0.3"
+        "js-export-excel": "^1.0.3",
+        "vue-cropper": "^0.2.9"
     },
     "engines": {
         "node": ">= 4.0.0",
