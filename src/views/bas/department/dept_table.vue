@@ -3,7 +3,10 @@
 </template>
 
 <script>
-import { FindSysRoleTable, DeleteBasDepartmentRow } from "../../../api/api";
+import {
+  FindBasDepartmentTable,
+  DeleteBasDepartmentRow
+} from "../../../api/api";
 import custtable from "./../../layout/layout_table";
 export default {
   components: {
@@ -12,9 +15,9 @@ export default {
   data() {
     return {
       columns: [
-        { prop: "Name", label: "角色名称", width: "", align: "" },
-        { prop: "CreateUser", label: "创建人", width: "", align: "" },
-        { prop: "UpdateUser", label: "修改人", width: "", align: "" },
+        { prop: "Code", label: "部门编号", width: "", align: "" },
+        { prop: "Name", label: "部门名称", width: "", align: "" },
+        { prop: "ParentCode", label: "上线部门编号", width: "", align: "" },
         {
           prop: "CreateTime",
           label: "创建时间",
@@ -44,7 +47,7 @@ export default {
         }
       ],
       api: {
-        FindTable: FindSysRoleTable,
+        FindTable: FindBasDepartmentTable,
         DeleteRow: DeleteBasDepartmentRow
       }
     };

@@ -73,6 +73,10 @@ export default {
     GetData(row) {
       FindSysMoudleForm(row).then(result => {
         this.formData = result.data;
+        this.formData.ParentCodeList.splice(0, 0, {
+          label: "无上级",
+          value: "&"
+        });
         this.dialogVisible = true;
       });
     },
