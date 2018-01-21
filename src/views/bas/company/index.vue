@@ -21,5 +21,7 @@ export default {
   width: 1000px;
   margin: auto;
   overflow: auto;
+  height: auto !important;
+  max-height: 100%;
 }
 </style>

@@ -2,7 +2,7 @@
   <el-row class="container">
     <el-col :span="24" class="header">
       <el-col :span="10" class="logo" :class="collapsed?'logo-collapse-width':'logo-width'">
-        {{collapsed?'':sysName}}
+        <img v-if="!collapsed" :src="TradeMark" width="199" height="60" />
       </el-col>
       <el-col :span="10">
         <div class="tools" @click.prevent="collapse">
@@ -68,7 +68,8 @@ import custBotton from "./layout/layout_button";
 export default {
   data() {
     return {
-      sysName: "VUEADMIN",
+      // sysName: "VUEADMIN",
+      TradeMark: "",
       collapsed: false,
       sysUserName: "",
       sysUserAvatar: "",
@@ -128,6 +129,7 @@ export default {
       user = JSON.parse(user);
       this.sysUserName = user.name || "";
       this.sysUserAvatar = require("./../assets/" + user.avatar);
+      this.TradeMark = user.TradeMark;
     }
   }
 };
@@ -165,16 +167,19 @@ export default {
       //width:230px;
       height: 60px;
       font-size: 22px;
-      padding-left: 20px;
-      padding-right: 20px;
+      // padding-left: 20px;
+      // padding-right: 20px;
       border-color: rgba(238, 241, 146, 0.3);
       border-right-width: 1px;
       border-right-style: solid;
-      img {
-        width: 40px;
-        float: left;
-        margin: 10px 10px 10px 18px;
+      .el-dropdown {
+        img {
+          width: 40px;
+          float: left;
+          margin: 10px 10px 10px 18px;
+        }
       }
+
       .txt {
         color: #fff;
       }

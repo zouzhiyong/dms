@@ -91,6 +91,9 @@ axios.interceptors.response.use(function(response) {
 export const UploadPath = "/WebAppDms/UpLoad/";
 //登录
 export const requestLogin = params => { return axios.post(`/api/Login/Login`, params).then(res => res.data); };
+//公司设置页面
+export const FindBasCompanyForm = params => { return axios.post(`/api/Company/FindBasCompanyForm`).then(res => res.data); };
+export const SaveBasCompanyForm = params => { return axios.post(`/api/Company/SaveBasCompanyForm`, params).then(res => res.data); };
 //模块设置页面
 export const getMenu = params => { return axios.post(`/api/Menu/FindMenu`).then(res => res.data); };
 export const FindSysModuleTree = params => { return axios.post(`/api/Menu/FindSysModuleTree`).then(res => res.data); };
