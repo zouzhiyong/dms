@@ -10,14 +10,11 @@
           <el-input v-model="formData.Name" placeholder="部门名称"></el-input>
         </el-form-item>
         <!-- <el-form-item label="上级部门" prop="ParentCode">
-          <el-input v-model="formData.ParentCode" placeholder="上线部门编号"></el-input>
-        </el-form-item> -->
-        <el-form-item label="上级部门" prop="ParentCode">
           <el-select v-model="formData.ParentCode" placeholder="上级模块">
             <el-option v-for="item in formData.ParentCodeList" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="顺序" prop="Sequence">
           <el-input v-model="formData.Sequence" placeholder="顺序"></el-input>
         </el-form-item>

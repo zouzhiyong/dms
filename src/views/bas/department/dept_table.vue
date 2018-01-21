@@ -17,7 +17,7 @@ export default {
       columns: [
         { prop: "Code", label: "部门编号", width: "", align: "" },
         { prop: "Name", label: "部门名称", width: "", align: "" },
-        { prop: "ParentCode", label: "上线部门编号", width: "", align: "" },
+        // { prop: "ParentCode", label: "上线部门编号", width: "", align: "" },
         {
           prop: "CreateTime",
           label: "创建时间",
