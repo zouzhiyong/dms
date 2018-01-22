@@ -99,37 +99,6 @@ Date.prototype.Format = function(fmt) { //author: meizz
 }
 
 
-
-//router.afterEach(transition => {
-//NProgress.done();
-//});
-//回车跳转v-enter=""
-// Vue.directive('enter', {
-//     bind: function(el, { value }, vnode) {
-//         el.addEventListener("keydown", ev => {
-//             el.addEventListener("keyup", ev => {
-//                 if (ev.keyCode === 13) {
-//                     let nextInput = vnode.context.$refs[value];
-//                     if (nextInput) {
-//                         if (nextInput[0] && typeof nextInput[0].focus === "function") {
-//                             nextInput[0].focus();
-//                             if (nextInput[0].$refs.input.$refs.input && typeof nextInput[0].$refs.input.$refs.input.select === "function") {
-//                                 nextInput[0].$refs.input.$refs.input.select();
-//                             }
-//                         } else {
-//                             nextInput.focus();
-//                             if (nextInput.$refs.input && typeof nextInput.$refs.input.select === "function") {
-//                                 nextInput.$refs.input.select();
-//                             }
-//                         }
-//                     }
-//                 }
-//             });
-//         });
-//     }
-// })
-
-
 new Vue({
     //el: '#app',
     //template: '<App/>',
