@@ -112,14 +112,15 @@ export const FindSysUserTable = params => { return axios.post(`/api/User/FindSys
 export const FindSysUserForm = params => { return axios.post(`/api/User/FindSysUserForm`, params).then(res => res.data); };
 export const SaveSysUserForm = params => { return axios.post(`/api/User/SaveSysUserForm`, params).then(res => res.data); };
 export const DeleteSysUserRow = params => { return axios.post(`/api/User/DeleteSysUserRow`, params).then(res => res.data); };
-//权限设置页面
-export const FindSysRoleTree = params => { return axios.post(`/api/Role/FindSysRoleTree`).then(res => res.data); };
-export const FindSysRoleMenuTable = params => { return axios.post(`/api/Role/FindSysRoleMenuTable`, params).then(res => res.data); };
-export const SaveSysRoleMenuForm = params => { return axios.post(`/api/Role/SaveSysRoleMenuForm`, params).then(res => res.data); };
+//角色设置页面
 export const FindSysRoleTable = params => { return axios.post(`/api/Role/FindSysRoleTable`, params).then(res => res.data); };
 export const DeleteSysRoleRow = params => { return axios.post(`/api/Role/DeleteSysRoleRow`, params).then(res => res.data); };
 export const FindSysRoleForm = params => { return axios.post(`/api/Role/FindSysRoleForm`, params).then(res => res.data); };
 export const SaveSysRoleForm = params => { return axios.post(`/api/Role/SaveSysRoleForm`, params).then(res => res.data); };
+//角色对应菜单及按钮设置页面
+export const FindSysRoleMenuTree = params => { return axios.post(`/api/RoleMenu/FindSysRoleMenuTree`).then(res => res.data); };
+export const FindSysRoleMenuTable = params => { return axios.post(`/api/RoleMenu/FindSysRoleMenuTable`, params).then(res => res.data); };
+export const SaveSysRoleMenuForm = params => { return axios.post(`/api/RoleMenu/SaveSysRoleMenuForm`, params).then(res => res.data); };
 //客户设置页面
 export const FindBasRegionList = params => { return axios.post(`/api/customer/FindBasRegionList`).then(res => res.data); };
 export const FindBasCustomerTable = params => { return axios.post(`/api/customer/FindBasCustomerTable`, params).then(res => res.data); };

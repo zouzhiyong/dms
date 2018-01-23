@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { FindSysRoleTree } from "../../../api/api";
+import { FindSysRoleMenuTree } from "../../../api/api";
 export default {
   data() {
     return {
@@ -22,7 +22,7 @@ export default {
   },
   methods: {
     iniData() {
-      FindSysRoleTree().then(result => {
+      FindSysRoleMenuTree().then(result => {
         this.treeData = result.data;
         if (this.treeData.length > 0) {
           this.$nextTick(() => {
