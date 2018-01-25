@@ -13,7 +13,7 @@
           <el-checkbox v-model="scope.row.isMenuRole" @change="x=>handleCheckedDataChange(x,scope.row)">{{scope.row.Name2}}</el-checkbox>
         </template>
       </el-table-column>
-      <el-table-column label="按钮" width="550" header-align="center">
+      <el-table-column label="按钮" width="400" header-align="center">
         <template slot-scope="scope">
           <el-checkbox-group :disabled="!scope.row.isMenuRole" v-model="scope.row.ButtonRoles" size="mini">
             <el-checkbox v-for="item in scope.row.chilDren" :label="item.ButtonID" :key="item.ButtonID">{{item.Name}}</el-checkbox>
