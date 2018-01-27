@@ -35,7 +35,7 @@ export default {
             return row.IsValid == 0 ? "无效" : "有效";
           }
         },
-        { prop: "Sequence", label: "顺序号", width: "", align: "right" }
+        { prop: "Sequence", label: "显示顺序", width: "", align: "right" }
       ],
       api: {
         FindTable: FindSysMoudleTable,
