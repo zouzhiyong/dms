@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { FindSysDeptTree } from "../../../api/api";
+import { FindBasDeptTree } from "../../../api/api";
 export default {
   data() {
     return {
@@ -25,7 +25,7 @@ export default {
           label: "所有部门"
         }
       ];
-      FindSysDeptTree().then(result => {
+      FindBasDeptTree().then(result => {
         obj[0].children = result.data;
         this.treeData = obj;
         if (this.treeData.length > 0) {

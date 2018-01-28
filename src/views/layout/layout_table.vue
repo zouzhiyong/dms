@@ -8,6 +8,11 @@
       </el-table-column>
       <el-table-column :prop="item.prop" :width="item.width" :formatter="item.formatter" :label="item.label" header-align="center" :align="item.align" v-for="item in columns" :key="item.id">
       </el-table-column>
+      <!-- <el-table-column type="index" width="50" header-align="center" align="center">
+        <template slot-scope="scope">
+          {{scope.$index + 1 + (pageSize * (currentPage - 1))}}
+        </template>
+      </el-table-column> -->
       <el-table-column label="操作" width="120" align="center" header-align="center" v-if="isOperate">
         <template slot-scope="scope">
           <span style="width:32px;display:inline-block">

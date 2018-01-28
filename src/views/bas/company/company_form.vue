@@ -114,12 +114,13 @@ export default {
     handleSave() {
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
+          //var dataBase64 = this.formData.TradeMark;
           this.$refs.cropper.getCropData(data => {
             this.formData.TradeMark = data;
-            SaveBasCompanyForm(this.formData).then(result => {
-              this.GetData();
-              //this.$refs.ruleForm.resetFields();
-            });
+          });
+          //this.formData.TradeMark = dataBase64;
+          SaveBasCompanyForm(this.formData).then(result => {
+            this.GetData();
           });
         } else {
           return false;
@@ -157,16 +158,15 @@ export default {
           data = e.target.result;
         }
         if (num === 1) {
-          console.log(data);
           this.formData.TradeMark = data;
         } else if (num === 2) {
           //this.example2.img = data;
         }
       };
       // 转化为base64
-      // reader.readAsDataURL(file)
+      reader.readAsDataURL(file);
       // 转化为blob
-      reader.readAsArrayBuffer(file);
+      //reader.readAsArrayBuffer(file);
     }
   }
 };

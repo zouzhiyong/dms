@@ -107,11 +107,11 @@ export const DeleteBasDepartmentRow = params => { return axios.post(`/api/Depart
 export const FindBasDepartmentForm = params => { return axios.post(`/api/Department/FindBasDepartmentForm`, params).then(res => res.data); };
 export const SaveBasDepartmentForm = params => { return axios.post(`/api/Department/SaveBasDepartmentForm`, params).then(res => res.data); };
 //用户设置页面
-export const FindSysDeptTree = params => { return axios.post(`/api/User/FindSysDeptTree`).then(res => res.data); };
-export const FindSysUserTable = params => { return axios.post(`/api/User/FindSysUserTable`, params).then(res => res.data); };
-export const FindSysUserForm = params => { return axios.post(`/api/User/FindSysUserForm`, params).then(res => res.data); };
-export const SaveSysUserForm = params => { return axios.post(`/api/User/SaveSysUserForm`, params).then(res => res.data); };
-export const DeleteSysUserRow = params => { return axios.post(`/api/User/DeleteSysUserRow`, params).then(res => res.data); };
+export const FindBasDeptTree = params => { return axios.post(`/api/User/FindBasDeptTree`).then(res => res.data); };
+export const FindBasUserTable = params => { return axios.post(`/api/User/FindBasUserTable`, params).then(res => res.data); };
+export const FindBasUserForm = params => { return axios.post(`/api/User/FindBasUserForm`, params).then(res => res.data); };
+export const SaveBasUserForm = params => { return axios.post(`/api/User/SaveBasUserForm`, params).then(res => res.data); };
+export const DeleteBasUserRow = params => { return axios.post(`/api/User/DeleteBasUserRow`, params).then(res => res.data); };
 //角色设置页面
 export const FindSysRoleTable = params => { return axios.post(`/api/Role/FindSysRoleTable`, params).then(res => res.data); };
 export const DeleteSysRoleRow = params => { return axios.post(`/api/Role/DeleteSysRoleRow`, params).then(res => res.data); };

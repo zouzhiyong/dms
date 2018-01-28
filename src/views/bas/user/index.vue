@@ -1,7 +1,7 @@
 ﻿<template>
   <layout>
     <userTools slot="toolbar"></userTools>
-    <userTree slot="tree"></userTree>
+    <userTree slot="tree" ref="tree"></userTree>
     <userTable slot="table" ref="table"></userTable>
     <userForm slot="form" ref="form"></userForm>
   </layout>

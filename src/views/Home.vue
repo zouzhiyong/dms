@@ -12,7 +12,7 @@
       <el-col :span="4" class="userinfo">
         <el-dropdown trigger="hover">
           <span class="el-dropdown-link userinfo-inner">
-            <img :src="this.sysUserAvatar" /> {{sysUserName}}</span>
+            <img :src="this.sysUserAvatar" :onerror="defaultImg" /> {{sysUserName}}</span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>我的消息</el-dropdown-item>
             <el-dropdown-item>设置</el-dropdown-item>
@@ -73,7 +73,8 @@ export default {
       collapsed: false,
       sysUserName: "",
       sysUserAvatar: "",
-      menuData: ""
+      menuData: "",
+      defaultImg: 'this.src="' + require("./../assets/20180128171118.png") + '"'
     };
   },
   components: {
@@ -128,7 +129,7 @@ export default {
     if (user) {
       user = JSON.parse(user);
       this.sysUserName = user.name || "";
-      this.sysUserAvatar = require("./../assets/" + user.avatar);
+      this.sysUserAvatar = user.avatar;
       this.TradeMark = user.TradeMark;
     }
   }

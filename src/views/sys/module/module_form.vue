@@ -86,8 +86,8 @@ export default {
     GetData(row) {
       FindSysMoudleForm(row).then(result => {
         result.data.isIndeterminate =
-          result.data.CheckedButtons > 0 &&
-          result.data.CheckedButtons < result.data.Buttons.length;
+          result.data.CheckedButtons.length > 0 &&
+          result.data.CheckedButtons.length < result.data.Buttons.length;
         result.data.checkAll =
           result.data.CheckedButtons.length === result.data.Buttons.length;
         this.formData = result.data;
@@ -96,6 +96,7 @@ export default {
           value: "&"
         });
         this.dialogVisible = true;
+        this.$refs.ruleForm.resetFields();
         this.tabs = "first";
       });
     },
@@ -131,7 +132,7 @@ export default {
     },
     handleCheckedButtonChange(value) {
       let checkedCount = value.length;
-      this.formData.checkAll = true; // checkedCount === this.formData.Buttons.length;
+      this.formData.checkAll = checkedCount === this.formData.Buttons.length;
       this.formData.isIndeterminate =
         checkedCount > 0 && checkedCount < this.formData.Buttons.length;
     }
