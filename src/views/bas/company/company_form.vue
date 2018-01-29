@@ -71,7 +71,11 @@
 </template>
 
 <script>
-import { FindBasCompanyForm, SaveBasCompanyForm } from "../../../api/api";
+import {
+  FindBasCompanyForm,
+  SaveBasCompanyForm,
+  UploadPath
+} from "../../../api/api";
 import custBotton from "./../../layout/layout_button";
 import vueCropper from "vue-cropper";
 export default {
@@ -115,6 +119,7 @@ export default {
     GetData() {
       FindBasCompanyForm().then(result => {
         this.formData = result.data;
+        this.img = UploadPath + result.data.TradeMark;
       });
     },
     handleSave() {
