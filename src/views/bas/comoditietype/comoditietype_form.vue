@@ -1,11 +1,11 @@
 <template>
-  <el-dialog width="340px" :visible.sync="dialogVisible" :close-on-click-modal="false" :close-on-press-escape="false" :before-close="handleClose">
+  <el-dialog v-if="dialogVisible" width="340px" :visible.sync="dialogVisible" :close-on-click-modal="false" :close-on-press-escape="false" :before-close="handleClose">
     <span slot="title">{{$route.name}}</span>
     <span>
       <el-form @submit.native.prevent :rules="rules" size="small" ref="ruleForm" :model="formData" label-width='80px' class="demo-form-inline">
         <el-form-item label="类别名称" prop="TypeName">
           <el-input v-model="formData.TypeName" placeholder="部门名称"></el-input>
-        </el-form-item>        
+        </el-form-item>
         <el-form-item label="对应上级" prop="ParentID">
           <el-select v-model="formData.ParentID" placeholder="对应上级">
             <el-option v-for="item in formData.ParentIDList" :key="item.value" :label="item.label" :value="item.value">

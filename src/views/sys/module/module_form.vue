@@ -1,5 +1,5 @@
 <template>
-  <el-dialog width="650px" :visible.sync="dialogVisible" :close-on-click-modal="false" :close-on-press-escape="false" :before-close="handleClose">
+  <el-dialog v-if="dialogVisible" width="650px" :visible.sync="dialogVisible" :close-on-click-modal="false" :close-on-press-escape="false" :before-close="handleClose">
     <span slot="title">{{$route.name}}</span>
     <span>
       <el-form @submit.native.prevent :rules="rules" size="small" :inline="true" ref="ruleForm" :model="formData" label-width='80px' class="demo-form-inline">
@@ -75,7 +75,7 @@ export default {
       dialogVisible: false,
       formData: {},
       rules: {
-        MenuName: [{ required: true, message: "模块名称不能为空" }]
+        Name: [{ required: true, message: "模块名称不能为空" }]
       }
     };
   },
@@ -96,7 +96,7 @@ export default {
           value: "&"
         });
         this.dialogVisible = true;
-        this.$refs.ruleForm.resetFields();
+        // this.$refs.ruleForm.resetFields();
         this.tabs = "first";
       });
     },

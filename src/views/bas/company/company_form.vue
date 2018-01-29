@@ -40,18 +40,22 @@
               <el-col :span="8">公司商标</el-col>
               <el-col :span="16" style="color:#606266;font-weight:400;text-align:right">注意：修改后需重新登录后生效</el-col>
             </el-row>
-            <vueCropper ref="cropper" :fixed="option.fixed" :img="formData.TradeMark" :autoCrop="option.autoCrop" :fixedNumber="option.fixedNumber" :autoCropWidth="option.autoCropWidth" :autoCropHeight="option.autoCropHeight" :outputSize="option.size" :outputType="option.outputType" :info="true" :full="option.full" :canScale="option.canScale" :canMove="option.canMove" :canMoveBox="option.canMoveBox" :fixedBox="option.fixedBox" :original="option.original" @realTime="realTime" style="height:300px"></vueCropper>
+            <vueCropper ref="cropper" :fixed="option.fixed" :img="img" :autoCrop="option.autoCrop" :fixedNumber="option.fixedNumber" :autoCropWidth="option.autoCropWidth" :autoCropHeight="option.autoCropHeight" :outputSize="option.size" :outputType="option.outputType" :info="true" :full="option.full" :canScale="option.canScale" :canMove="option.canMove" :canMoveBox="option.canMoveBox" :fixedBox="option.fixedBox" :original="option.original" @realTime="realTime" style="height:300px"></vueCropper>
           </el-form-item>
           <div class="cropperButton">
             <input type="file" id="uploads" style="position:absolute; clip:rect(0 0 0 0);" accept="image/png, image/jpeg, image/gif, image/jpg" @change="uploadImg($event, 1)">
-            <label class="el-button el-button--primary el-button--small" for="uploads">
+            <label class="el-button el-button--primary el-button--mini" for="uploads">
               <i class="el-icon-upload el-icon--right"></i> 上传
             </label>
-            <button @click="startCrop" class="el-button el-button--primary el-button--small">
-              <i class="fa fa-crop"></i> 剪切</button>
-            <button @click="rotateLeft" class="el-button el-button--primary el-button--small">
+            <button @click="changeScale(0.2)" class="el-button el-button--primary el-button--mini">
+              <i class="fa fa-plus"></i>放大</button>
+            <button @click="changeScale(-0.2)" class="el-button el-button--primary el-button--mini">
+              <i class="fa fa-minus"></i>缩小</button>
+            <!-- <button @click="startCrop" class="el-button el-button--primary el-button--mini">
+              <i class="fa fa-crop"></i> 剪切</button> -->
+            <button @click="rotateLeft" class="el-button el-button--primary el-button--mini">
               <i class="fa fa-undo"></i> 向左</button>
-            <button @click="rotateRight" class="el-button el-button--primary el-button--small">
+            <button @click="rotateRight" class="el-button el-button--primary el-button--mini">
               <i class="fa fa-repeat"></i> 向右</button>
           </div>
         </el-col>
@@ -73,6 +77,7 @@ import vueCropper from "vue-cropper";
 export default {
   data() {
     return {
+      img: "",
       formData: {},
       rules: {
         Name: [{ required: true, message: "公司名称不能为空" }],
@@ -82,18 +87,19 @@ export default {
       },
       option: {
         size: 1,
-        autoCrop: false,
-        full: true,
+        autoCrop: true,
+        full: false,
         outputType: "png",
         canScale: true,
         canMove: true,
         fixedBox: false,
         original: false,
         canMoveBox: true,
-        autoCropWidth: 300,
-        autoCropHeight: 200,
-        fixedNumber: [200, 60],
-        fixed: true
+        autoCropWidth: 400,
+        autoCropHeight: 120,
+        fixedNumber: [400, 120],
+        fixed: true,
+        fixedBox: true
       },
       previews: {}
     };
@@ -114,18 +120,26 @@ export default {
     handleSave() {
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
-          //var dataBase64 = this.formData.TradeMark;
-          this.$refs.cropper.getCropData(data => {
-            this.formData.TradeMark = data;
-          });
-          //this.formData.TradeMark = dataBase64;
-          SaveBasCompanyForm(this.formData).then(result => {
-            this.GetData();
-          });
+          var s = this.img.substr(0, 4);
+          if (s !== "data") {
+            SaveBasCompanyForm(this.formData).then(result => {
+              this.GetData();
+            });
+          } else {
+            this.$refs.cropper.getCropData(data => {
+              this.formData.TradeMark = data;
+              SaveBasCompanyForm(this.formData).then(result => {
+                this.GetData();
+              });
+            });
+          }
         } else {
           return false;
         }
       });
+    },
+    changeScale(num) {
+      this.$refs.cropper.changeScale(num);
     },
     startCrop() {
       this.$refs.cropper.startCrop();
@@ -158,7 +172,7 @@ export default {
           data = e.target.result;
         }
         if (num === 1) {
-          this.formData.TradeMark = data;
+          this.img = data;
         } else if (num === 2) {
           //this.example2.img = data;
         }
@@ -178,7 +192,9 @@ export default {
 .el-input__inner {
   width: 350px;
 }
-
+.el-button--mini {
+  padding: 7px 7px;
+}
 .rowbody {
   padding: 5px;
 }

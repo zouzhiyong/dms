@@ -1,5 +1,5 @@
 <template>
-  <el-dialog width="650px" :visible.sync="dialogVisible" :close-on-click-modal="false" :close-on-press-escape="false" :before-close="handleClose">
+  <el-dialog v-if="dialogVisible" width="650px" :visible.sync="dialogVisible" :close-on-click-modal="false" :close-on-press-escape="false" :before-close="handleClose">
     <span slot="title">{{$route.name}}</span>
     <span>
       <el-form @submit.native.prevent :rules="rules" size="small" :inline="true" ref="ruleForm" :model="formData" label-width='80px' class="demo-form-inline">
@@ -88,19 +88,23 @@
           <el-tab-pane label="图片" name="three">
             <el-col style="width:480px">
               <el-form-item prop="Photo">
-                <vueCropper ref="cropper" :fixed="option.fixed" :img="formData.Photo" :autoCrop="option.autoCrop" :fixedNumber="option.fixedNumber" :autoCropWidth="option.autoCropWidth" :autoCropHeight="option.autoCropHeight" :outputSize="option.size" :outputType="option.outputType" :info="true" :full="option.full" :canScale="option.canScale" :canMove="option.canMove" :canMoveBox="option.canMoveBox" :fixedBox="option.fixedBox" :original="option.original" @realTime="realTime" style="height:300px;width:480px;"></vueCropper>
+                <vueCropper ref="cropper" :fixed="option.fixed" :img="img" :autoCrop="option.autoCrop" :fixedNumber="option.fixedNumber" :autoCropWidth="option.autoCropWidth" :autoCropHeight="option.autoCropHeight" :outputSize="option.size" :outputType="option.outputType" :info="true" :full="option.full" :canScale="option.canScale" :canMove="option.canMove" :canMoveBox="option.canMoveBox" :fixedBox="option.fixedBox" :original="option.original" @realTime="realTime" style="height:300px;width:480px;"></vueCropper>
               </el-form-item>
             </el-col>
             <el-col class="cropperButton" style="height:300px;text-align:center;width:130px">
               <input type="file" id="uploads" style="position:absolute; clip:rect(0 0 0 0);" accept="image/png, image/jpeg, image/gif, image/jpg" @change="uploadImg($event, 1)">
-              <label class="el-button el-button--primary el-button--small" for="uploads" style="width:86px">
+              <label class="el-button el-button--primary el-button--mini" for="uploads">
                 <i class="el-icon-upload el-icon--right"></i> 上传
               </label>
-              <button @click="startCrop" class="el-button el-button--primary el-button--small">
-                <i class="fa fa-crop"></i> 剪切</button>
-              <button @click="rotateLeft" class="el-button el-button--primary el-button--small">
+              <button @click="changeScale(0.2)" class="el-button el-button--primary el-button--mini">
+                <i class="fa fa-plus"></i>放大</button>
+              <button @click="changeScale(-0.2)" class="el-button el-button--primary el-button--mini">
+                <i class="fa fa-minus"></i>缩小</button>
+              <!-- <button @click="startCrop" class="el-button el-button--primary el-button--mini">
+                <i class="fa fa-crop"></i> 剪切</button> -->
+              <button @click="rotateLeft" class="el-button el-button--primary el-button--mini">
                 <i class="fa fa-undo"></i> 向左</button>
-              <button @click="rotateRight" class="el-button el-button--primary el-button--small">
+              <button @click="rotateRight" class="el-button el-button--primary el-button--mini">
                 <i class="fa fa-repeat"></i> 向右</button>
             </el-col>
           </el-tab-pane>
@@ -117,12 +121,13 @@
 </template>
 
 <script>
-import { FindBasUserForm, SaveBasUserForm } from "../../../api/api";
+import { FindBasUserForm, SaveBasUserForm, UploadPath } from "../../../api/api";
 import custBotton from "./../../layout/layout_button";
 import vueCropper from "vue-cropper";
 export default {
   data() {
     return {
+      img: "",
       tabs: "first",
       dialogVisible: false,
       formData: {},
@@ -136,18 +141,19 @@ export default {
       },
       option: {
         size: 1,
-        autoCrop: false,
-        full: true,
+        autoCrop: true,
+        full: false,
         outputType: "png",
         canScale: true,
         canMove: true,
         fixedBox: false,
         original: false,
         canMoveBox: true,
-        autoCropWidth: 200,
-        autoCropHeight: 200,
-        fixedNumber: [200, 200],
-        fixed: true
+        autoCropWidth: 150,
+        autoCropHeight: 150,
+        fixedNumber: [150, 150],
+        fixed: true,
+        fixedBox: true
       },
       previews: {}
     };
@@ -163,6 +169,9 @@ export default {
           label: "--请选择--",
           value: 0
         };
+        if (row.UserID != 0) {
+          this.img = UploadPath + result.data.Photo;
+        }
         this.formData = result.data;
         this.formData.DeptIDList.splice(0, 0, obj);
         this.formData.UserCategoryIDList.splice(0, 0, obj);
@@ -170,7 +179,6 @@ export default {
         this.formData.RightsIDList.splice(0, 0, obj);
         this.formData.ParentEmpIDList.splice(0, 0, obj);
         this.formData.CertificateIDList.splice(0, 0, obj);
-
         this.dialogVisible = true;
         this.tabs = "first";
       });
@@ -178,19 +186,30 @@ export default {
     handleSave() {
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
-          this.$refs.cropper.getCropData(data => {
-            this.formData.Photo = data;
-          });
-
-          SaveBasUserForm(this.formData).then(result => {
-            this.dialogVisible = false;
-            this.$parent.$parent.$refs.table.$refs.table.GetData();
-            this.$refs.ruleForm.resetFields();
-          });
+          var s = this.img.substr(0, 4);
+          if (s !== "data") {
+            SaveBasUserForm(this.formData).then(result => {
+              this.dialogVisible = false;
+              this.$parent.$parent.$refs.table.$refs.table.GetData();
+              this.$refs.ruleForm.resetFields();
+            });
+          } else {
+            this.$refs.cropper.getCropData(data => {
+              this.formData.Photo = data;
+              SaveBasUserForm(this.formData).then(result => {
+                this.dialogVisible = false;
+                this.$parent.$parent.$refs.table.$refs.table.GetData();
+                this.$refs.ruleForm.resetFields();
+              });
+            });
+          }
         } else {
           return false;
         }
       });
+    },
+    changeScale(num) {
+      this.$refs.cropper.changeScale(num);
     },
     handleCanle() {
       this.dialogVisible = false;
@@ -234,7 +253,7 @@ export default {
           data = e.target.result;
         }
         if (num === 1) {
-          this.formData.Photo = data;
+          this.img = data;
         } else if (num === 2) {
           //this.example2.img = data;
         }
@@ -252,6 +271,10 @@ export default {
 .el-input,
 .el-input__inner {
   width: 200px;
+}
+
+.el-button--mini {
+  padding: 7px 7px;
 }
 .el-dialog__wrapper>>>.el-dialog__body {
   padding: 0px 5px;

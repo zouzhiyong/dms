@@ -74,7 +74,7 @@ export default {
       sysUserName: "",
       sysUserAvatar: "",
       menuData: "",
-      defaultImg: 'this.src="' + require("./../assets/20180128171118.png") + '"'
+      defaultImg: 'this.src="' + require("./../assets/default.png") + '"'
     };
   },
   components: {

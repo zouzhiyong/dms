@@ -1,46 +1,39 @@
 <template>
-  <el-dialog width="550px" :visible.sync="dialogVisible" :close-on-click-modal="false" :close-on-press-escape="false" :before-close="handleClose">
+  <el-dialog v-if="dialogVisible" width="550px" :visible.sync="dialogVisible" :close-on-click-modal="false" :close-on-press-escape="false" :before-close="handleClose">
     <span slot="title">{{$route.name}}</span>
     <span>
       <el-col :span="15">
-<el-form @submit.native.prevent :inline="false" :rules="rules" size="small" ref="ruleForm" :model="formData" label-width='80px' class="demo-form-inline">
-        <el-form-item label="客户编码" prop="Code">
-          <el-input v-model="formData.Code" placeholder="客户编码"></el-input>
-        </el-form-item> 
-        <el-form-item label="客户名称" prop="CustomerName">
-          <el-input v-model="formData.CustomerName" placeholder="客户名称"></el-input>
-        </el-form-item> 
-        <el-form-item label="联系人" prop="LinkMan">
-          <el-input v-model="formData.LinkMan" placeholder="联系人"></el-input>
-        </el-form-item>  
-        <el-form-item label="联系电话" prop="LinkManPhone">
-          <el-input v-model="formData.LinkManPhone" placeholder="联系电话"></el-input>
-        </el-form-item>  
-        <el-form-item label="销售区域" prop="RegionName">
-          <el-cascader :clearable="true" :options="RegionList" v-model="formData.RegionName" @change="handleChange"></el-cascader>
-        </el-form-item>     
-        <el-form-item label="有效否" prop="IsValid">
-          <el-select v-model="formData.IsValid" placeholder="有效否">
-            <el-option v-for="item in formData.IsValidList" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </el-form-item>
-      </el-form>
+        <el-form @submit.native.prevent :inline="false" :rules="rules" size="small" ref="ruleForm" :model="formData" label-width='80px' class="demo-form-inline">
+          <el-form-item label="客户编码" prop="Code">
+            <el-input v-model="formData.Code" placeholder="客户编码"></el-input>
+          </el-form-item>
+          <el-form-item label="客户名称" prop="CustomerName">
+            <el-input v-model="formData.CustomerName" placeholder="客户名称"></el-input>
+          </el-form-item>
+          <el-form-item label="联系人" prop="LinkMan">
+            <el-input v-model="formData.LinkMan" placeholder="联系人"></el-input>
+          </el-form-item>
+          <el-form-item label="联系电话" prop="LinkManPhone">
+            <el-input v-model="formData.LinkManPhone" placeholder="联系电话"></el-input>
+          </el-form-item>
+          <el-form-item label="销售区域" prop="RegionName">
+            <el-cascader :clearable="true" :options="RegionList" v-model="formData.RegionName" @change="handleChange"></el-cascader>
+          </el-form-item>
+          <el-form-item label="有效否" prop="IsValid">
+            <el-select v-model="formData.IsValid" placeholder="有效否">
+              <el-option v-for="item in formData.IsValidList" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
       </el-col>
       <el-col :span="9">
-          <el-upload ref="upload" 
-          class="avatar-uploader" 
-          accept="image/png,image/jpeg" 
-          :headers="headers" 
-          action="/WebAppDms/api/customer/ImgUpload" 
-          :show-file-list="false" 
-          :on-success="handleAvatarSuccess" 
-          :before-upload="beforeAvatarUpload">
-            <img v-if="imageUrl" :src="imageUrl" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
+        <el-upload ref="upload" class="avatar-uploader" accept="image/png,image/jpeg" :headers="headers" action="/WebAppDms/api/customer/ImgUpload" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+          <img v-if="imageUrl" :src="imageUrl" class="avatar">
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </el-upload>
       </el-col>
-     
+
     </span>
     <span slot="footer">
       <custBotton>
