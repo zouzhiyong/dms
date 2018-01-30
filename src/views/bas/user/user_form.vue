@@ -88,8 +88,7 @@
           <el-tab-pane label="图片" name="three">
             <el-col style="width:480px">
               <el-form-item prop="Photo">
-                <vueCropper ref="cropper" :fixed="option.fixed" :img="img" :autoCrop="option.autoCrop" :fixedNumber="option.fixedNumber" :autoCropWidth="option.autoCropWidth" :autoCropHeight="option.autoCropHeight" :outputSize="option.size" :outputType="option.outputType"
-                  :info="true" :full="option.full" :canScale="option.canScale" :canMove="option.canMove" :canMoveBox="option.canMoveBox" :fixedBox="option.fixedBox" :original="option.original" @realTime="realTime" style="height:300px;width:480px;"></vueCropper>
+                <vueCropper @imgLoad="imgLoad" ref="cropper" :fixed="option.fixed" :img="img" :autoCrop="option.autoCrop" :fixedNumber="option.fixedNumber" :autoCropWidth="option.autoCropWidth" :autoCropHeight="option.autoCropHeight" :outputSize="option.size" :outputType="option.outputType" :info="true" :full="option.full" :canScale="option.canScale" :canMove="option.canMove" :canMoveBox="option.canMoveBox" :fixedBox="option.fixedBox" :original="option.original" @realTime="realTime" style="height:300px;width:480px;"></vueCropper>
               </el-form-item>
             </el-col>
             <el-col class="cropperButton" style="height:300px;text-align:center;width:130px">
@@ -122,174 +121,180 @@
 </template>
 
 <script>
-  import { FindBasUserForm, SaveBasUserForm, UploadPath } from "../../../api/api";
-  import custBotton from "./../../layout/layout_button";
-  import vueCropper from "vue-cropper";
-  export default {
-    data() {
-      return {
-        img: "",
-        tabs: "first",
-        dialogVisible: false,
-        formData: {},
-        rules: {
-          Code: [{ required: true, message: "账号不能为空" }],
-          Name: [{ required: true, message: "名称不能为空" }],
-          Email: [{ type: "email", message: "请输入正确的邮箱地址" }],
-          UserCategoryID: [{ required: true, message: "职员类型不能为空" }],
-          PositionID: [{ required: true, message: "职位不能为空" }],
-          Phone: [{ required: true, message: "手机号码不能为空" }]
-        },
-        option: {
-          size: 1,
-          autoCrop: true,
-          full: false,
-          outputType: "png",
-          canScale: true,
-          canMove: true,
-          fixedBox: false,
-          original: false,
-          canMoveBox: true,
-          autoCropWidth: 150,
-          autoCropHeight: 150,
-          fixedNumber: [150, 150],
-          fixed: true,
-          fixedBox: true
-        },
-        previews: {}
-      };
-    },
-    components: {
-      custBotton,
-      vueCropper
-    },
-    methods: {
-      GetData(row) {
-        FindBasUserForm(row).then(result => {
-          let obj = {
-            label: "--请选择--",
-            value: 0
-          };
-          if (row.UserID == 0) {
-            this.img = "";
-          } else {
-            this.img = UploadPath + result.data.Photo;
-          }
-          this.formData = result.data;
-          this.formData.DeptIDList.splice(0, 0, obj);
-          this.formData.UserCategoryIDList.splice(0, 0, obj);
-          this.formData.PositionIDList.splice(0, 0, obj);
-          this.formData.RightsIDList.splice(0, 0, obj);
-          this.formData.ParentEmpIDList.splice(0, 0, obj);
-          this.formData.CertificateIDList.splice(0, 0, obj);
-          this.dialogVisible = true;
-          this.tabs = "first";
-        });
+import { FindBasUserForm, SaveBasUserForm, UploadPath } from "../../../api/api";
+import custBotton from "./../../layout/layout_button";
+import vueCropper from "vue-cropper";
+export default {
+  data() {
+    return {
+      checkImg: false,
+      img: "",
+      tabs: "first",
+      dialogVisible: false,
+      formData: {},
+      rules: {
+        Code: [{ required: true, message: "账号不能为空" }],
+        Name: [{ required: true, message: "名称不能为空" }],
+        Email: [{ type: "email", message: "请输入正确的邮箱地址" }],
+        UserCategoryID: [{ required: true, message: "职员类型不能为空" }],
+        PositionID: [{ required: true, message: "职位不能为空" }],
+        Phone: [{ required: true, message: "手机号码不能为空" }]
       },
-      handleSave() {
-        this.$refs.ruleForm.validate(valid => {
-          if (valid) {
-            var s = this.img.substr(0, 4);
-            if (s !== "data") {
+      option: {
+        size: 1,
+        autoCrop: true,
+        full: false,
+        outputType: "png",
+        canScale: true,
+        canMove: true,
+        fixedBox: false,
+        original: false,
+        canMoveBox: true,
+        autoCropWidth: 150,
+        autoCropHeight: 150,
+        fixedNumber: [150, 150],
+        fixed: true,
+        fixedBox: true
+      },
+      previews: {}
+    };
+  },
+  components: {
+    custBotton,
+    vueCropper
+  },
+  methods: {
+    GetData(row) {
+      FindBasUserForm(row).then(result => {
+        let obj = {
+          label: "--请选择--",
+          value: 0
+        };
+        if (row.UserID == 0) {
+          this.img = "";
+        } else {
+          this.img = UploadPath + result.data.Photo;
+        }
+        this.formData = result.data;
+        this.formData.DeptIDList.splice(0, 0, obj);
+        this.formData.UserCategoryIDList.splice(0, 0, obj);
+        this.formData.PositionIDList.splice(0, 0, obj);
+        this.formData.RightsIDList.splice(0, 0, obj);
+        this.formData.ParentEmpIDList.splice(0, 0, obj);
+        this.formData.CertificateIDList.splice(0, 0, obj);
+        this.dialogVisible = true;
+        this.tabs = "first";
+      });
+    },
+    handleSave() {
+      this.$refs.ruleForm.validate(valid => {
+        if (valid) {
+          if (this.checkImg) {
+            this.$refs.cropper.getCropData(data => {
+              this.formData.Photo = data;
+              this.img = data;
               SaveBasUserForm(this.formData).then(result => {
                 this.dialogVisible = false;
                 this.$parent.$parent.$refs.table.$refs.table.GetData();
                 this.$refs.ruleForm.resetFields();
               });
-            } else {
-              this.$refs.cropper.getCropData(data => {
-                this.formData.Photo = data;
-                SaveBasUserForm(this.formData).then(result => {
-                  this.dialogVisible = false;
-                  this.$parent.$parent.$refs.table.$refs.table.GetData();
-                  this.$refs.ruleForm.resetFields();
-                });
-              });
-            }
+            });
           } else {
-            return false;
+            SaveBasUserForm(this.formData).then(result => {
+              this.dialogVisible = false;
+              this.$parent.$parent.$refs.table.$refs.table.GetData();
+              this.$refs.ruleForm.resetFields();
+            });
           }
-        });
-      },
-      changeScale(num) {
-        this.$refs.cropper.changeScale(num);
-      },
-      handleCanle() {
-        this.dialogVisible = false;
-        this.$refs.ruleForm.resetFields();
-        this.$refs.cropper.stopCrop();
-      },
-      handleClose(done) {
-        this.dialogVisible = false;
-        this.$refs.ruleForm.resetFields();
-        this.$refs.cropper.stopCrop();
-        done();
-      },
-      startCrop() {
-        this.$refs.cropper.startCrop();
-      },
-      rotateLeft() {
-        this.$refs.cropper.rotateRight(); //向右边旋转90度
-      },
-      rotateRight() {
-        this.$refs.cropper.rotateLeft(); //向左边旋转90度
-      },
-      // 实时预览函数
-      realTime(data) {
-        this.previews = data;
-      },
-      uploadImg(e, num) {
-        //上传图片
-        // this.option.img
-        var file = e.target.files[0];
-        if (!/\.(gif|jpg|jpeg|png|bmp|GIF|JPG|PNG)$/.test(e.target.value)) {
-          alert("图片类型必须是.gif,jpeg,jpg,png,bmp中的一种");
+        } else {
           return false;
         }
-        var reader = new FileReader();
-        reader.onload = e => {
-          let data;
-          if (typeof e.target.result === "object") {
-            // 把Array Buffer转化为blob 如果是base64不需要
-            data = window.URL.createObjectURL(new Blob([e.target.result]));
-          } else {
-            data = e.target.result;
-          }
-          if (num === 1) {
-            this.img = data;
-          } else if (num === 2) {
-            //this.example2.img = data;
-          }
-        };
-        // 转化为base64
-        reader.readAsDataURL(file);
-        // 转化为blob
-        //reader.readAsArrayBuffer(file);
+      });
+    },
+    imgLoad(v) {
+      this.checkImg = v === "success";
+    },
+    changeScale(num) {
+      this.$refs.cropper.changeScale(num);
+    },
+    handleCanle() {
+      this.dialogVisible = false;
+      this.$refs.ruleForm.resetFields();
+      this.$refs.cropper.refresh();
+      this.checkImg = false;
+    },
+    handleClose(done) {
+      this.dialogVisible = false;
+      this.$refs.ruleForm.resetFields();
+      this.$refs.cropper.refresh();
+      this.checkImg = false;
+      done();
+    },
+    startCrop() {
+      this.$refs.cropper.startCrop();
+    },
+    rotateLeft() {
+      this.$refs.cropper.rotateRight(); //向右边旋转90度
+    },
+    rotateRight() {
+      this.$refs.cropper.rotateLeft(); //向左边旋转90度
+    },
+    // 实时预览函数
+    realTime(data) {
+      this.previews = data;
+    },
+    uploadImg(e, num) {
+      //上传图片
+      // this.option.img
+      var file = e.target.files[0];
+      if (!/\.(gif|jpg|jpeg|png|bmp|GIF|JPG|PNG)$/.test(e.target.value)) {
+        alert("图片类型必须是.gif,jpeg,jpg,png,bmp中的一种");
+        return false;
       }
+      var reader = new FileReader();
+      reader.onload = e => {
+        let data;
+        if (typeof e.target.result === "object") {
+          // 把Array Buffer转化为blob 如果是base64不需要
+          data = window.URL.createObjectURL(new Blob([e.target.result]));
+        } else {
+          data = e.target.result;
+        }
+        if (num === 1) {
+          this.img = data;
+        } else if (num === 2) {
+          //this.example2.img = data;
+        }
+      };
+      // 转化为base64
+      reader.readAsDataURL(file);
+      // 转化为blob
+      //reader.readAsArrayBuffer(file);
     }
-  };
+  }
+};
 </script>
 
 <style scoped>
-  .el-input,
-  .el-input__inner {
-    width: 200px;
-  }
+.el-input,
+.el-input__inner {
+  width: 200px;
+}
 
-  .el-button--mini {
-    padding: 7px 7px;
-  }
+.el-button--mini {
+  padding: 7px 7px;
+}
 
-  .el-dialog__wrapper>>>.el-dialog__body {
-    padding: 0px 5px;
-  }
+.el-dialog__wrapper>>>.el-dialog__body {
+  padding: 0px 5px;
+}
 
-  .el-tabs--border-card {
-    box-shadow: none;
-    border: none;
-  }
+.el-tabs--border-card {
+  box-shadow: none;
+  border: none;
+}
 
-  .cropperButton>>>.el-button {
-    margin: 10px auto;
-  }
+.cropperButton>>>.el-button {
+  margin: 10px auto;
+}
 </style>

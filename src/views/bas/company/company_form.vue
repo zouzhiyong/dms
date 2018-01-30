@@ -40,7 +40,7 @@
               <el-col :span="8">公司商标</el-col>
               <el-col :span="16" style="color:#606266;font-weight:400;text-align:right">注意：修改后需重新登录后生效</el-col>
             </el-row>
-            <vueCropper ref="cropper" :fixed="option.fixed" :img="img" :autoCrop="option.autoCrop" :fixedNumber="option.fixedNumber" :autoCropWidth="option.autoCropWidth" :autoCropHeight="option.autoCropHeight" :outputSize="option.size" :outputType="option.outputType" :info="true" :full="option.full" :canScale="option.canScale" :canMove="option.canMove" :canMoveBox="option.canMoveBox" :fixedBox="option.fixedBox" :original="option.original" @realTime="realTime" style="height:300px"></vueCropper>
+            <vueCropper @imgLoad="imgLoad" ref="cropper" :fixed="option.fixed" :img="img" :autoCrop="option.autoCrop" :fixedNumber="option.fixedNumber" :autoCropWidth="option.autoCropWidth" :autoCropHeight="option.autoCropHeight" :outputSize="option.size" :outputType="option.outputType" :info="true" :full="option.full" :canScale="option.canScale" :canMove="option.canMove" :canMoveBox="option.canMoveBox" :fixedBox="option.fixedBox" :original="option.original" @realTime="realTime" style="height:300px"></vueCropper>
           </el-form-item>
           <div class="cropperButton">
             <input type="file" id="uploads" style="position:absolute; clip:rect(0 0 0 0);" accept="image/png, image/jpeg, image/gif, image/jpg" @change="uploadImg($event, 1)">
@@ -81,6 +81,7 @@ import vueCropper from "vue-cropper";
 export default {
   data() {
     return {
+      checkImg: false,
       img: "",
       formData: {},
       rules: {
@@ -122,20 +123,23 @@ export default {
         this.img = UploadPath + result.data.TradeMark;
       });
     },
+    imgLoad(v) {
+      this.checkImg = v === "success";
+    },
     handleSave() {
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
-          var s = this.img.substr(0, 4);
-          if (s !== "data") {
-            SaveBasCompanyForm(this.formData).then(result => {
-              this.GetData();
-            });
-          } else {
+          if (this.checkImg) {
             this.$refs.cropper.getCropData(data => {
               this.formData.TradeMark = data;
+              this.img = data;
               SaveBasCompanyForm(this.formData).then(result => {
                 this.GetData();
               });
+            });
+          } else {
+            SaveBasCompanyForm(this.formData).then(result => {
+              this.GetData();
             });
           }
         } else {
