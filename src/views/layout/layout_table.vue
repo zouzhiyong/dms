@@ -6,13 +6,22 @@
           {{scope.$index + 1 + (pageSize * (currentPage - 1))}}
         </template>
       </el-table-column>
-      <el-table-column :prop="item.prop" :width="item.width" :formatter="item.formatter" :label="item.label" header-align="center" :align="item.align" v-for="item in columns" :key="item.id">
-      </el-table-column>
-      <!-- <el-table-column type="index" width="50" header-align="center" align="center">
-        <template slot-scope="scope">
-          {{scope.$index + 1 + (pageSize * (currentPage - 1))}}
-        </template>
-      </el-table-column> -->
+      <template v-for="item in columns">
+        <el-table-column v-if="item.prop=='IsValid'" :prop="item.prop" :width="item.width" :formatter="item.formatter" :label="item.label" header-align="center" :align="item.align" :key="item.id">
+          <template slot-scope="scope">
+            <i v-if="scope.row.IsValid==1" class="fa fa-check" style="color:#409EFF"></i>
+            <i v-else class="fa fa-times" style="color:#C0C4CC"></i>
+          </template>
+        </el-table-column>
+        <el-table-column v-else-if="item.prop=='IsLockedout'" :prop="item.prop" :width="item.width" :formatter="item.formatter" :label="item.label" header-align="center" :align="item.align" :key="item.id">
+          <template slot-scope="scope">
+            <i v-if="scope.row.IsLockedout==1" class="fa fa-lock" style="color:#C0C4CC"></i>
+            <i v-else class="fa fa-unlock" style="color:#409EFF"></i>
+          </template>
+        </el-table-column>
+        <el-table-column v-else :prop="item.prop" :width="item.width" :formatter="item.formatter" :label="item.label" header-align="center" :align="item.align" :key="item.id">
+        </el-table-column>
+      </template>
       <el-table-column label="操作" width="120" align="center" header-align="center" v-if="isOperate">
         <template slot-scope="scope">
           <span style="width:32px;display:inline-block">

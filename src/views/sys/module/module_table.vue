@@ -30,10 +30,7 @@ export default {
           prop: "IsValid",
           label: "有效否",
           width: "",
-          align: "center",
-          formatter: function(row, column) {
-            return row.IsValid == 0 ? "无效" : "有效";
-          }
+          align: "center"
         },
         { prop: "Sequence", label: "显示顺序", width: "", align: "right" }
       ],

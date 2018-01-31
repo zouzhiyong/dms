@@ -122,11 +122,11 @@ export const FindSysRoleMenuTree = params => { return axios.post(`/api/RoleMenu/
 export const FindSysRoleMenuTable = params => { return axios.post(`/api/RoleMenu/FindSysRoleMenuTable`, params).then(res => res.data); };
 export const SaveSysRoleMenuForm = params => { return axios.post(`/api/RoleMenu/SaveSysRoleMenuForm`, params).then(res => res.data); };
 //客户设置页面
-export const FindBasRegionList = params => { return axios.post(`/api/customer/FindBasRegionList`).then(res => res.data); };
-export const FindBasCustomerTable = params => { return axios.post(`/api/customer/FindBasCustomerTable`, params).then(res => res.data); };
-export const DeleteBasCustomerRow = params => { return axios.post(`/api/customer/DeleteBasCustomerRow`, params).then(res => res.data); };
-export const FindBasCustomerForm = params => { return axios.post(`/api/customer/FindBasCustomerForm`, params).then(res => res.data); };
-export const SaveBasCustomerForm = params => { return axios.post(`/api/customer/SaveBasCustomerForm`, params).then(res => res.data); };
+export const FindBasRegionList = params => { return axios.post(`/api/Customer/FindBasRegionList`).then(res => res.data); };
+export const FindBasCustomerTable = params => { return axios.post(`/api/Customer/FindBasCustomerTable`, params).then(res => res.data); };
+export const DeleteBasCustomerRow = params => { return axios.post(`/api/Customer/DeleteBasCustomerRow`, params).then(res => res.data); };
+export const FindBasCustomerForm = params => { return axios.post(`/api/Customer/FindBasCustomerForm`, params).then(res => res.data); };
+export const SaveBasCustomerForm = params => { return axios.post(`/api/Customer/SaveBasCustomerForm`, params).then(res => res.data); };
 //商品类别设置页面
 export const FindBasComoditieTypeTree = params => { return axios.post(`/api/ComoditieType/FindBasComoditieTypeTree`).then(res => res.data); };
 export const FindBasComoditieTypeTable = params => { return axios.post(`/api/ComoditieType/FindBasComoditieTypeTable`, params).then(res => res.data); };

@@ -23,8 +23,8 @@ export default {
     return {
       logining: false,
       ruleForm2: {
-        account: "admin",
-        checkPass: "12345678"
+        account: "", //test
+        checkPass: "" //12345678
       },
       rules2: {
         account: [

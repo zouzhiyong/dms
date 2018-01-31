@@ -23,19 +23,16 @@ export default {
           prop: "IsValid",
           label: "有效否",
           width: "80",
-          align: "center",
-          formatter: function(row, column) {
-            return row.IsValid == 0 ? "无效" : "有效";
-          }
+          align: "center"
+          // formatter: function(row, column) {
+          //   return row.IsValid == 0 ? "无效" : "有效";
+          // }
         },
         {
           prop: "IsLockedout",
           label: "是否锁定",
           width: "80",
-          align: "center",
-          formatter: function(row, column) {
-            return row.IsLockedout == 0 ? "未锁" : "已锁";
-          }
+          align: "center"
         },
         {
           prop: "LastActiveTIme",
