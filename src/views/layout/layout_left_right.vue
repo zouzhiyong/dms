@@ -2,10 +2,10 @@
   <div class='body'>
     <slot name="bill"></slot>
     <el-row class="toolbar">
-      <el-col :span="12" class="condition">
+      <el-col :span="19" class="condition">
         <slot name="condition"></slot>
       </el-col>
-      <el-col v-if="!$slots.bill && $slots.toolbar" :span="$slots.condition?12:24" class="button">
+      <el-col v-if="!$slots.bill && $slots.toolbar" :span="$slots.condition?5:24" class="button">
         <slot name="toolbar"></slot>
       </el-col>
     </el-row>

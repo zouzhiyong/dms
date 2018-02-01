@@ -1,7 +1,7 @@
 <template>
   <el-form :inline="true" size="small" :model="formInline" class="demo-form-inline">
     <el-form-item label="客户名称">
-      <el-input v-model="formInline.CustomerName" placeholder="客户名称"></el-input>
+      <el-input v-model="formInline.Name" placeholder="客户名称"></el-input>
     </el-form-item>
     <el-form-item label="销售区域">
       <el-cascader :clearable="true" :props="props" :options="RegionList" v-model="formInline.Region" @change="handleChange"></el-cascader>
@@ -23,8 +23,8 @@ export default {
         label: "Name"
       },
       formInline: {
-        CustomerName: "",
-        Region: ""
+        Name: "",
+        Region: 0
       }
     };
   },
@@ -37,15 +37,15 @@ export default {
   },
   mounted() {
     this.$parent.$parent.$parent.$parent.$refs.table.$refs.table.conditionData = this.formInline;
-    //this.$parent.$parent.$parent.$parent.$refs.table.$refs.table.GetData();
+    this.$parent.$parent.$parent.$parent.$refs.table.$refs.table.GetData();
   },
   methods: {
     onSubmit() {
       let Region = this.formInline.Region;
-
-      console.log(Region.length > 0 ? Region[Region.length - 1] : "");
-      //this.$parent.$parent.$parent.$parent.$refs.table.conditionData = this.formInline;
-      //this.$parent.$parent.$parent.$parent.$refs.table.$refs.table.GetData();
+      this.formInline.Region =
+        Region.length > 0 ? Region[Region.length - 1] : "";
+      this.$parent.$parent.$parent.$parent.$refs.table.conditionData = this.formInline;
+      this.$parent.$parent.$parent.$parent.$refs.table.$refs.table.GetData();
     },
     handleChange(value) {
       // if (value.length > 0) {

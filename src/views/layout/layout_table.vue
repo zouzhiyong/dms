@@ -1,6 +1,6 @@
 <template>
   <div style="height:100%">
-    <el-table :data="tableData" ref="table" size="small" border height="100%">
+    <el-table :data="tableData" ref="table" size="small" border height="calc(100% - 40px)">
       <el-table-column type="index" width="50" header-align="center" align="center">
         <template slot-scope="scope">
           {{scope.$index + 1 + (pageSize * (currentPage - 1))}}
