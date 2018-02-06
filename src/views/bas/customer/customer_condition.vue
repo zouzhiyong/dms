@@ -45,7 +45,7 @@ export default {
       var obj = this.formInline;
       obj.Region =
         this.formInline.RegionModel.length > 0
-          ? this.formInline.Region[this.formInline.RegionModel.length - 1]
+          ? this.formInline.RegionModel[this.formInline.RegionModel.length - 1]
           : 0;
       this.$parent.$parent.$parent.$parent.$refs.table.conditionData = obj;
       this.$parent.$parent.$parent.$parent.$refs.table.$refs.table.GetData();
