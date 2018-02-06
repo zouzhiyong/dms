@@ -16,7 +16,7 @@ export default {
         { prop: "Name", label: "客户名称", width: "", align: "" },
         { prop: "Contact", label: "联系人", width: "100", align: "" },
         { prop: "Tel", label: "联系电话", width: "150", align: "" },
-        { prop: "regionName", label: "销售区域", width: "100", align: "" },
+        { prop: "regionName", label: "销售区域", width: "", align: "" },
         {
           prop: "CustCategoryName",
           label: "客户类型",

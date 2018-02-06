@@ -1,10 +1,10 @@
 <template>
   <el-form :inline="true" size="small" :model="formInline" class="demo-form-inline">
     <el-form-item label="客户名称">
-      <el-input v-model="formInline.Name" placeholder="客户名称"></el-input>
+      <el-input :clearable="true" v-model="formInline.Name" placeholder="客户名称"></el-input>
     </el-form-item>
     <el-form-item label="销售区域">
-      <el-cascader :clearable="true" :props="props" :options="RegionList" v-model="formInline.Region" @change="handleChange"></el-cascader>
+      <el-cascader :clearable="true" :props="props" :options="RegionList" v-model="formInline.RegionModel" @change="handleChange"></el-cascader>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="onSubmit">查询</el-button>
@@ -24,6 +24,7 @@ export default {
       },
       formInline: {
         Name: "",
+        RegionModel: [],
         Region: 0
       }
     };
@@ -41,10 +42,12 @@ export default {
   },
   methods: {
     onSubmit() {
-      let Region = this.formInline.Region;
-      this.formInline.Region =
-        Region.length > 0 ? Region[Region.length - 1] : "";
-      this.$parent.$parent.$parent.$parent.$refs.table.conditionData = this.formInline;
+      var obj = this.formInline;
+      obj.Region =
+        this.formInline.RegionModel.length > 0
+          ? this.formInline.Region[this.formInline.RegionModel.length - 1]
+          : 0;
+      this.$parent.$parent.$parent.$parent.$refs.table.conditionData = obj;
       this.$parent.$parent.$parent.$parent.$refs.table.$refs.table.GetData();
     },
     handleChange(value) {
