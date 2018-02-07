@@ -30,7 +30,9 @@ export default {
           width: "100",
           align: "",
           formatter: function(row, column) {
-            return new Date(row.CreateTime).Format("yyyy-MM-dd");
+            return row.CreateTime == null
+              ? ""
+              : new Date(row.CreateTime).Format("yyyy-MM-dd");
           }
         },
         {
@@ -39,7 +41,9 @@ export default {
           width: "100",
           align: "",
           formatter: function(row, column) {
-            return new Date(row.UpdateTime).Format("yyyy-MM-dd");
+            return row.UpdateTime == null
+              ? ""
+              : new Date(row.UpdateTime).Format("yyyy-MM-dd");
           }
         }
       ],

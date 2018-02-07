@@ -144,7 +144,11 @@ export default {
         if (row.UserID == 0) {
           this.img = "";
         } else {
-          this.img = UploadPath + resultData.Photo;
+          this.img =
+            UploadPath +
+            resultData.Photo +
+            "?" +
+            new Date().Format("yyyyMMddhhmmss");
         }
         this.formData = resultData;
         this.formData.RegionIDList = result.data.RegionIDList;

@@ -43,8 +43,8 @@
       <section class="content-container">
         <div class="grid-content bg-purple-light">
           <el-col :span="24" class="breadcrumb-container">
-            <strong class="title">{{$route.meta.name}}</strong>
-            <el-breadcrumb separator="/" class="breadcrumb-inner">
+            <!-- <strong class="title">{{$route.meta.name}}</strong> -->
+            <el-breadcrumb separator="-" class="breadcrumb-inner">
               <el-breadcrumb-item v-if="item.meta.name!=''" v-for="item in $route.matched" :key="item.path">
                 {{ item.meta.name }}
               </el-breadcrumb-item>
@@ -290,9 +290,9 @@ export default {
             float: left;
             color: #475669;
           }
-          .breadcrumb-inner {
-            float: right;
-          }
+          // .breadcrumb-inner {
+          //   float: right;
+          // }
         }
       }
       .content-wrapper {

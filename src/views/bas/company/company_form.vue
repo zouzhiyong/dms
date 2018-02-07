@@ -120,7 +120,11 @@ export default {
     GetData() {
       FindBasCompanyForm().then(result => {
         this.formData = result.data;
-        this.img = UploadPath + result.data.TradeMark;
+        this.img =
+          UploadPath +
+          result.data.TradeMark +
+          "?" +
+          new Date().Format("yyyyMMddhhmmss");
       });
     },
     imgLoad(v) {

@@ -101,6 +101,11 @@ export const FindSysMoudleTable = params => { return axios.post(`/api/Menu/FindS
 export const FindSysMoudleForm = params => { return axios.post(`/api/Menu/FindSysMoudleForm`, params).then(res => res.data); };
 export const SaveSysMoudleForm = params => { return axios.post(`/api/Menu/SaveSysMoudleForm`, params).then(res => res.data); };
 export const DeleteSysMoudleRow = params => { return axios.post(`/api/Menu/DeleteSysMoudleRow`, params).then(res => res.data); };
+//仓库设置页面
+export const FindBasWarehouseTable = params => { return axios.post(`/api/Warehouse/FindBasWarehouseTable`, params).then(res => res.data); };
+export const DeleteBasWarehouseRow = params => { return axios.post(`/api/Warehouse/DeleteBasWarehouseRow`, params).then(res => res.data); };
+export const FindBasWarehouseForm = params => { return axios.post(`/api/Warehouse/FindBasWarehouseForm`, params).then(res => res.data); };
+export const SaveBasWarehouseForm = params => { return axios.post(`/api/Warehouse/SaveBasWarehouseForm`, params).then(res => res.data); };
 //部门设置页面
 export const FindBasDepartmentTable = params => { return axios.post(`/api/Department/FindBasDepartmentTable`, params).then(res => res.data); };
 export const DeleteBasDepartmentRow = params => { return axios.post(`/api/Department/DeleteBasDepartmentRow`, params).then(res => res.data); };
@@ -128,16 +133,16 @@ export const DeleteBasCustomerRow = params => { return axios.post(`/api/Customer
 export const FindBasCustomerForm = params => { return axios.post(`/api/Customer/FindBasCustomerForm`, params).then(res => res.data); };
 export const SaveBasCustomerForm = params => { return axios.post(`/api/Customer/SaveBasCustomerForm`, params).then(res => res.data); };
 //商品类别设置页面
-export const FindBasComoditieTypeTree = params => { return axios.post(`/api/ComoditieType/FindBasComoditieTypeTree`).then(res => res.data); };
-export const FindBasComoditieTypeTable = params => { return axios.post(`/api/ComoditieType/FindBasComoditieTypeTable`, params).then(res => res.data); };
-export const DeleteBasComoditieTypeRow = params => { return axios.post(`/api/ComoditieType/DeleteBasComoditieTypeRow`, params).then(res => res.data); };
-export const FindBasComoditieTypeForm = params => { return axios.post(`/api/ComoditieType/FindBasComoditieTypeForm`, params).then(res => res.data); };
-export const SaveBasComoditieTypeForm = params => { return axios.post(`/api/ComoditieType/SaveBasComoditieTypeForm`, params).then(res => res.data); };
+//export const FindBasComoditieTypeTree = params => { return axios.post(`/api/ComoditieType/FindBasComoditieTypeTree`).then(res => res.data); };
+//export const FindBasComoditieTypeTable = params => { return axios.post(`/api/ComoditieType/FindBasComoditieTypeTable`, params).then(res => res.data); };
+//export const DeleteBasComoditieTypeRow = params => { return axios.post(`/api/ComoditieType/DeleteBasComoditieTypeRow`, params).then(res => res.data); };
+//export const FindBasComoditieTypeForm = params => { return axios.post(`/api/ComoditieType/FindBasComoditieTypeForm`, params).then(res => res.data); };
+//export const SaveBasComoditieTypeForm = params => { return axios.post(`/api/ComoditieType/SaveBasComoditieTypeForm`, params).then(res => res.data); };
 //商品设置页面
-export const FindBasComoditieTree = params => { return axios.post(`/api/Comoditie/FindBasComoditieTree`).then(res => res.data); };
-export const FindBasComoditieTable = params => { return axios.post(`/api/Comoditie/FindBasComoditieTable`, params).then(res => res.data); };
-export const DeleteBasComoditieRow = params => { return axios.post(`/api/Comoditie/DeleteBasComoditieRow`, params).then(res => res.data); };
-export const FindBasComoditieForm = params => { return axios.post(`/api/Comoditie/FindBasComoditieForm`, params).then(res => res.data); };
-export const SaveBasComoditieForm = params => { return axios.post(`/api/Comoditie/SaveBasComoditieForm`, params).then(res => res.data); };
+//export const FindBasComoditieTree = params => { return axios.post(`/api/Comoditie/FindBasComoditieTree`).then(res => res.data); };
+//export const FindBasComoditieTable = params => { return axios.post(`/api/Comoditie/FindBasComoditieTable`, params).then(res => res.data); };
+//export const DeleteBasComoditieRow = params => { return axios.post(`/api/Comoditie/DeleteBasComoditieRow`, params).then(res => res.data); };
+//export const FindBasComoditieForm = params => { return axios.post(`/api/Comoditie/FindBasComoditieForm`, params).then(res => res.data); };
+//export const SaveBasComoditieForm = params => { return axios.post(`/api/Comoditie/SaveBasComoditieForm`, params).then(res => res.data); };
 //进货管理页面
-export const FindDmsPurallComoditie = params => { return axios.post(`/api/Purall/FindDmsPurallComoditie?str=` + params).then(res => res.data); };
+//export const FindDmsPurallComoditie = params => { return axios.post(`/api/Purall/FindDmsPurallComoditie?str=` + params).then(res => res.data); };
