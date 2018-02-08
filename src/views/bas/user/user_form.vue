@@ -173,7 +173,11 @@ export default {
         if (row.UserID == 0) {
           this.img = "";
         } else {
-          this.img = UploadPath + result.data.Photo;
+          this.img =
+            UploadPath +
+            result.data.Photo +
+            "?" +
+            new Date().Format("yyyyMMddhhmmss");
         }
         this.formData = result.data;
         this.formData.DeptIDList.splice(0, 0, obj);
