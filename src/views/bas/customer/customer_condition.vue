@@ -29,16 +29,15 @@ export default {
       }
     };
   },
-  created() {
+  created() {},
+  mounted() {
+    this.$parent.$parent.$parent.$parent.$refs.table.$refs.table.conditionData = this.formInline;
+    this.$parent.$parent.$parent.$parent.$refs.table.$refs.table.GetData();
     setTimeout(_ => {
       FindBasRegionList().then(result => {
         this.RegionList = result.data.children;
       });
-    }, 300);
-  },
-  mounted() {
-    this.$parent.$parent.$parent.$parent.$refs.table.$refs.table.conditionData = this.formInline;
-    this.$parent.$parent.$parent.$parent.$refs.table.$refs.table.GetData();
+    }, 500);
   },
   methods: {
     onSubmit() {

@@ -69,73 +69,88 @@
 </template>
 
 <script>
-import { FindBasWarehouseForm, SaveBasWarehouseForm } from "../../../api/api";
-import custBotton from "./../../layout/layout_button";
-export default {
-  data() {
-    return {
-      dialogVisible: false,
-      multipleSelection: [],
-      formData: {},
-      tabs: "first",
-      rules: {
-        Name: [{ required: true, message: "仓库名称不能为空" }],
-        Phone: [{ pattern: /^1[34578]\d{9}$/, message: "您的手机号码输入错误" }]
-      }
-    };
-  },
-  components: {
-    custBotton
-  },
-  methods: {
-    GetData(row) {
-      FindBasWarehouseForm(row).then(result => {
-        this.formData = result.data;
-        this.dialogVisible = true;
-        this.tabs = "first";
-      });
-    },
-    handleSave() {
-      this.$refs.ruleForm.validate(valid => {
-        if (valid) {
-          SaveBasWarehouseForm(this.formData).then(result => {
-            this.dialogVisible = false;
-            this.$parent.$parent.$refs.table.$refs.table.GetData();
-            this.$refs.ruleForm.resetFields();
-          });
-        } else {
-          return false;
+  import { FindBasWarehouseForm, SaveBasWarehouseForm } from "../../../api/api";
+  import custBotton from "./../../layout/layout_button";
+  export default {
+    data() {
+      return {
+        dialogVisible: false,
+        multipleSelection: [],
+        formData: {},
+        tabs: "first",
+        rules: {
+          Name: [{ required: true, message: "仓库名称不能为空" }],
+          Phone: [{ pattern: /^1[34578]\d{9}$/, message: "您的手机号码输入错误" }]
         }
-      });
+      };
     },
-    handleCanle() {
-      this.dialogVisible = false;
-      this.$refs.ruleForm.resetFields();
+    components: {
+      custBotton
     },
-    handleClose(done) {
-      this.dialogVisible = false;
-      this.$refs.ruleForm.resetFields();
-      done();
-    },
-    handleSelectionChange(val) {
-      console.log(this.formData.userView);
-      this.multipleSelection = val;
+    methods: {
+      GetData(row) {
+        FindBasWarehouseForm(row).then(result => {
+          this.formData = result.data;
+          this.dialogVisible = true;
+          this.tabs = "first";
+          this.$nextTick(function () {
+            let tempObj = [];
+            result.data.userView.forEach(row => {
+              if (row.userFlag) {
+                this.$refs.multipleTable.toggleRowSelection(row, true);
+                tempObj.push(row);
+              }
+            });
+            this.multipleSelection = tempObj;
+          });
+        });
+      },
+      handleSave() {
+        this.$refs.ruleForm.validate(valid => {
+          if (valid) {
+            var obj = JSON.parse(JSON.stringify(this.formData));
+            delete obj.userView;
+            obj.userData = this.multipleSelection;
+            SaveBasWarehouseForm(obj).then(result => {
+              this.dialogVisible = false;
+              this.$parent.$parent.$refs.table.$refs.table.GetData();
+              this.$refs.ruleForm.resetFields();
+            });
+          } else {
+            return false;
+          }
+        });
+      },
+
+      handleCanle() {
+        this.dialogVisible = false;
+        this.$refs.ruleForm.resetFields();
+      },
+      handleClose(done) {
+        this.dialogVisible = false;
+        this.$refs.ruleForm.resetFields();
+        done();
+      },
+      handleSelectionChange(val) {
+        this.multipleSelection = val;
+      }
     }
-  }
-};
+  };
 </script>
 
 <style scoped>
-.el-cascader,
-.el-input,
-.el-input__inner {
-  width: 200px;
-}
-.el-dialog__wrapper>>>.el-dialog__body {
-  padding: 0px 5px;
-}
-.el-tabs--border-card {
-  box-shadow: none;
-  border: none;
-}
+  .el-cascader,
+  .el-input,
+  .el-input__inner {
+    width: 200px;
+  }
+
+  .el-dialog__wrapper>>>.el-dialog__body {
+    padding: 0px 5px;
+  }
+
+  .el-tabs--border-card {
+    box-shadow: none;
+    border: none;
+  }
 </style>

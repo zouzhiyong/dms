@@ -162,17 +162,14 @@ export default {
     handleSave() {
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
+          this.formData.RegionID =
+            this.formData.RegionIDArr.length > 0
+              ? this.formData.RegionIDArr[this.formData.RegionIDArr.length - 1]
+              : null;
           if (this.checkImg) {
             this.$refs.cropper.getCropData(data => {
               this.formData.Photo = data;
               this.img = data;
-              this.formData.RegionID =
-                this.formData.RegionIDArr.length > 0
-                  ? this.formData.RegionIDArr[
-                      this.formData.RegionIDArr.length - 1
-                    ]
-                  : null;
-
               SaveBasCustomerForm(this.formData).then(result => {
                 this.dialogVisible = false;
                 this.$parent.$parent.$refs.table.$refs.table.GetData();
