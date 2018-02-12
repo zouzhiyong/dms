@@ -107,7 +107,7 @@ export default {
         Name: [{ required: true, message: "客户名称不能为空" }],
         Phone: [
           { required: true, message: "电话号码不能为空" },
-          { pattern: /^1[34578]\d{9}$/, message: "您的手机号码输入错误" }
+          { pattern: /^1[34578]\d{9}$/, message: "手机号码输入错误" }
         ]
       },
       option: {

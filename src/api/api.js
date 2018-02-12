@@ -101,6 +101,12 @@ export const FindSysMoudleTable = params => { return axios.post(`/api/Menu/FindS
 export const FindSysMoudleForm = params => { return axios.post(`/api/Menu/FindSysMoudleForm`, params).then(res => res.data); };
 export const SaveSysMoudleForm = params => { return axios.post(`/api/Menu/SaveSysMoudleForm`, params).then(res => res.data); };
 export const DeleteSysMoudleRow = params => { return axios.post(`/api/Menu/DeleteSysMoudleRow`, params).then(res => res.data); };
+//供应商设置页面
+// export const FindBasSupplierList = params => { return axios.post(`/api/Supplier/FindBasSupplierList`).then(res => res.data); };
+export const FindBasSupplierTable = params => { return axios.post(`/api/Supplier/FindBasSupplierTable`, params).then(res => res.data); };
+export const DeleteBasSupplierRow = params => { return axios.post(`/api/Supplier/DeleteBasSupplierRow`, params).then(res => res.data); };
+export const FindBasSupplierForm = params => { return axios.post(`/api/Supplier/FindBasSupplierForm`, params).then(res => res.data); };
+export const SaveBasSupplierForm = params => { return axios.post(`/api/Supplier/SaveBasSupplierForm`, params).then(res => res.data); };
 //仓库设置页面
 export const FindBasWarehouseTable = params => { return axios.post(`/api/Warehouse/FindBasWarehouseTable`, params).then(res => res.data); };
 export const DeleteBasWarehouseRow = params => { return axios.post(`/api/Warehouse/DeleteBasWarehouseRow`, params).then(res => res.data); };
