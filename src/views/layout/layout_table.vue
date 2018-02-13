@@ -25,10 +25,10 @@
       <el-table-column label="操作" width="120" align="center" header-align="center" v-if="isOperate">
         <template slot-scope="scope">
           <span style="width:32px;display:inline-block">
-            <el-button type="text" icon="el-icon-edit" @click="handleEditClick(scope.row)"></el-button>
+            <el-button :disabled="scope.row.IsSystem==1" type="text" icon="el-icon-edit" @click="handleEditClick(scope.row)"></el-button>
           </span>
           <span style="width:32px;display:inline-block">
-            <el-button :disabled="parseInt(scope.row.isRole)!=0" type="text" icon="el-icon-delete" @click="handleDeleteClick(scope.row)"></el-button>
+            <el-button :disabled="scope.row.IsSystem==1 || parseInt(scope.row.isRole)!=0" type="text" icon="el-icon-delete" @click="handleDeleteClick(scope.row)"></el-button>
           </span>
         </template>
       </el-table-column>

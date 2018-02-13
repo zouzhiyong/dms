@@ -139,11 +139,14 @@ export const DeleteBasCustomerRow = params => { return axios.post(`/api/Customer
 export const FindBasCustomerForm = params => { return axios.post(`/api/Customer/FindBasCustomerForm`, params).then(res => res.data); };
 export const SaveBasCustomerForm = params => { return axios.post(`/api/Customer/SaveBasCustomerForm`, params).then(res => res.data); };
 //商品类别设置页面
-//export const FindBasComoditieTypeTree = params => { return axios.post(`/api/ComoditieType/FindBasComoditieTypeTree`).then(res => res.data); };
-//export const FindBasComoditieTypeTable = params => { return axios.post(`/api/ComoditieType/FindBasComoditieTypeTable`, params).then(res => res.data); };
-//export const DeleteBasComoditieTypeRow = params => { return axios.post(`/api/ComoditieType/DeleteBasComoditieTypeRow`, params).then(res => res.data); };
-//export const FindBasComoditieTypeForm = params => { return axios.post(`/api/ComoditieType/FindBasComoditieTypeForm`, params).then(res => res.data); };
-//export const SaveBasComoditieTypeForm = params => { return axios.post(`/api/ComoditieType/SaveBasComoditieTypeForm`, params).then(res => res.data); };
+export const FindBasItemGroupList = params => { return axios.post(`/api/ItemCategory/FindBasItemGroupList`).then(res => res.data); };
+export const FindBasItemCategoryList = params => { return axios.post(`/api/ItemCategory/FindBasItemCategoryList`, params).then(res => res.data); };
+export const FindBasItemCategoryTable = params => { return axios.post(`/api/ItemCategory/FindBasItemCategoryTable`, params).then(res => res.data); };
+export const DeleteBasItemCategoryRow = params => { return axios.post(`/api/ItemCategory/DeleteBasItemCategoryRow`, params).then(res => res.data); };
+export const FindBasItemGroupForm = params => { return axios.post(`/api/ItemCategory/FindBasItemGroupForm`, params).then(res => res.data); };
+export const FindBasItemCategoryForm = params => { return axios.post(`/api/ItemCategory/FindBasItemCategoryForm`, params).then(res => res.data); };
+export const SaveBasItemGroupForm = params => { return axios.post(`/api/ItemCategory/SaveBasItemGroupForm`, params).then(res => res.data); };
+export const SaveBasItemCategoryForm = params => { return axios.post(`/api/ItemCategory/SaveBasItemCategoryForm`, params).then(res => res.data); };
 //商品设置页面
 //export const FindBasComoditieTree = params => { return axios.post(`/api/Comoditie/FindBasComoditieTree`).then(res => res.data); };
 //export const FindBasComoditieTable = params => { return axios.post(`/api/Comoditie/FindBasComoditieTable`, params).then(res => res.data); };

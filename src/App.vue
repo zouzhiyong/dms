@@ -29,6 +29,10 @@ html {
   box-sizing: border-box;
 }
 
+.el-radio-group {
+  font-size: 0 !important;
+}
+
 .el-submenu .el-menu-item,
 .el-menu-item,
 .el-submenu__title {
