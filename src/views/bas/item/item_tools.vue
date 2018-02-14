@@ -5,7 +5,7 @@
 export default {
   methods: {
     handleClickNew() {
-      let row = { TypeID: 0 };
+      let row = { ItemID: 0 };
       this.$parent.$parent.$parent.$parent.$refs.form.GetData(row);
     }
   }

@@ -135,6 +135,8 @@ export default {
       rules: {
         Code: [{ required: true, message: "账号不能为空" }],
         Name: [{ required: true, message: "名称不能为空" }],
+        DeptID: [{ required: true, message: "部门不能为空" }],
+        UserCategoryID: [{ required: true, message: "职员类型不能为空" }],
         Email: [{ type: "email", message: "请输入正确的邮箱地址" }],
         UserCategoryID: [{ required: true, message: "职员类型不能为空" }],
         PositionID: [{ required: true, message: "职位不能为空" }],
@@ -168,7 +170,7 @@ export default {
       FindBasUserForm(row).then(result => {
         let obj = {
           label: "--请选择--",
-          value: 0
+          value: null
         };
         if (row.UserID == 0) {
           this.img = "";

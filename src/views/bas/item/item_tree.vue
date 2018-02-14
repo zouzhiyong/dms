@@ -1,9 +1,9 @@
 <template>
-  <el-tree ref="tree" :data="treeData" :props="defaultProps" node-key="TypeID" :current-node-key="0" :highlight-current="true" :default-expanded-keys="[0]" @node-click="handleNodeClick"></el-tree>
+  <el-tree ref="tree" :data="treeData" :props="defaultProps" node-key="value" :current-node-key="0" :highlight-current="true" :default-expanded-keys="[0]" @node-click="handleNodeClick"></el-tree>
 </template>
 
 <script>
-import { FindBasComoditieTree } from "../../../api/api";
+import { FindBasItemTree } from "../../../api/api";
 export default {
   data() {
     return {
@@ -21,17 +21,19 @@ export default {
     iniData() {
       var obj = [
         {
-          TypeID: 0,
+          value: 0,
           label: "所有类别",
+          ItemGroupID: 0,
+          ItemCategoryID: 0,
           children: []
         }
       ];
-      FindBasComoditieTree().then(result => {
+      FindBasItemTree().then(result => {
         obj[0].children = result.data;
         this.treeData = obj;
         if (this.treeData.length > 0) {
           this.$nextTick(() => {
-            this.$refs.tree.setCurrentKey(this.treeData[0].TypeID);
+            this.$refs.tree.setCurrentKey(this.treeData[0].value);
             this.handleNodeClick(this.treeData[0]);
           });
         }

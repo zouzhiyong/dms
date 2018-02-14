@@ -67,6 +67,7 @@ export default {
       formData: {},
       rules: {
         Name: [{ required: true, message: "名称不能为空" }],
+        Contact: [{ required: true, message: "联系人不能为空" }],
         Phone: [
           { required: true, message: "电话号码不能为空" },
           { pattern: /^1[34578]\d{9}$/, message: "手机号码输入错误" }
@@ -84,7 +85,7 @@ export default {
         var resultData = result.data;
         let obj = {
           label: "--请选择--",
-          value: 0
+          value: null
         };
 
         this.formData = resultData;

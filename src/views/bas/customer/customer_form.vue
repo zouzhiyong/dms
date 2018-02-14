@@ -105,6 +105,7 @@ export default {
       formData: {},
       rules: {
         Name: [{ required: true, message: "客户名称不能为空" }],
+        CustCategoryID: [{ required: true, message: "客户类型不能为空" }],
         Phone: [
           { required: true, message: "电话号码不能为空" },
           { pattern: /^1[34578]\d{9}$/, message: "手机号码输入错误" }
@@ -139,7 +140,7 @@ export default {
         var resultData = result.data.list;
         let obj = {
           label: "--请选择--",
-          value: 0
+          value: null
         };
         if (row.UserID == 0) {
           this.img = "";
