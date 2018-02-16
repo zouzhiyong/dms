@@ -152,5 +152,5 @@ export const DeleteBasItemRow = params => { return axios.post(`/api/Item/DeleteB
 export const FindBasItemForm = params => { return axios.post(`/api/Item/FindBasItemForm`, params).then(res => res.data); };
 export const FindBasItemGroupCategoryForm = params => { return axios.post(`/api/Item/FindBasItemGroupCategoryForm`, params).then(res => res.data); };
 export const SaveBasItemForm = params => { return axios.post(`/api/Item/SaveBasItemForm`, params).then(res => res.data); };
-//进货管理页面
-//export const FindDmsPurallComoditie = params => { return axios.post(`/api/Purall/FindDmsPurallComoditie?str=` + params).then(res => res.data); };
+//采购管理页面
+export const FindPurOrderForm = params => { return axios.post(`/api/Purchaser/FindPurOrderForm`, params).then(res => res.data); };
