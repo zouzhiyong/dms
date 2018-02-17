@@ -35,12 +35,12 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="基本单位" prop="BaseUOM">
+            <!-- <el-form-item label="基本单位" prop="BaseUOM">
               <el-select v-model="formData.BaseUOM" placeholder="基本单位">
                 <el-option v-for="item in formData.UOMList" :key="item.value" :label="item.label" :value="item.value">
                 </el-option>
               </el-select>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="有效期" prop="Period">
               <el-input v-model.number="formData.Period" placeholder="有效期"></el-input>
             </el-form-item>
@@ -98,7 +98,46 @@
               <el-switch v-model="formData.IsZeroValue" :active-value="1" :inactive-value="0"></el-switch>
             </el-form-item>
           </el-tab-pane>
-          <el-tab-pane label="商品照片(封面)" name="tab3">
+          <el-tab-pane label="单位信息" name="tab3">
+            <el-table class="UOM" :data="formData.UOM" border size="mini" style="width: 100%" height="230px">
+              <el-table-column type="index" width="70" align="center" header-align="center">
+              </el-table-column>
+              <el-table-column prop="UomType" width="100" label="单位类型" align="center" header-align="center">
+                <template slot-scope="scope">
+                  {{scope.row.UomType==1?"基本单位":"扩展单位"}}
+                </template>
+              </el-table-column>
+              <el-table-column prop="UomID" label="单位" width="124px" align="center" header-align="center">
+                <template slot-scope="scope">
+                  <el-select size="mini" v-model="scope.row.UomID" popper-class="popper">
+                    <el-option v-for="item in formData.UOMList" :disabled="item.disabled" :key="item.value" :label="item.label" :value="item.value">
+                    </el-option>
+                  </el-select>
+                </template>
+              </el-table-column>
+              <el-table-column prop="RateQty" label="换算率" align="center" header-align="center">
+                <template slot-scope="scope">
+                  <el-input-number :disabled="scope.row.UomType==1?true:false" size="mini" v-model="scope.row.RateQty" placeholder="请输入换算倍数" style="width:100%"></el-input-number>
+                </template>
+              </el-table-column>
+              <el-table-column prop="IsValid" label="有效否" align="center" header-align="center">
+                <template slot-scope="scope">
+                  <el-switch v-model="scope.row.IsValid" :active-value="1" :inactive-value="0"></el-switch>
+                </template>
+              </el-table-column>
+              <el-table-column label="操作" width="60" align="center" header-align="center">
+                <template slot-scope="scope">
+                  <span style="width:32px;display:inline-block">
+                    <el-button v-if="scope.$index>0 || formData.UOM.length==1" type="text" size="small" icon="el-icon-delete" @click="handleDeleteClick(scope.$index)"></el-button>
+                  </span>
+                </template>
+              </el-table-column>
+            </el-table>
+            <div style="text-align:center">
+              <el-button type="text" icon="el-icon-circle-plus" style="padding: 5px 15px" @click="handleAddUOM">新增</el-button>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="商品照片(封面)" name="tab4">
             <el-col style="width:480px">
               <el-form-item prop="Photo.Picture">
                 <vueCropper @imgLoad="imgLoad" ref="cropper" :fixed="option.fixed" :img="img" :autoCrop="option.autoCrop" :fixedNumber="option.fixedNumber" :autoCropWidth="option.autoCropWidth" :autoCropHeight="option.autoCropHeight" :outputSize="option.size" :outputType="option.outputType" :info="true" :full="option.full" :canScale="option.canScale" :canMove="option.canMove" :canMoveBox="option.canMoveBox" :fixedBox="option.fixedBox" :original="option.original" @realTime="realTime" style="height:300px;width:480px;"></vueCropper>
@@ -121,7 +160,7 @@
                 <i class="fa fa-repeat"></i> 向右</button>
             </el-col>
           </el-tab-pane>
-          <el-tab-pane label="商品照片(详细)" name="tab4">
+          <el-tab-pane label="商品照片(详细)" name="tab5">
             <!-- <el-upload ref="upload" class="upload-demo" multiple :limit="3" :on-exceed="handleExceed" :headers="headers" accept="image/png,image/jpeg" action="/WebAppDms/api/customer/ImgUpload" :on-preview="handlePreview" :on-remove="handleRemove" :file-list="fileList" list-type="picture">
               <el-button size="small" type="primary">点击上传</el-button>
               <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -151,6 +190,13 @@ import vueCropper from "vue-cropper";
 export default {
   data() {
     return {
+      UOMObj: {
+        ItemID: 0,
+        UomID: null,
+        RateQty: 1,
+        IsValid: 1,
+        UomType: 1
+      },
       nullObj: {
         label: "--请选择--",
         value: null
@@ -216,7 +262,13 @@ export default {
             "?" +
             new Date().Format("yyyyMMddhhmmss");
         }
+
         this.formData = result.data;
+        // if (this.formData.UOM == null) {
+        //   let arrTemp = [];
+        //   arrTemp.push(this.UOMObj);
+        //   this.formData.UOM = arrTemp;
+        // }
         this.formData.ItemGroupIDList.splice(0, 0, this.nullObj);
         this.formData.ItemCategoryIDList.splice(0, 0, this.nullObj);
         this.formData.UOMList.splice(0, 0, this.nullObj);
@@ -224,21 +276,81 @@ export default {
         this.dialogVisible = true;
       });
     },
+    handleAddUOM() {
+      this.formData.UOMList.map(item => {
+        let tempOjb = this.formData.UOM.filter(_item => {
+          return _item.UomID == item.value;
+        });
+
+        if (tempOjb.length > 0) {
+          item.disabled = true;
+        } else {
+          item.disabled = false;
+        }
+      });
+
+      let arr = this.formData.UOM.filter(item => {
+        return item.UomID == null;
+      });
+
+      if (arr.length > 0) {
+        this.$message({
+          message: "请选择单位",
+          type: "warning"
+        });
+        return;
+      }
+      //1为基本单位，2为其它单位
+      let objTemp = JSON.parse(JSON.stringify(this.UOMObj));
+
+      if (this.formData.UOM.length <= 0) {
+        objTemp.UomType = 1;
+      } else {
+        objTemp.UomType = 2;
+      }
+      objTemp.ItemID = this.formData.ItemID;
+      this.formData.UOM.push(objTemp);
+    },
+    handleDeleteClick(index) {
+      this.formData.UOM.splice(index, 1);
+    },
     handleSave() {
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
+          let SaveData = JSON.parse(JSON.stringify(this.formData));
+          SaveData.BaseUOM = null;
+          //获取基本单位
+          SaveData.UOM.map((item, index) => {
+            //将基本单位保存在BaseUOM字段上
+            if (item.UomType == 1 && item.UomID != null) {
+              SaveData.BaseUOM = item.UomID;
+            }
+          });
+          if (SaveData.BaseUOM == null) {
+            this.$message({
+              message: "请选择单位",
+              type: "warning"
+            });
+            return;
+          }
+          let arr = SaveData.UOM.filter(item => {
+            return item.UomType != 1 && item.UomID != null;
+          });
+
+          SaveData.UOM = arr;
+
           if (this.checkImg) {
             this.$refs.cropper.getCropData(data => {
-              this.formData.Photo.Picture = data;
+              SaveData.Photo.Picture = data;
               this.img = data;
-              SaveBasItemForm(this.formData).then(result => {
+              SaveBasItemForm(SaveData).then(result => {
                 this.dialogVisible = false;
                 this.$parent.$parent.$refs.table.$refs.table.GetData();
                 this.$refs.ruleForm.resetFields();
               });
             });
           } else {
-            SaveBasItemForm(this.formData).then(result => {
+            SaveBasItemForm(SaveData).then(result => {
               this.dialogVisible = false;
               this.$parent.$parent.$refs.table.$refs.table.GetData();
               this.$refs.ruleForm.resetFields();
@@ -345,5 +457,14 @@ export default {
 
 .cropperButton>>>.el-button {
   margin: 10px auto;
+}
+.UOM.el-table>>>.cell {
+  line-height: 30px;
+}
+.UOM.el-table .el-select>>>.el-input {
+  width: 104px;
+}
+.UOM.el-table .el-button--small {
+  padding: 5px 10px;
 }
 </style>

@@ -149,10 +149,11 @@ export default {
 .cell-div {
   padding: 5px;
 }
-.el-select>>>.el-input {
+.el-select--small>>>.el-input,
+.el-input-number>>>.el-input,
+.el-autocomplete>>>.el-input {
   width: auto;
 }
-
 .el-table {
   height: 100%;
   box-sizing: content-box;

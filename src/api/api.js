@@ -154,3 +154,4 @@ export const FindBasItemGroupCategoryForm = params => { return axios.post(`/api/
 export const SaveBasItemForm = params => { return axios.post(`/api/Item/SaveBasItemForm`, params).then(res => res.data); };
 //采购管理页面
 export const FindPurOrderForm = params => { return axios.post(`/api/Purchaser/FindPurOrderForm`, params).then(res => res.data); };
+export const FindPurOrderItem = params => { return axios.post(`/api/Purchaser/FindPurOrderItem?str=` + params).then(res => res.data); };

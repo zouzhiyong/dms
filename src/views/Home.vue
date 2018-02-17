@@ -297,7 +297,7 @@ export default {
       .content-wrapper {
         background: #f5f7fa;
         box-sizing: border-box;
-        height: calc(100% - 38px);
+        height: calc(100% - 33px);
         padding: 20px;
       }
       .footer {
