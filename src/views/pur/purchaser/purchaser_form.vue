@@ -188,7 +188,7 @@ export default {
       curInput.$refs.input.$refs.input.select();
     },
     onblur(row) {
-      row.CodeName = row.Code;
+      row.Name = row.Name;
     },
     getSummaries(param, callback) {
       const { columns, data } = param;
