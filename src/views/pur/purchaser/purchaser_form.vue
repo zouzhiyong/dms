@@ -51,11 +51,29 @@
           </el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="制 单 人">
+        <el-select :disabled="true" v-model="formInline.CreateUserID " placeholder="制单人">
+          <el-option v-for="item in formInline.CustList" :key="item.value" :label="item.label" :value="item.value">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="修 改 人">
+        <el-select :disabled="true" v-model="formInline.UpdateUserID " placeholder="修改人">
+          <el-option v-for="item in formInline.CustList" :key="item.value" :label="item.label" :value="item.value">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="审 批 人">
+        <el-select :disabled="true" v-model="formInline.ConfirmUserID " placeholder="审批人">
+          <el-option v-for="item in formInline.CustList" :key="item.value" :label="item.label" :value="item.value">
+          </el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item label="备　　注">
-        <el-input ref="Remark" v-model="formInline.Remark" placeholder="备注" @keyup.enter.native="enter($refs.tablebill.$refs.table.$refs[ 'CodeName0'][0])" style="width: 617px;"></el-input>
+        <el-input ref="Remark" v-model="formInline.Remark" placeholder="备注" @keyup.enter.native="enter($refs.tablebill.$refs.table.$refs[ 'Code0'][0])" style="width: 617px;"></el-input>
       </el-form-item>
     </el-row>
-    <div style="height:calc(100% - 150px) ">
+    <div style="height:calc(100% - 195px) ">
       <cust-table ref="table" :columns="columns" :disabled="false" :api="api" keys="Code" :isOperate="true" @summaries="getSummaries" @handleSelect="handleSelect" @onblur="onblur"></cust-table>
     </div>
     <div style="padding: 20px 0;text-align:center ">
@@ -122,7 +140,7 @@ export default {
           placeholder: "数量"
         },
         {
-          prop: "仓库ID",
+          prop: "WarehouseID",
           label: "仓库",
           width: "100",
           align: "",
@@ -180,8 +198,15 @@ export default {
       for (var i in value) {
         row[i] = value[i];
       }
+      row.Code = value.Code;
       row.Name = value.Name;
-      row.UnitID = this.formInline.UomIDList[0];
+      row.UomID = value.UomIDList.length > 0 ? value.UomIDList[0].value : null;
+      row.WarehouseID =
+        value.WarehouseIDList.length > 0
+          ? value.WarehouseIDList[0].value
+          : null;
+      row.IsGiftList = [{ label: "否", value: 0 }, { label: "是", value: 1 }];
+      row.IsGift = row.IsGiftList.length > 0 ? row.IsGiftList[0].value : null;
 
       let curInput = this.$refs.table.$refs[item.prop + index][0];
       curInput.focus();
