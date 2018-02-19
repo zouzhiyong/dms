@@ -379,10 +379,12 @@ export default {
             //赋值采购单位
             if (item.IsPurchaseUOM == 1) {
               SaveData.PurchaseUOM = item.UomID;
+              SaveData.PurchasePrice = item.PurchasePrice;
             }
             //赋值销售单位
             if (item.IsSalesUOM == 1) {
               SaveData.SalesUOM = item.UomID;
+              SaveData.SalesPrice = item.SalesPrice;
             }
           });
           if (SaveData.BaseUOM == null) {
@@ -442,12 +444,14 @@ export default {
       });
     },
     handleCanle() {
+      this.width = "650px";
       this.dialogVisible = false;
       this.$refs.ruleForm.resetFields();
       this.$refs.cropper.refresh();
       this.checkImg = false;
     },
     handleClose(done) {
+      this.width = "650px";
       this.dialogVisible = false;
       this.$refs.ruleForm.resetFields();
       this.$refs.cropper.refresh();
@@ -455,6 +459,7 @@ export default {
       done();
     },
     dialogClose() {
+      this.width = "650px";
       this.dialogVisible = false;
       this.$refs.ruleForm.resetFields();
       this.$refs.cropper.refresh();
