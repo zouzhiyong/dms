@@ -158,6 +158,10 @@ export default {
   height: 100%;
   box-sizing: content-box;
 }
+
+.el-table .el-input {
+  width: 100%;
+}
 </style>
 
 <style>

@@ -1,9 +1,9 @@
 <template>
-  <el-dialog v-if="dialogVisible" width="650px" :visible.sync="dialogVisible" :close-on-click-modal="false" :close-on-press-escape="false" :before-close="handleClose">
+  <el-dialog v-if="dialogVisible" :width="width" :visible.sync="dialogVisible" :close-on-click-modal="false" :close-on-press-escape="false" :before-close="handleClose">
     <span slot="title">{{$route.name}}</span>
     <span>
       <el-form @submit.native.prevent :rules="rules" size="small" :inline="true" ref="ruleForm" :model="formData" label-width='80px' class="demo-form-inline">
-        <el-tabs type="border-card" value="tab1">
+        <el-tabs type="border-card" value="tab1" @tab-click="handleClick">
           <el-tab-pane label="基本信息" name="tab1">
             <el-form-item label="商品编码" prop="Code">
               <el-input v-model="formData.Code" placeholder="商品编码"></el-input>
@@ -52,7 +52,7 @@
             </el-form-item>
           </el-tab-pane>
           <el-tab-pane label="其它信息" name="tab2">
-            <el-form-item label="销售单位" prop="SalesUOM">
+            <!-- <el-form-item label="销售单位" prop="SalesUOM">
               <el-select v-model="formData.SalesUOM" placeholder="销售单位">
                 <el-option v-for="item in formData.UOMList" :key="item.value" :label="item.label" :value="item.value">
                 </el-option>
@@ -69,7 +69,7 @@
             </el-form-item>
             <el-form-item label="销售价" prop="SalesPrice">
               <el-input v-model.number="formData.SalesPrice" placeholder="销售价"></el-input>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="长度" prop="Length">
               <el-input v-model.number="formData.Length" placeholder="长度"></el-input>
             </el-form-item>
@@ -100,14 +100,17 @@
           </el-tab-pane>
           <el-tab-pane label="单位信息" name="tab3">
             <el-table class="UOM" :data="formData.UOM" border size="mini" style="width: 100%" height="230px">
-              <el-table-column type="index" width="70" align="center" header-align="center">
-              </el-table-column>
-              <el-table-column prop="UomType" width="100" label="单位类型" align="center" header-align="center">
+              <!-- <el-table-column type="index" width="70" align="center" header-align="center">
+              </el-table-column> -->
+              <el-table-column prop="UomType" width="124" label="单位类型" align="center" header-align="center">
                 <template slot-scope="scope">
-                  {{scope.row.UomType==1?"基本单位":"扩展单位"}}
+                  <el-select size="mini" :disabled="true" v-model="scope.row.UomType" popper-class="popper">
+                    <el-option v-for="item in formData.UomIDList" :key="item.value" :label="item.label" :value="item.value">
+                    </el-option>
+                  </el-select>
                 </template>
               </el-table-column>
-              <el-table-column prop="UomID" label="单位" width="124px" align="center" header-align="center">
+              <el-table-column prop="UomID" width="124" label="单位" align="center" header-align="center">
                 <template slot-scope="scope">
                   <el-select size="mini" v-model="scope.row.UomID" popper-class="popper">
                     <el-option v-for="item in formData.UOMList" :disabled="item.disabled" :key="item.value" :label="item.label" :value="item.value">
@@ -117,10 +120,30 @@
               </el-table-column>
               <el-table-column prop="RateQty" label="换算率" align="center" header-align="center">
                 <template slot-scope="scope">
-                  <el-input-number :disabled="scope.row.UomType==1?true:false" size="mini" v-model="scope.row.RateQty" placeholder="请输入换算倍数" style="width:100%"></el-input-number>
+                  <el-input-number :controls="false" :disabled="scope.row.UomType==1?true:false" size="mini" v-model="scope.row.RateQty" placeholder="请输入换算倍数" style="width:100%"></el-input-number>
                 </template>
               </el-table-column>
-              <el-table-column prop="IsValid" label="有效否" align="center" header-align="center">
+              <el-table-column prop="PurchasePrice" label="采购单价" align="center" header-align="center">
+                <template slot-scope="scope">
+                  <el-input size="mini" v-model="scope.row.PurchasePrice" placeholder="0.00" style="width:100%"></el-input>
+                </template>
+              </el-table-column>
+              <el-table-column prop="SalesPrice" label="销售单价" align="center" header-align="center">
+                <template slot-scope="scope">
+                  <el-input size="mini" v-model="scope.row.SalesPrice" placeholder="0.00" style="width:100%"></el-input>
+                </template>
+              </el-table-column>
+              <el-table-column prop="IsPurchaseUOM" label="采购单位" align="center" header-align="center">
+                <template slot-scope="scope">
+                  <el-switch @change="handleSwitch(scope.row,'IsPurchaseUOM')" v-model="scope.row.IsPurchaseUOM" :active-value="1" :inactive-value="0"></el-switch>
+                </template>
+              </el-table-column>
+              <el-table-column prop="IsSalesUOM" label="销售单位" align="center" header-align="center">
+                <template slot-scope="scope">
+                  <el-switch @change="handleSwitch(scope.row,'IsSalesUOM')" v-model="scope.row.IsSalesUOM" :active-value="1" :inactive-value="0"></el-switch>
+                </template>
+              </el-table-column>
+              <el-table-column prop="IsValid" width="70" label="有效否" align="center" header-align="center">
                 <template slot-scope="scope">
                   <el-switch v-model="scope.row.IsValid" :active-value="1" :inactive-value="0"></el-switch>
                 </template>
@@ -190,12 +213,17 @@ import vueCropper from "vue-cropper";
 export default {
   data() {
     return {
+      width: "650px",
       UOMObj: {
         ItemID: 0,
         UomID: null,
         RateQty: 1,
         IsValid: 1,
-        UomType: 1
+        UomType: 1,
+        PurchasePrice: null,
+        SalesPrice: null,
+        IsPurchaseUOM: 1,
+        IsSalesUOM: 1
       },
       nullObj: {
         label: "--请选择--",
@@ -269,6 +297,23 @@ export default {
         //   arrTemp.push(this.UOMObj);
         //   this.formData.UOM = arrTemp;
         // }
+        //控制不能重复选择
+        this.formData.UOMList.map(item => {
+          let tempOjb = this.formData.UOM.filter(_item => {
+            return _item.UomID == item.value;
+          });
+
+          if (tempOjb.length > 0) {
+            item.disabled = true;
+          } else {
+            item.disabled = false;
+          }
+        });
+        //获取单位类型列表
+        this.formData.UomIDList = [
+          { value: 1, label: "基本单位" },
+          { value: 0, label: "扩展单位" }
+        ];
         this.formData.ItemGroupIDList.splice(0, 0, this.nullObj);
         this.formData.ItemCategoryIDList.splice(0, 0, this.nullObj);
         this.formData.UOMList.splice(0, 0, this.nullObj);
@@ -300,13 +345,17 @@ export default {
         });
         return;
       }
-      //1为基本单位，2为其它单位
+      //1为基本单位，0为其它单位
       let objTemp = JSON.parse(JSON.stringify(this.UOMObj));
 
       if (this.formData.UOM.length <= 0) {
         objTemp.UomType = 1;
+        objTemp.IsPurchaseUOM = 1;
+        objTemp.IsSalesUOM = 1;
       } else {
-        objTemp.UomType = 2;
+        objTemp.UomType = 0;
+        objTemp.IsPurchaseUOM = 0;
+        objTemp.IsSalesUOM = 0;
       }
       objTemp.ItemID = this.formData.ItemID;
       this.formData.UOM.push(objTemp);
@@ -318,26 +367,31 @@ export default {
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
           let SaveData = JSON.parse(JSON.stringify(this.formData));
-          SaveData.BaseUOM = null;
           //获取基本单位
+          SaveData.BaseUOM = null;
+          SaveData.PurchaseUOM = null;
+          SaveData.SalesUOM = null;
           SaveData.UOM.map((item, index) => {
             //将基本单位保存在BaseUOM字段上
-            if (item.UomType == 1 && item.UomID != null) {
+            if (item.UomType == 1 && item.UomID != null && item.IsValid == 1) {
               SaveData.BaseUOM = item.UomID;
+            }
+            //赋值采购单位
+            if (item.IsPurchaseUOM == 1) {
+              SaveData.PurchaseUOM = item.UomID;
+            }
+            //赋值销售单位
+            if (item.IsSalesUOM == 1) {
+              SaveData.SalesUOM = item.UomID;
             }
           });
           if (SaveData.BaseUOM == null) {
             this.$message({
-              message: "请选择单位",
+              message: "请选择基本单位",
               type: "warning"
             });
             return;
           }
-          let arr = SaveData.UOM.filter(item => {
-            return item.UomType != 1 && item.UomID != null;
-          });
-
-          SaveData.UOM = arr;
 
           if (this.checkImg) {
             this.$refs.cropper.getCropData(data => {
@@ -360,6 +414,19 @@ export default {
           return false;
         }
       });
+    },
+    handleClick(tab, event) {
+      if (tab.paneName == "tab3") {
+        this.width = "820px";
+      } else {
+        this.width = "650px";
+      }
+    },
+    handleSwitch(row, value) {
+      this.formData.UOM.map(item => {
+        item[value] = 0;
+      });
+      row[value] = 1;
     },
     imgLoad(v) {
       this.checkImg = v === "success";

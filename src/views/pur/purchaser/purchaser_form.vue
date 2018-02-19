@@ -106,7 +106,7 @@ export default {
           types: "autocomplete",
           api: FindPurOrderItem,
           placeholder: "商品编码、名称",
-          next: "BillQty"
+          next: "PurchasePrice"
         },
         {
           prop: "Name",
@@ -127,6 +127,15 @@ export default {
           width: "100",
           align: "",
           types: "select"
+        },
+        {
+          prop: "PurchasePrice",
+          label: "单价",
+          width: "101",
+          align: "right",
+          types: "input-number",
+          next: "BillQty",
+          placeholder: "单价"
         },
         {
           prop: "BillQty",
@@ -153,8 +162,8 @@ export default {
           width: "",
           align: "",
           types: "input",
-          // next: "CodeName",
-          // lastNext: true,
+          next: "Code",
+          lastNext: true,
           placeholder: "备注"
         }
       ],
@@ -220,7 +229,7 @@ export default {
       const sums = [];
       columns.forEach((column, index) => {
         let prop = column.property;
-        if (prop == "CodeName") {
+        if (prop == "Code") {
           let arr = data.filter(item => {
             return item.Code != "";
           });
@@ -228,7 +237,7 @@ export default {
           return;
         }
 
-        if (prop == "sl") {
+        if (prop == "BillQty") {
           const values = data.map(item => Number(item[prop]));
           sums[index] = values.reduce((prev, curr) => {
             const value = Number(curr);
@@ -241,7 +250,7 @@ export default {
           sums[index] = sums[index].toFixed(2);
         }
 
-        if (prop == "je") {
+        if (prop == "UnitAmount") {
           const values = data.map(item => Number(item[prop]));
           sums[index] = values.reduce((prev, curr) => {
             const value = Number(curr);
@@ -266,10 +275,6 @@ export default {
 
 .el-form>>>.el-input--suffix>>>.el-input__inner {
   padding-right: 15px;
-}
-
-.el-form>>>.el-input {
-  width: 150px;
 }
 
 .el-form>>>.el-input {
