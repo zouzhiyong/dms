@@ -49,8 +49,9 @@ if (localRoutes) {
         item.component = resolve => require([`./views/Home.vue`], resolve);
         item.children.map(_item => {
             _item.component = resolve =>
-                require(["./views/" + _item.MenuPath + `.vue`], resolve);
+                require(["./views/" + _item.MenuPath], resolve);
         });
+        // console.log(item);
         router.options.routes.push(item);
     });
 

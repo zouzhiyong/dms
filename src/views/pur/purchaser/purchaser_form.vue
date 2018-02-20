@@ -73,6 +73,9 @@
       <el-form-item label="备　　注">
         <el-input ref="Remark" v-model="formInline.Remark" placeholder="备注" @keyup.enter.native="enter($refs.tablebill.$refs.table.$refs[ 'Code0'][0])" style="width: 632px;"></el-input>
       </el-form-item>
+      <el-form-item label="单 据 号" v-if="formInline.Code!=null">
+        {{formInline.Code}}
+      </el-form-item>
     </el-row>
     <div style="height:calc(100% - 195px) ">
       <cust-table ref="table" :tableData="formInline.OrderDetail" :columns="columns" :disabled="false" :api="api" keys="Code" :isOperate="true" @summaries="getSummaries" @handleInputSelect="handleInputSelect" @onblur="onblur"></cust-table>
@@ -217,6 +220,9 @@ export default {
       api: {}
     };
   },
+  props: {
+    billtype: { type: Number }
+  },
   computed: {
     OrderDetail() {
       let DetailData = JSON.parse(JSON.stringify(this.formInline.OrderDetail));
@@ -229,7 +235,7 @@ export default {
     }
   },
   created() {
-    let row = { POID: 0 };
+    let row = { POID: 0, BillType: this.billtype };
     FindPurOrderForm(row).then(result => {
       result.data.SupplierIDList.splice(0, 0, this.obj);
       result.data.TruckIDList.splice(0, 0, this.obj);
@@ -242,6 +248,27 @@ export default {
   mounted() {},
   methods: {
     handleSave() {
+      //判断是否有明细
+      if (this.OrderDetail.length == 0) {
+        this.$message.error("单据明细不能为空");
+        return;
+      }
+
+      //判断是否有数量为0的行，有则提示
+      let arr = this.OrderDetail.filter(item => {
+        return item.BillQty == 0;
+      });
+      if (arr.length > 0) {
+        this.$message.error("有 " + arr.length + " 条记录订单数量为0");
+        return;
+      }
+
+      //判断供应商是否为空
+      if (this.formInline.SupplierID == null) {
+        this.$message.error("供应商不能为空");
+        return;
+      }
+
       let SaveData = JSON.parse(JSON.stringify(this.formInline));
       SaveData.OrderDetail = this.OrderDetail;
       // this.$refs.ruleForm.validate(valid => {

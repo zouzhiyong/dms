@@ -81,15 +81,16 @@ export default {
       });
     },
     GetMenuData(data) {
-      sessionStorage.routes = JSON.stringify(data);
       data.map(item => {
         item.component = resolve => require([`./Home.vue`], resolve);
         item.children.map(_item => {
           _item.component = resolve =>
-            require(["./" + _item.MenuPath + `.vue`], resolve);
+            require(["./" + _item.MenuPath], resolve);
         });
+
         this.$router.options.routes.push(item);
       });
+      sessionStorage.routes = JSON.stringify(data);
       this.$router.addRoutes(this.$router.options.routes);
     }
   }
