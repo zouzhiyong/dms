@@ -7,6 +7,12 @@
           </el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="采 购 员">
+        <el-select ref="PurchaserID" v-model="formInline.PurchaserID" placeholder="采购员">
+          <el-option v-for="item in formInline.PurchaserIDList" :key="item.value" :label="item.label" :value="item.value">
+          </el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item label="订单类型">
         <el-select :disabled="true" v-model="formInline.BillType" placeholder="订单类型">
           <el-option v-for="item in formInline.BillTypeList" :key="item.value" :label="item.label" :value="item.value">
@@ -14,11 +20,11 @@
         </el-select>
       </el-form-item>
       <el-form-item label="订单日期">
-        <el-date-picker ref="BillDate" v-model="formInline.BillDate" type="date" :editable="false" :clearable="false" placeholder="订单日期">
+        <el-date-picker ref="BillDate" :readonly="true" v-model="formInline.BillDate" type="date" :editable="false" :clearable="false" placeholder="订单日期">
         </el-date-picker>
       </el-form-item>
       <el-form-item label="过账日期">
-        <el-date-picker ref="PostDate" v-model="formInline.PostDate" type="date" :editable="false" :clearable="false" placeholder="过账日期">
+        <el-date-picker ref="PostDate" :readonly="true" v-model="formInline.PostDate" type="date" :editable="false" :clearable="false" placeholder="过账日期">
         </el-date-picker>
       </el-form-item>
       <el-form-item label="车　　辆">
@@ -33,12 +39,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="采 购 员">
-        <el-select v-model="formInline.PurchaserID " placeholder="采购员">
-          <el-option v-for="item in formInline.PurchaserIDList" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
+
       <el-form-item label="是否发货">
         <el-select :disabled="true" v-model="formInline.IsStockFinished" placeholder="是否发货">
           <el-option v-for="item in formInline.IsStockFinishedList" :key="item.value" :label="item.label" :value="item.value">
@@ -70,11 +71,11 @@
         </el-select>
       </el-form-item>
       <el-form-item label="备　　注">
-        <el-input ref="Remark" v-model="formInline.Remark" placeholder="备注" @keyup.enter.native="enter($refs.tablebill.$refs.table.$refs[ 'Code0'][0])" style="width: 617px;"></el-input>
+        <el-input ref="Remark" v-model="formInline.Remark" placeholder="备注" @keyup.enter.native="enter($refs.tablebill.$refs.table.$refs[ 'Code0'][0])" style="width: 632px;"></el-input>
       </el-form-item>
     </el-row>
     <div style="height:calc(100% - 195px) ">
-      <cust-table ref="table" :columns="columns" :disabled="false" :api="api" keys="Code" :isOperate="true" @summaries="getSummaries" @handleSelect="handleSelect" @onblur="onblur"></cust-table>
+      <cust-table ref="table" :tableData="formInline.OrderDetail" :columns="columns" :disabled="false" :api="api" keys="Code" :isOperate="true" @summaries="getSummaries" @handleInputSelect="handleInputSelect" @onblur="onblur"></cust-table>
     </div>
     <div style="padding: 20px 0;text-align:center ">
       <el-button type="primary " size="medium " accesskey="S " @click="handleSave ">保存 (S)</el-button>
@@ -84,7 +85,11 @@
 </template>
 
 <script>
-import { FindPurOrderForm, FindPurOrderItem } from "../../../api/api";
+import {
+  FindPurOrderForm,
+  FindPurOrderItem,
+  SavePurOrderForm
+} from "../../../api/api";
 import custTable from "./../../layout/layout_table_bill";
 export default {
   components: {
@@ -101,17 +106,18 @@ export default {
         {
           prop: "Code",
           label: "商品编码",
-          width: "150",
+          width: "130",
           align: "",
           types: "autocomplete",
           api: FindPurOrderItem,
           placeholder: "商品编码、名称",
-          next: "PurchasePrice"
+          next: "UnitAmount",
+          MustIsValue: "ItemID" //必须有值回车才生效
         },
         {
           prop: "Name",
           label: "商品名称",
-          width: "300",
+          width: "250",
           align: ""
         },
         {
@@ -124,14 +130,21 @@ export default {
         {
           prop: "UomID",
           label: "单位",
-          width: "100",
+          width: "90",
           align: "",
-          types: "select"
+          types: "select",
+          change: row => {
+            row.UomIDList.map(item => {
+              if (row.UomID == item.value) {
+                row.UnitAmount = item.PurchasePrice;
+              }
+            });
+          }
         },
         {
-          prop: "PurchasePrice",
+          prop: "UnitAmount",
           label: "单价",
-          width: "101",
+          width: "70",
           align: "right",
           types: "input-number",
           next: "BillQty",
@@ -139,14 +152,34 @@ export default {
         },
         {
           prop: "BillQty",
-          label: "数量",
-          width: "101",
+          label: "订单数量",
+          width: "80",
           align: "right",
           types: "input-number",
-          placeholder: "",
           next: "Code",
           lastNext: true,
-          placeholder: "数量"
+          placeholder: "订单数量"
+        },
+        {
+          prop: "OperQty",
+          label: "操作数量",
+          width: "80",
+          align: "right",
+          placeholder: "操作数量",
+          formatter: (row, column) => {
+            return row.OperQty == null ? 0 : row.OperQty;
+          }
+        },
+        {
+          prop: "BalanceQty",
+          label: "剩余数量",
+          width: "80",
+          align: "right",
+          placeholder: "操作数量",
+          formatter: (row, column) => {
+            row.BalanceQty = Number(row.BillQty) - Number(row.OperQty);
+            return row.BalanceQty;
+          }
         },
         {
           prop: "WarehouseID",
@@ -155,7 +188,21 @@ export default {
           align: "",
           types: "select"
         },
-        { prop: "UnitAmount", label: "金额", width: "100", align: "right" },
+        {
+          prop: "Amount",
+          label: "金额",
+          width: "80",
+          align: "right",
+          formatter: (row, column) => {
+            row.Amount = (
+              parseFloat(row.BillQty) * parseFloat(row.UnitAmount)
+            ).toFixed(2);
+            return row.Amount;
+            // return (
+            //   parseFloat(row.BillQty) * parseFloat(row.UnitAmount).toFixed(2)
+            // );
+          }
+        },
         {
           prop: "Remark",
           label: "备注",
@@ -170,25 +217,49 @@ export default {
       api: {}
     };
   },
+  computed: {
+    OrderDetail() {
+      let DetailData = JSON.parse(JSON.stringify(this.formInline.OrderDetail));
+      let arr = DetailData.filter((item, index) => {
+        item.RowID = index + 1;
+        item.Amount = parseFloat(item.Amount);
+        return item.ItemID;
+      });
+      return arr;
+    }
+  },
   created() {
     let row = { POID: 0 };
     FindPurOrderForm(row).then(result => {
+      result.data.SupplierIDList.splice(0, 0, this.obj);
+      result.data.TruckIDList.splice(0, 0, this.obj);
+      result.data.DriverIDList.splice(0, 0, this.obj);
+      result.data.PurchaserIDList.splice(0, 0, this.obj);
       this.formInline = result.data;
-      this.formInline.SupplierIDList.splice(0, 0, this.obj);
-      this.formInline.TruckIDList.splice(0, 0, this.obj);
-      this.formInline.DriverIDList.splice(0, 0, this.obj);
-      this.formInline.PurchaserIDList.splice(0, 0, this.obj);
-
       this.dialogVisible = true;
     });
   },
-  mounted() {
-    //console.log(this.$refs.SupplierID);
-    this.$refs.table.GetData();
-  },
+  mounted() {},
   methods: {
     handleSave() {
-      // console.log(this.$refs.tablebill.saveData);
+      let SaveData = JSON.parse(JSON.stringify(this.formInline));
+      SaveData.OrderDetail = this.OrderDetail;
+      // this.$refs.ruleForm.validate(valid => {
+      //   if (valid) {
+      SavePurOrderForm(SaveData).then(result => {
+        this.formInline.POID = result.data.POID;
+        this.formInline.Code = result.data.Code;
+        this.formInline.CreateTime = result.data.CreateTime;
+        this.formInline.BillDate = result.data.BillDate;
+        this.formInline.Status = result.data.Status;
+        this.formInline.OrderDetail.map(item => {
+          item.POID = result.data.POID;
+        });
+      });
+      // } else {
+      //   return false;
+      // }
+      //});
     },
     enter(vnode) {
       //日期跳至表格中控件
@@ -203,13 +274,45 @@ export default {
         }
       }
     },
-    handleSelect(value, row, index, item) {
-      for (var i in value) {
-        row[i] = value[i];
+    handleInputSelect(value, row, index, item) {
+      let arr = this.OrderDetail.filter(item => {
+        return item.ItemID == value.ItemID;
+      });
+      if (arr.length > 0) {
+        this.$confirm("当前商品记录重复, 是否继续?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+          .then(() => {
+            this.handleInputSelectCall(value, row, index, item);
+          })
+          .catch(() => {
+            return;
+          });
+      } else {
+        this.handleInputSelectCall(value, row, index, item);
       }
+    },
+    handleInputSelectCall(value, row, index, item) {
       row.Code = value.Code;
+      row.CodeCopy = row.Code; //在未取到商品时离开焦点可将此值赋予正确值
       row.Name = value.Name;
-      row.UomID = value.UomIDList.length > 0 ? value.UomIDList[0].value : null;
+      row.ItemID = value.ItemID;
+      row.WarehouseIDList = value.WarehouseIDList;
+      row.UomIDList = value.UomIDList;
+      //先取基本单位，如果有采购单位就取采购单位
+      value.UomIDList.map(item => {
+        if (item.UomType == 1) {
+          row.UomID = item.value;
+          row.UnitAmount = item.PurchasePrice;
+        }
+        if (item.IsPurchaseUOM == 1) {
+          row.UomID = item.value;
+          row.UnitAmount = item.PurchasePrice;
+        }
+      });
+
       row.WarehouseID =
         value.WarehouseIDList.length > 0
           ? value.WarehouseIDList[0].value
@@ -222,7 +325,7 @@ export default {
       curInput.$refs.input.$refs.input.select();
     },
     onblur(row) {
-      row.Name = row.Name;
+      row.Code = row.CodeCopy;
     },
     getSummaries(param, callback) {
       const { columns, data } = param;
@@ -231,7 +334,7 @@ export default {
         let prop = column.property;
         if (prop == "Code") {
           let arr = data.filter(item => {
-            return item.Code != "";
+            return item.ItemID;
           });
           sums[index] = "合计 " + arr.length + " 种商品";
           return;
@@ -250,7 +353,7 @@ export default {
           sums[index] = sums[index].toFixed(2);
         }
 
-        if (prop == "UnitAmount") {
+        if (prop == "UnitAmount" || prop == "Amount") {
           const values = data.map(item => Number(item[prop]));
           sums[index] = values.reduce((prev, curr) => {
             const value = Number(curr);
@@ -278,6 +381,6 @@ export default {
 }
 
 .el-form>>>.el-input {
-  width: 150px;
+  width: 155px;
 }
 </style>
