@@ -60,6 +60,7 @@ if (localRoutes) {
 
 router.beforeEach((to, from, next) => {
     //NProgress.start();
+
     if (to.path == '/login') {
         sessionStorage.removeItem('user');
         sessionStorage.removeItem('routes');

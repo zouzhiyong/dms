@@ -65,7 +65,14 @@ export default {
       });
     },
     handleEditClick(row) {
-      this.$parent.$parent.$parent.$parent.$parent.$refs.form.GetData(row);
+      this.$emit("editClick", row);
+      if (
+        this.$parent.$parent.$parent.$parent.$parent.$refs.form &&
+        typeof this.$parent.$parent.$parent.$parent.$parent.$refs.form
+          .GetData === "function"
+      ) {
+        this.$parent.$parent.$parent.$parent.$parent.$refs.form.GetData(row);
+      }
     },
     handleDeleteClick(row) {
       this.$confirm("是否确认删除?", "提示", {

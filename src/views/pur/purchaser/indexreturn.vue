@@ -1,16 +1,12 @@
 ﻿<template>
-  <layout>
-    <purchaserFrom slot="bill" ref="bill" :billtype="1"></purchaserFrom>
-  </layout>
+  <purchaserIndex :billtype="1"></purchaserIndex>
 </template>
 
 <script>
-import layout from "./../../layout/layout_left_right";
-import purchaserFrom from "./purchaser_form";
+import purchaserIndex from "./index";
 export default {
   components: {
-    layout,
-    purchaserFrom
+    purchaserIndex
   }
 };
 </script>

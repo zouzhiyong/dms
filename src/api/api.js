@@ -67,12 +67,16 @@ axios.interceptors.response.use(function(response) {
 }, function(error) {
     // 对响应错误做点什么
     // this.$Progress.fail()
-
     clearTimeout(_time);
     try {
         loadingInstance.close();
     } catch (e) {}
-    if (error.response.data.Message) {
+    if (error.response.data.message) {
+        new Vue().$message({
+            message: error.response.data.message,
+            type: 'error'
+        });
+    } else if (error.response.data.Message) {
         new Vue().$message({
             message: error.response.data.Message,
             type: 'error'
@@ -156,3 +160,4 @@ export const SaveBasItemForm = params => { return axios.post(`/api/Item/SaveBasI
 export const FindPurOrderForm = params => { return axios.post(`/api/Purchaser/FindPurOrderForm`, params).then(res => res.data); };
 export const FindPurOrderItem = params => { return axios.post(`/api/Purchaser/FindPurOrderItem?str=` + params).then(res => res.data); };
 export const SavePurOrderForm = params => { return axios.post(`/api/Purchaser/SavePurOrderForm`, params).then(res => res.data); };
+export const FindPurOrderTable = params => { return axios.post(`/api/Purchaser/FindPurOrderTable`, params).then(res => res.data); };

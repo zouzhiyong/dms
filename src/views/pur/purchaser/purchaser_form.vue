@@ -81,8 +81,8 @@
       <cust-table ref="table" :tableData="formInline.OrderDetail" :columns="columns" :disabled="false" :api="api" keys="Code" :isOperate="true" @summaries="getSummaries" @handleInputSelect="handleInputSelect" @onblur="onblur"></cust-table>
     </div>
     <div style="padding: 20px 0;text-align:center ">
-      <el-button type="primary " size="medium " accesskey="S " @click="handleSave ">保存 (S)</el-button>
-      <el-button type="primary " size="medium " accesskey="G ">审核 (G)</el-button>
+      <el-button type="primary " size="medium " accesskey="S" @click="handleSave ">保存 (S)</el-button>
+      <el-button type="primary " size="medium " accesskey="G">审核 (G)</el-button>
     </div>
   </el-form>
 </template>
@@ -104,6 +104,20 @@ export default {
         label: "--请选择--",
         value: null
       },
+      BillTypeList: [
+        { label: "采购订单", value: 0 },
+        { label: "采购退货单", value: 1 }
+      ],
+      StatusList: [
+        { label: "打开", value: 0 },
+        { label: "保存", value: 1 },
+        { label: "确定", value: 2 },
+        { label: "完成", value: 3 }
+      ],
+      IsStockFinishedList: [
+        { label: "未完成", value: 0 },
+        { label: "已完成", value: 1 }
+      ],
       formInline: {},
       columns: [
         {
@@ -235,18 +249,25 @@ export default {
     }
   },
   created() {
-    let row = { POID: 0, BillType: this.billtype };
-    FindPurOrderForm(row).then(result => {
-      result.data.SupplierIDList.splice(0, 0, this.obj);
-      result.data.TruckIDList.splice(0, 0, this.obj);
-      result.data.DriverIDList.splice(0, 0, this.obj);
-      result.data.PurchaserIDList.splice(0, 0, this.obj);
-      this.formInline = result.data;
-      this.dialogVisible = true;
-    });
+    let row = { POID: 0 };
+    this.iniData(row);
   },
-  mounted() {},
   methods: {
+    iniData(row) {
+      this.formInline = {};
+      row.BillType = this.billtype;
+      FindPurOrderForm(row).then(result => {
+        result.data.BillTypeList = this.BillTypeList;
+        result.data.StatusList = this.StatusList;
+        result.data.IsStockFinishedList = this.IsStockFinishedList;
+        result.data.SupplierIDList.splice(0, 0, this.obj);
+        result.data.TruckIDList.splice(0, 0, this.obj);
+        result.data.DriverIDList.splice(0, 0, this.obj);
+        result.data.PurchaserIDList.splice(0, 0, this.obj);
+        this.formInline = result.data;
+        this.dialogVisible = true;
+      });
+    },
     handleSave() {
       //判断是否有明细
       if (this.OrderDetail.length == 0) {
