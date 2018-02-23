@@ -1,5 +1,5 @@
 ﻿<template>
-  <purchaserIndex :billtype="1"></purchaserIndex>
+  <purchaserIndex :billtype="-1"></purchaserIndex>
 </template>
 
 <script>

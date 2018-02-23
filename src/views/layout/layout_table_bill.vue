@@ -13,6 +13,12 @@
             </el-autocomplete>
           </template>
         </el-table-column>
+        <el-table-column class-name="cell-switch" v-if="item.types && item.types.toLowerCase()=='switch' && item.visible!=false" :prop="item.prop" :width="item.width" :label="item.label" header-align="center" :align="item.align" :key="item.id">
+          <template slot-scope="scope">
+            <el-switch v-model="scope.row[item.prop]" :active-value="1" :inactive-value="0">
+            </el-switch>
+          </template>
+        </el-table-column>
         <el-table-column v-if="item.types && item.types.toLowerCase()=='select' && item.visible!=false" :prop="item.prop" :width="item.width" :label="item.label" header-align="center" :align="item.align" :key="item.id">
           <template slot-scope="scope">
             <el-select :disabled="disabled" size="small" @change="item.change?item.change(scope.row):''" v-model="scope.row[item.prop]" popper-class="popper" :placeholder="item.placeholder" @keyup.enter.native="enter($refs[item.next+(item.lastNext?scope.$index+1:scope.$index)],scope.row[item.MustIsValue] || !item.MustIsValue)" :ref="item.prop+scope.$index">
@@ -183,6 +189,9 @@ export default {
   padding: 5px;
   background: #f5f7fa;
   height: 32px;
+}
+.el-table--small>>>.el-table__body-wrapper td.cell-switch .cell {
+  text-align: center;
 }
 
 .el-select--small>>>.el-input,

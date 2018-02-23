@@ -81,8 +81,8 @@
       <cust-table ref="table" :tableData="formInline.OrderDetail" :columns="columns" :disabled="false" :api="api" keys="Code" :isOperate="true" @summaries="getSummaries" @handleInputSelect="handleInputSelect" @onblur="onblur"></cust-table>
     </div>
     <div style="padding: 20px 0;text-align:center ">
-      <el-button type="primary " size="medium " accesskey="S" @click="handleSave ">保存 (S)</el-button>
-      <el-button type="primary " size="medium " accesskey="G">审核 (G)</el-button>
+      <el-button v-if="formInline.Status<=1" type="primary " size="medium " accesskey="S" @click="handleSave">保存 (S)</el-button>
+      <el-button v-if="formInline.Status<=1" type="primary " size="medium " accesskey="G" @click="handleAudit">审核 (G)</el-button>
     </div>
   </el-form>
 </template>
@@ -91,7 +91,8 @@
 import {
   FindPurOrderForm,
   FindPurOrderItem,
-  SavePurOrderForm
+  SavePurOrderForm,
+  AuditPurOrderForm
 } from "../../../api/api";
 import custTable from "./../../layout/layout_table_bill";
 export default {
@@ -111,7 +112,7 @@ export default {
       StatusList: [
         { label: "打开", value: 0 },
         { label: "保存", value: 1 },
-        { label: "确定", value: 2 },
+        { label: "审核", value: 2 },
         { label: "完成", value: 3 }
       ],
       IsStockFinishedList: [
@@ -142,7 +143,7 @@ export default {
           label: "是否赠品",
           width: "100",
           align: "",
-          types: "select"
+          types: "switch"
         },
         {
           prop: "UomID",
@@ -215,9 +216,6 @@ export default {
               parseFloat(row.BillQty) * parseFloat(row.UnitAmount)
             ).toFixed(2);
             return row.Amount;
-            // return (
-            //   parseFloat(row.BillQty) * parseFloat(row.UnitAmount).toFixed(2)
-            // );
           }
         },
         {
@@ -266,6 +264,13 @@ export default {
         result.data.PurchaserIDList.splice(0, 0, this.obj);
         this.formInline = result.data;
         this.dialogVisible = true;
+
+        //如果为状态为保存，则明细新增空行
+        if (result.data.Status == 1) {
+          this.$nextTick(item => {
+            this.$refs.table.GetData();
+          });
+        }
       });
     },
     handleSave() {
@@ -295,19 +300,27 @@ export default {
       // this.$refs.ruleForm.validate(valid => {
       //   if (valid) {
       SavePurOrderForm(SaveData).then(result => {
-        this.formInline.POID = result.data.POID;
-        this.formInline.Code = result.data.Code;
-        this.formInline.CreateTime = result.data.CreateTime;
-        this.formInline.BillDate = result.data.BillDate;
-        this.formInline.Status = result.data.Status;
-        this.formInline.OrderDetail.map(item => {
-          item.POID = result.data.POID;
-        });
+        let row = { POID: result.data.POID };
+        this.iniData(row);
+        // this.formInline.POID = result.data.POID;
+        // this.formInline.Code = result.data.Code;
+        // this.formInline.CreateTime = result.data.CreateTime;
+        // this.formInline.BillDate = result.data.BillDate;
+        // this.formInline.Status = result.data.Status;
+        // this.formInline.OrderDetail.map(item => {
+        //   item.POID = result.data.POID;
+        // });
       });
       // } else {
       //   return false;
       // }
       //});
+    },
+    handleAudit() {
+      AuditPurOrderForm(this.formInline).then(result => {
+        let row = { POID: result.data.POID };
+        this.iniData(row);
+      });
     },
     enter(vnode) {
       //日期跳至表格中控件
@@ -322,6 +335,7 @@ export default {
         }
       }
     },
+
     handleInputSelect(value, row, index, item) {
       let arr = this.OrderDetail.filter(item => {
         return item.ItemID == value.ItemID;
@@ -365,8 +379,8 @@ export default {
         value.WarehouseIDList.length > 0
           ? value.WarehouseIDList[0].value
           : null;
-      row.IsGiftList = [{ label: "否", value: 0 }, { label: "是", value: 1 }];
-      row.IsGift = row.IsGiftList.length > 0 ? row.IsGiftList[0].value : null;
+
+      // row.IsGift = row.IsGiftList.length > 0 ? row.IsGiftList[0].value : null;
 
       let curInput = this.$refs.table.$refs[item.prop + index][0];
       curInput.focus();
