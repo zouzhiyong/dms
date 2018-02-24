@@ -3,6 +3,12 @@
     <el-form-item label="单据编码">
       <el-input :clearable="true" v-model="formInline.Code" placeholder="单据编码"></el-input>
     </el-form-item>
+    <el-form-item label="单据状态">
+      <el-select :clearable="true" v-model="formInline.Status" placeholder="单据状态">
+        <el-option v-for="item in formInline.StatusList" :key="item.value" :label="item.label" :value="item.value">
+        </el-option>
+      </el-select>
+    </el-form-item>
     <el-form-item label="日期">
       <el-date-picker :clearable="false" value-format="yyyy-MM-dd" v-model="formInline.Date" type="daterange" align="left" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
       </el-date-picker>
@@ -18,7 +24,13 @@ export default {
   data() {
     return {
       formInline: {
-        Code: "",
+        Code: null,
+        Status: null,
+        StatusList: [
+          { label: "保存", value: 1 },
+          { label: "审核", value: 2 },
+          { label: "完成", value: 3 }
+        ],
         Date: [new Date().Format("yyyy-MM-dd"), new Date().Format("yyyy-MM-dd")]
       },
       pickerOptions: {
@@ -62,6 +74,9 @@ export default {
   methods: {
     onSubmit() {
       var obj = this.formInline;
+      //状态为字符串为置空
+      this.formInline.Status =
+        this.formInline.Status == "" ? null : this.formInline.Status;
       this.$parent.$parent.$parent.$parent.$parent.$parent.$refs.table.conditionData = obj;
       this.$parent.$parent.$parent.$parent.$parent.$parent.$refs.table.$refs.table.GetData();
     }

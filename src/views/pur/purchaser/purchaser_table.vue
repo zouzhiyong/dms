@@ -14,7 +14,7 @@ export default {
       columns: [
         { prop: "Code", label: "单据编码", width: "", align: "" },
         { prop: "PurchaserName", label: "供应商名称", width: "", align: "" },
-        { prop: "Status", label: "状态", width: "", align: "center" },
+        { prop: "StatusName", label: "状态", width: "", align: "center" },
         {
           prop: "BillDate",
           label: "订单日期",

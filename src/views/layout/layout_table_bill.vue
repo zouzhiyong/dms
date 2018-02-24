@@ -15,7 +15,7 @@
         </el-table-column>
         <el-table-column class-name="cell-switch" v-if="item.types && item.types.toLowerCase()=='switch' && item.visible!=false" :prop="item.prop" :width="item.width" :label="item.label" header-align="center" :align="item.align" :key="item.id">
           <template slot-scope="scope">
-            <el-switch v-model="scope.row[item.prop]" :active-value="1" :inactive-value="0">
+            <el-switch :disabled="disabled" v-model="scope.row[item.prop]" :active-value="1" :inactive-value="0">
             </el-switch>
           </template>
         </el-table-column>
@@ -34,7 +34,7 @@
         </el-table-column>
         <el-table-column v-if="item.types && item.types.toLowerCase()=='input-number' && item.visible!=false" :prop="item.prop" :width="item.width" :label="item.label" header-align="center" :align="item.align" :key="item.id">
           <template slot-scope="scope">
-            <el-input-number :disabled="disabled" :min="0" :controls="false" style="width:100%" size="small" v-model="scope.row[item.prop]" :placeholder="item.placeholder" :ref="item.prop+scope.$index" @keyup.enter.native="enter($refs[item.next+(item.lastNext?scope.$index+1:scope.$index)],scope.row[item.MustIsValue] || !item.MustIsValue)"></el-input-number>
+            <el-input-number :disabled="disabled" @focus="handleFocus" @blur="($event)=>{handleInputBlur($event,scope.row,item.prop)}" :min="0" :controls="false" style="width:100%" size="small" v-model="scope.row[item.prop]" :placeholder="item.placeholder" :ref="item.prop+scope.$index" @keyup.enter.native="enter($refs[item.next+(item.lastNext?scope.$index+1:scope.$index)],scope.row[item.MustIsValue] || !item.MustIsValue)"></el-input-number>
           </template>
         </el-table-column>
         <el-table-column class-name="cell-div" v-if="!item.types && item.visible!=false" :prop="item.prop" :width="item.width" :formatter="item.formatter" :label="item.label" header-align="center" :align="item.align" :key="item.id">
@@ -43,7 +43,7 @@
       <el-table-column label="操作" width="80" align="center" header-align="center" v-if="isOperate">
         <template slot-scope="scope">
           <span style="width:32px;display:inline-block">
-            <el-button size="small" v-if="scope.row[keys] && scope.row[keys]!=''" type="text" icon="el-icon-delete" @click="handleDeleteClick(scope.$index,scope.row)"></el-button>
+            <el-button size="small" v-if="!disabled" type="text" icon="el-icon-delete" @click="handleDeleteClick(scope.$index,scope.row)"></el-button>
           </span>
         </template>
       </el-table-column>
@@ -98,10 +98,20 @@ export default {
       //   })
       //   .catch(() => {});
     },
+    handleFocus($event) {
+      $event.target.select();
+    },
+    handleInputBlur($event, row, prop) {
+      row[prop] = Number($event.target.value).toFixed(2);
+      //.replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, "$&,"); //使用正则替换，每隔三个数加一个','
+    },
     //离开焦点时将原来正确值重新赋值，避免出现错误的值
     handleBlur(row) {
       this.$emit("onblur", row);
     },
+    // thousand(value) {
+    //   return value.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,"); //使用正则替换，每隔三个数加一个','
+    // },
     querySearch(ref, api, queryString, cb) {
       this.$refs[ref][0].highlightedIndex = 0;
       api(queryString).then(result => {

@@ -2,13 +2,13 @@
   <el-form :inline="true" size="small" :model="formInline" label-width="70px" class="demo-form-inline" style="height:100%">
     <el-row style="padding: 5px 0;">
       <el-form-item label="供 应 商">
-        <el-select ref="SupplierID" v-model="formInline.SupplierID" placeholder="供应商">
+        <el-select :disabled="disabled" ref="SupplierID" v-model="formInline.SupplierID" placeholder="供应商">
           <el-option v-for="item in formInline.SupplierIDList" :key="item.value" :label="item.label" :value="item.value">
           </el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="采 购 员">
-        <el-select ref="PurchaserID" v-model="formInline.PurchaserID" placeholder="采购员">
+        <el-select :disabled="disabled" ref="PurchaserID" v-model="formInline.PurchaserID" placeholder="采购员">
           <el-option v-for="item in formInline.PurchaserIDList" :key="item.value" :label="item.label" :value="item.value">
           </el-option>
         </el-select>
@@ -28,13 +28,13 @@
         </el-date-picker>
       </el-form-item>
       <el-form-item label="车　　辆">
-        <el-select v-model="formInline.TruckID " placeholder="车辆 ">
+        <el-select :disabled="disabled" v-model="formInline.TruckID " placeholder="车辆 ">
           <el-option v-for="item in formInline.TruckIDList " :key="item.value" :label="item.label" :value="item.value">
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="司　　机">
-        <el-select v-model="formInline.DriverID " placeholder="司机 ">
+      <el-form-item :disabled="disabled" label="司　　机">
+        <el-select :disabled="disabled" v-model="formInline.DriverID " placeholder="司机 ">
           <el-option v-for="item in formInline.DriverIDList" :key="item.value" :label="item.label" :value="item.value">
           </el-option>
         </el-select>
@@ -71,14 +71,14 @@
         </el-select>
       </el-form-item>
       <el-form-item label="备　　注">
-        <el-input ref="Remark" v-model="formInline.Remark" placeholder="备注" @keyup.enter.native="enter($refs.tablebill.$refs.table.$refs[ 'Code0'][0])" style="width: 632px;"></el-input>
+        <el-input :disabled="disabled" ref="Remark" v-model="formInline.Remark" placeholder="备注" @keyup.enter.native="enter($refs.tablebill.$refs.table.$refs[ 'Code0'][0])" style="width: 632px;"></el-input>
       </el-form-item>
       <el-form-item label="单 据 号" v-if="formInline.Code!=null">
         {{formInline.Code}}
       </el-form-item>
     </el-row>
     <div style="height:calc(100% - 195px) ">
-      <cust-table ref="table" :tableData="formInline.OrderDetail" :columns="columns" :disabled="false" :api="api" keys="Code" :isOperate="true" @summaries="getSummaries" @handleInputSelect="handleInputSelect" @onblur="onblur"></cust-table>
+      <cust-table ref="table" :tableData="formInline.OrderDetail" :columns="columns" :disabled="disabled" :api="api" keys="Code" :isOperate="true" @summaries="getSummaries" @handleInputSelect="handleInputSelect" @onblur="onblur"></cust-table>
     </div>
     <div style="padding: 20px 0;text-align:center ">
       <el-button v-if="formInline.Status<=1" type="primary " size="medium " accesskey="S" @click="handleSave">保存 (S)</el-button>
@@ -105,6 +105,7 @@ export default {
         label: "--请选择--",
         value: null
       },
+      disabled: false,
       BillTypeList: [
         { label: "采购订单", value: 0 },
         { label: "采购退货单", value: 1 }
@@ -162,7 +163,7 @@ export default {
         {
           prop: "UnitAmount",
           label: "单价",
-          width: "70",
+          width: "80",
           align: "right",
           types: "input-number",
           next: "BillQty",
@@ -171,7 +172,7 @@ export default {
         {
           prop: "BillQty",
           label: "订单数量",
-          width: "80",
+          width: "90",
           align: "right",
           types: "input-number",
           next: "Code",
@@ -185,7 +186,8 @@ export default {
           align: "right",
           placeholder: "操作数量",
           formatter: (row, column) => {
-            return row.OperQty == null ? 0 : row.OperQty;
+            let OperQty = row.OperQty == null ? 0 : row.OperQty;
+            return OperQty.toFixed(2); //.replace(/(\d)(?=(\d{3})+\.)/g, "$1,"); //使用正则替换，每隔三个数加一个','
           }
         },
         {
@@ -196,7 +198,8 @@ export default {
           placeholder: "操作数量",
           formatter: (row, column) => {
             row.BalanceQty = Number(row.BillQty) - Number(row.OperQty);
-            return row.BalanceQty;
+            let BalanceQty = row.BalanceQty == null ? 0 : row.BalanceQty;
+            return BalanceQty.toFixed(2); //使用正则替换，每隔三个数加一个','
           }
         },
         {
@@ -209,7 +212,7 @@ export default {
         {
           prop: "Amount",
           label: "金额",
-          width: "80",
+          width: "100",
           align: "right",
           formatter: (row, column) => {
             row.Amount = (
@@ -270,6 +273,12 @@ export default {
           this.$nextTick(item => {
             this.$refs.table.GetData();
           });
+        }
+
+        if (result.data.Status > 1) {
+          this.disabled = true;
+        } else {
+          this.disabled = false;
         }
       });
     },
@@ -412,7 +421,9 @@ export default {
               return prev;
             }
           }, 0);
-          sums[index] = sums[index].toFixed(2);
+          sums[index] = sums[index]
+            .toFixed(2)
+            .replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, "$&,");
         }
 
         if (prop == "UnitAmount" || prop == "Amount") {
@@ -425,7 +436,11 @@ export default {
               return prev;
             }
           }, 0);
-          sums[index] = "￥" + sums[index].toFixed(2);
+          sums[index] =
+            "￥" +
+            sums[index]
+              .toFixed(2)
+              .replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, "$&,");
         }
       });
       callback(sums);

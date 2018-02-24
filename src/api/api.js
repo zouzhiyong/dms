@@ -162,3 +162,4 @@ export const FindPurOrderItem = params => { return axios.post(`/api/Purchaser/Fi
 export const SavePurOrderForm = params => { return axios.post(`/api/Purchaser/SavePurOrderForm`, params).then(res => res.data); };
 export const AuditPurOrderForm = params => { return axios.post(`/api/Purchaser/AuditPurOrderForm`, params).then(res => res.data); };
 export const FindPurOrderTable = params => { return axios.post(`/api/Purchaser/FindPurOrderTable`, params).then(res => res.data); };
+export const DeletePurOrderRow = params => { return axios.post(`/api/Purchaser/DeletePurOrderRow`, params).then(res => res.data); };
