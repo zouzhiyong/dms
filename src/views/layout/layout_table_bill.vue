@@ -6,7 +6,7 @@
       <template v-for="item in columns">
         <el-table-column v-if="item.types && item.types.toLowerCase()=='autocomplete' && item.visible!=false" :prop="item.prop" :width="item.width" :label="item.label" header-align="center" :align="item.align" :key="item.id">
           <template slot-scope="scope">
-            <el-autocomplete :disabled="disabled" size="small" @blur="handleBlur(scope.row)" v-if="item.types && item.types.toLowerCase()=='autocomplete'" clearable popper-class="popperpurallbillautocomplete" v-model="scope.row[item.prop]" :fetch-suggestions="(x,y)=>{querySearch(item.prop+scope.$index,item.api,x,y)}" :placeholder="item.placeholder" :trigger-on-focus="false" @select="x=>{handleInputSelect(x,scope.row,scope.$index,item)}" @keyup.enter.native="enter($refs[item.next+(item.lastNext?scope.$index+1:scope.$index)],scope.row[item.MustIsValue] || !item.MustIsValue)" :ref="item.prop+scope.$index" style="width:100%">
+            <el-autocomplete :disabled="disabled" size="small" @blur="handleBlur(scope.row)" v-if="item.types && item.types.toLowerCase()=='autocomplete'" clearable popper-class="popperpurallbillautocomplete" v-model="scope.row[item.prop]" :fetch-suggestions="(queryString,callback)=>{querySearch(item.prop+scope.$index,item.api,queryString,callback)}" :placeholder="item.placeholder" :trigger-on-focus="false" @select="x=>{handleInputSelect(x,scope.row,scope.$index,item)}" @keyup.enter.native="enter($refs[item.next+(item.lastNext?scope.$index+1:scope.$index)],scope.row[item.MustIsValue] || !item.MustIsValue)" :ref="item.prop+scope.$index" style="width:100%">
               <template slot-scope="props">
                 <div>{{ props.item.CodeTemplate }}</div>
               </template>
@@ -58,8 +58,9 @@ export default {
   //   };
   // },
   props: {
-    keys: { type: String },
-    api: { type: Object },
+    // keys: { type: String },
+    // api: { type: Object },
+    formInline: { type: Object },
     columns: { type: Array },
     isOperate: { default: false },
     disabled: { type: Boolean },
@@ -114,9 +115,15 @@ export default {
     // },
     querySearch(ref, api, queryString, cb) {
       this.$refs[ref][0].highlightedIndex = 0;
-      api(queryString).then(result => {
-        cb(result.data);
-      });
+      let obj = JSON.parse(JSON.stringify(this.formInline));
+      obj.queryString = queryString;
+      api(obj)
+        .then(result => {
+          cb(result.data);
+        })
+        .catch(function(error) {
+          cb([]);
+        });
     },
     handleInputSelect(value, row, index, item) {
       this.$emit("handleInputSelect", value, row, index, item);

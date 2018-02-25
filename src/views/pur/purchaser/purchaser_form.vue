@@ -78,11 +78,14 @@
       </el-form-item>
     </el-row>
     <div style="height:calc(100% - 195px) ">
-      <cust-table ref="table" :tableData="formInline.OrderDetail" :columns="columns" :disabled="disabled" :api="api" keys="Code" :isOperate="true" @summaries="getSummaries" @handleInputSelect="handleInputSelect" @onblur="onblur"></cust-table>
+      <cust-table ref="table" :formInline="formInline" :tableData="formInline.OrderDetail" :columns="columns" :disabled="disabled" :api="api" keys="Code" :isOperate="true" @summaries="getSummaries" @handleInputSelect="handleInputSelect" @onblur="onblur"></cust-table>
     </div>
     <div style="padding: 20px 0;text-align:center ">
-      <el-button v-if="formInline.Status<=1" type="primary " size="medium " accesskey="S" @click="handleSave">保存 (S)</el-button>
-      <el-button v-if="formInline.Status<=1" type="primary " size="medium " accesskey="G" @click="handleAudit">审核 (G)</el-button>
+      <cust-button>
+        <el-button slot="newButton" v-if="formInline.Status>0" type="primary" icon="el-icon-news" size="medium" @click="handleNew">新建</el-button>
+        <el-button slot="saveButton" v-if="formInline.Status<=1" type="primary" icon="fa fa-floppy-o" size="medium" @click="handleSave">保存</el-button>
+        <el-button slot="auditButton" v-if="formInline.Status<=1" type="primary" icon="fa fa-floppy-o" size="medium" @click="handleAudit">审核</el-button>
+      </cust-button>
     </div>
   </el-form>
 </template>
@@ -95,9 +98,11 @@ import {
   AuditPurOrderForm
 } from "../../../api/api";
 import custTable from "./../../layout/layout_table_bill";
+import custButton from "./../../layout/layout_button";
 export default {
   components: {
-    custTable
+    custTable,
+    custButton
   },
   data() {
     return {
@@ -130,7 +135,7 @@ export default {
           types: "autocomplete",
           api: FindPurOrderItem,
           placeholder: "商品编码、名称",
-          next: "UnitAmount",
+          next: "BillQty",
           MustIsValue: "ItemID" //必须有值回车才生效
         },
         {
@@ -282,7 +287,17 @@ export default {
         }
       });
     },
+    handleNew() {
+      let row = { POID: 0 };
+      this.iniData(row);
+    },
     handleSave() {
+      //判断供应商是否为空
+      if (this.formInline.SupplierID == null) {
+        this.$message.error("供应商不能为空");
+        return;
+      }
+
       //判断是否有明细
       if (this.OrderDetail.length == 0) {
         this.$message.error("单据明细不能为空");
@@ -298,35 +313,17 @@ export default {
         return;
       }
 
-      //判断供应商是否为空
-      if (this.formInline.SupplierID == null) {
-        this.$message.error("供应商不能为空");
-        return;
-      }
-
       let SaveData = JSON.parse(JSON.stringify(this.formInline));
       SaveData.OrderDetail = this.OrderDetail;
-      // this.$refs.ruleForm.validate(valid => {
-      //   if (valid) {
       SavePurOrderForm(SaveData).then(result => {
         let row = { POID: result.data.POID };
         this.iniData(row);
-        // this.formInline.POID = result.data.POID;
-        // this.formInline.Code = result.data.Code;
-        // this.formInline.CreateTime = result.data.CreateTime;
-        // this.formInline.BillDate = result.data.BillDate;
-        // this.formInline.Status = result.data.Status;
-        // this.formInline.OrderDetail.map(item => {
-        //   item.POID = result.data.POID;
-        // });
       });
-      // } else {
-      //   return false;
-      // }
-      //});
     },
     handleAudit() {
-      AuditPurOrderForm(this.formInline).then(result => {
+      let SaveData = JSON.parse(JSON.stringify(this.formInline));
+      SaveData.OrderDetail = this.OrderDetail;
+      AuditPurOrderForm(SaveData).then(result => {
         let row = { POID: result.data.POID };
         this.iniData(row);
       });
