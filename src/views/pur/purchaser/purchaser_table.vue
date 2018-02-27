@@ -70,7 +70,7 @@ export default {
   methods: {
     handleEditClick(row) {
       let obj = this.$parent.$parent.$parent.$parent.$parent.$parent;
-      obj.activeName = "first";
+      obj.activeName = "second";
       obj.$refs.bill.iniData(row);
     }
   }

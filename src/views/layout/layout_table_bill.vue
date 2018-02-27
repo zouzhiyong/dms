@@ -39,14 +39,14 @@
         </el-table-column>
         <el-table-column class-name="cell-div" v-if="!item.types && item.visible!=false" :prop="item.prop" :width="item.width" :formatter="item.formatter" :label="item.label" header-align="center" :align="item.align" :key="item.id">
         </el-table-column>
+        <el-table-column v-if="item.types && item.types.toLowerCase()=='isoperate' && item.visible!=false" :width="item.width" :label="item.label" header-align="center" :align="item.align" :key="item.id">
+          <template slot-scope="scope">
+            <span style="width:32px;display:inline-block">
+              <el-button size="small" v-if="!disabled && scope.row[item.key]!=null" type="text" icon="el-icon-delete" @click="handleDeleteClick(scope.$index,scope.row)"></el-button>
+            </span>
+          </template>
+        </el-table-column>
       </template>
-      <el-table-column label="操作" width="80" align="center" header-align="center" v-if="isOperate">
-        <template slot-scope="scope">
-          <span style="width:32px;display:inline-block">
-            <el-button size="small" v-if="!disabled" type="text" icon="el-icon-delete" @click="handleDeleteClick(scope.$index,scope.row)"></el-button>
-          </span>
-        </template>
-      </el-table-column>
     </el-table>
   </div>
 </template>
@@ -103,7 +103,7 @@ export default {
       $event.target.select();
     },
     handleInputBlur($event, row, prop) {
-      row[prop] = Number($event.target.value).toFixed(2);
+      //row[prop] = Number($event.target.value).toFixed(2);
       //.replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, "$&,"); //使用正则替换，每隔三个数加一个','
     },
     //离开焦点时将原来正确值重新赋值，避免出现错误的值

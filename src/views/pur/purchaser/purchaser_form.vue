@@ -20,12 +20,15 @@
         </el-select>
       </el-form-item>
       <el-form-item label="订单日期">
-        <el-date-picker ref="BillDate" :readonly="true" v-model="formInline.BillDate" type="date" :editable="false" :clearable="false" placeholder="订单日期">
-        </el-date-picker>
+        <el-input :disabled="true" v-model="formInline.BillDate" placeholder="订单日期"></el-input>
+
+        <!-- <el-date-picker ref="BillDate" v-model="formInline.BillDate" type="date" :editable="false" :clearable="false" placeholder="订单日期">
+        </el-date-picker> -->
       </el-form-item>
       <el-form-item label="过账日期">
-        <el-date-picker ref="PostDate" :readonly="true" v-model="formInline.PostDate" type="date" :editable="false" :clearable="false" placeholder="过账日期">
-        </el-date-picker>
+        <el-input :disabled="true" v-model="formInline.PostDate" placeholder="过账日期"></el-input>
+        <!-- <el-date-picker ref="PostDate" :readonly="true" v-model="formInline.PostDate" type="date" :editable="false" :clearable="false" placeholder="过账日期">
+        </el-date-picker> -->
       </el-form-item>
       <el-form-item label="车　　辆">
         <el-select :disabled="disabled" v-model="formInline.TruckID " placeholder="车辆 ">
@@ -112,8 +115,8 @@ export default {
       },
       disabled: false,
       BillTypeList: [
-        { label: "采购订单", value: 0 },
-        { label: "采购退货单", value: 1 }
+        { label: "采购订单", value: 1 },
+        { label: "采购退货单", value: -1 }
       ],
       StatusList: [
         { label: "打开", value: 0 },
@@ -235,6 +238,13 @@ export default {
           next: "Code",
           lastNext: true,
           placeholder: "备注"
+        },
+        {
+          label: "操作",
+          width: "80",
+          align: "center",
+          types: "isOperate",
+          key: "ItemID"
         }
       ],
       api: {}
@@ -271,7 +281,12 @@ export default {
         result.data.DriverIDList.splice(0, 0, this.obj);
         result.data.PurchaserIDList.splice(0, 0, this.obj);
         this.formInline = result.data;
-        this.dialogVisible = true;
+        this.formInline.BillDate = new Date(this.formInline.BillDate).Format(
+          "yyyy-MM-dd"
+        );
+        this.formInline.ConfirmTime = new Date(
+          this.formInline.ConfirmTime
+        ).Format("yyyy-MM-dd");
 
         //如果为状态为保存，则明细新增空行
         if (result.data.Status == 1) {
@@ -344,7 +359,7 @@ export default {
 
     handleInputSelect(value, row, index, item) {
       let arr = this.OrderDetail.filter(item => {
-        return item.ItemID == value.ItemID;
+        return item.ItemID == value.ItemID && item.ItemID != row.ItemID;
       });
       if (arr.length > 0) {
         this.$confirm("当前商品记录重复, 是否继续?", "提示", {

@@ -6,7 +6,7 @@ export default {
   methods: {
     handleClickNew() {
       let obj = this.$parent.$parent.$parent.$parent.$parent.$parent;
-      obj.activeName = "first";
+      obj.activeName = "second";
       let row = { POID: 0 };
       obj.$refs.bill.iniData(row);
     }

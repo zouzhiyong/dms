@@ -1,15 +1,15 @@
 <template>
-  <el-tabs v-model="activeName" @tab-click="handleClick" style="height:100%">
-    <el-tab-pane label="单据管理" name="first" style="height:100%">
-      <layout>
-        <purchaserFrom slot="bill" ref="bill" :billtype="billtype"></purchaserFrom>
-      </layout>
-    </el-tab-pane>
-    <el-tab-pane label="单据浏览" name="second" style="height:100%">
+  <el-tabs v-model="activeName" type="card" style="height:100%">
+    <el-tab-pane label="单据浏览" name="first" style="height:100%">
       <layout>
         <purchaserCondition slot="condition" ref="condition"></purchaserCondition>
         <purchaserTools slot="toolbar"></purchaserTools>
         <purchaserTable slot="table" ref="table" :billtype="billtype"></purchaserTable>
+      </layout>
+    </el-tab-pane>
+    <el-tab-pane label="单据管理" name="second" style="height:100%">
+      <layout>
+        <purchaserFrom slot="bill" ref="bill" :billtype="billtype"></purchaserFrom>
       </layout>
     </el-tab-pane>
   </el-tabs>
@@ -37,13 +37,21 @@ export default {
       activeName: "first"
     };
   },
+  mounted() {
+    this.iniData();
+  },
   methods: {
-    handleClick(tab, event) {
-      if (tab.name == "second") {
-        this.$nextTick(item => {
-          this.$refs.table.$refs.table.conditionData = this.$refs.condition.formInline;
-          this.$refs.table.$refs.table.GetData();
-        });
+    iniData() {
+      this.$nextTick(item => {
+        this.$refs.table.$refs.table.conditionData = this.$refs.condition.formInline;
+        this.$refs.table.$refs.table.GetData();
+      });
+    }
+  },
+  watch: {
+    activeName(newVal, oldVal) {
+      if (newVal == "first") {
+        this.iniData();
       }
     }
   }
