@@ -20,15 +20,12 @@
         </el-select>
       </el-form-item>
       <el-form-item label="订单日期">
-        <el-input :disabled="true" v-model="formInline.BillDate" placeholder="订单日期"></el-input>
-
-        <!-- <el-date-picker ref="BillDate" v-model="formInline.BillDate" type="date" :editable="false" :clearable="false" placeholder="订单日期">
-        </el-date-picker> -->
+        <el-date-picker ref="BillDate" v-model="formInline.BillDate" type="date" :editable="false" :clearable="false" placeholder="订单日期">
+        </el-date-picker>
       </el-form-item>
       <el-form-item label="过账日期">
-        <el-input :disabled="true" v-model="formInline.PostDate" placeholder="过账日期"></el-input>
-        <!-- <el-date-picker ref="PostDate" :readonly="true" v-model="formInline.PostDate" type="date" :editable="false" :clearable="false" placeholder="过账日期">
-        </el-date-picker> -->
+        <el-date-picker ref="PostDate" :readonly="true" v-model="formInline.PostDate" type="date" :editable="false" :clearable="false" placeholder="过账日期">
+        </el-date-picker>
       </el-form-item>
       <el-form-item label="车　　辆">
         <el-select :disabled="disabled" v-model="formInline.TruckID " placeholder="车辆 ">
@@ -270,7 +267,6 @@ export default {
   },
   methods: {
     iniData(row) {
-      this.formInline = {};
       row.BillType = this.billtype;
       FindPurOrderForm(row).then(result => {
         result.data.BillTypeList = this.BillTypeList;
@@ -281,12 +277,6 @@ export default {
         result.data.DriverIDList.splice(0, 0, this.obj);
         result.data.PurchaserIDList.splice(0, 0, this.obj);
         this.formInline = result.data;
-        this.formInline.BillDate = new Date(this.formInline.BillDate).Format(
-          "yyyy-MM-dd"
-        );
-        this.formInline.ConfirmTime = new Date(
-          this.formInline.ConfirmTime
-        ).Format("yyyy-MM-dd");
 
         //如果为状态为保存，则明细新增空行
         if (result.data.Status == 1) {
