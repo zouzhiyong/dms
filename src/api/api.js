@@ -157,6 +157,7 @@ export const FindBasItemForm = params => { return axios.post(`/api/Item/FindBasI
 export const FindBasItemGroupCategoryForm = params => { return axios.post(`/api/Item/FindBasItemGroupCategoryForm`, params).then(res => res.data); };
 export const SaveBasItemForm = params => { return axios.post(`/api/Item/SaveBasItemForm`, params).then(res => res.data); };
 //采购管理页面
+export const FindSupplierList = params => { return axios.post(`/api/Purchaser/FindSupplierList`).then(res => res.data); };
 export const FindPurOrderForm = params => { return axios.post(`/api/Purchaser/FindPurOrderForm`, params).then(res => res.data); };
 export const FindPurOrderItem = params => { return axios.post(`/api/Purchaser/FindPurOrderItem`, params).then(res => res.data); };
 export const SavePurOrderForm = params => { return axios.post(`/api/Purchaser/SavePurOrderForm`, params).then(res => res.data); };

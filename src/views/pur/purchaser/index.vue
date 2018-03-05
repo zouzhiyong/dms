@@ -4,7 +4,7 @@
       <layout>
         <purchaserCondition slot="condition" ref="condition"></purchaserCondition>
         <purchaserTools slot="toolbar"></purchaserTools>
-        <purchaserTable slot="table" ref="table" :billtype="billtype"></purchaserTable>
+        <purchaserTable slot="table" ref="table"></purchaserTable>
       </layout>
     </el-tab-pane>
     <el-tab-pane label="单据管理" name="second" style="height:100%">
@@ -43,6 +43,8 @@ export default {
   methods: {
     iniData() {
       this.$nextTick(item => {
+        //单据类型
+        this.$refs.condition.formInline.BillType = this.billtype;
         this.$refs.table.$refs.table.conditionData = this.$refs.condition.formInline;
         this.$refs.table.$refs.table.GetData();
       });
@@ -68,5 +70,9 @@ export default {
 
 .el-tabs>>>.el-tabs__nav-wrap::after {
   background-color: transparent;
+}
+
+.el-tabs>>>.el-tabs__item.is-top.is-active {
+  background: #fff;
 }
 </style>

@@ -13,7 +13,7 @@ export default {
     return {
       columns: [
         { prop: "Code", label: "单据编码", width: "", align: "" },
-        { prop: "PurchaserName", label: "供应商名称", width: "", align: "" },
+        { prop: "SupplierName", label: "供应商名称", width: "", align: "" },
         { prop: "StatusName", label: "状态", width: "", align: "center" },
         {
           prop: "BillDate",

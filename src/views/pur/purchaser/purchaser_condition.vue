@@ -3,6 +3,12 @@
     <el-form-item label="单据编码">
       <el-input :clearable="true" v-model="formInline.Code" placeholder="单据编码"></el-input>
     </el-form-item>
+    <el-form-item label="供应商">
+      <el-select :clearable="true" v-model="formInline.SupplierID" placeholder="供应商">
+        <el-option v-for="item in formInline.SupplierIDList" :key="item.value" :label="item.label" :value="item.value">
+        </el-option>
+      </el-select>
+    </el-form-item>
     <el-form-item label="单据状态">
       <el-select :clearable="true" v-model="formInline.Status" placeholder="单据状态">
         <el-option v-for="item in formInline.StatusList" :key="item.value" :label="item.label" :value="item.value">
@@ -20,10 +26,13 @@
 </template>
 
 <script>
+import { FindSupplierList } from "../../../api/api";
 export default {
   data() {
     return {
       formInline: {
+        SupplierID: null,
+        SupplierIDList: [],
         Code: null,
         Status: null,
         StatusList: [
@@ -66,7 +75,11 @@ export default {
       }
     };
   },
-  created() {},
+  created() {
+    FindSupplierList().then(result => {
+      this.formInline.SupplierIDList = result.data;
+    });
+  },
   mounted() {
     // this.$parent.$parent.$parent.$parent.$parent.$parent.$refs.table.$refs.table.conditionData = this.formInline;
     // this.$parent.$parent.$parent.$parent.$parent.$parent.$refs.table.$refs.table.GetData();
@@ -75,6 +88,8 @@ export default {
     onSubmit() {
       var obj = this.formInline;
       //状态为字符串为置空
+      this.formInline.SupplierID =
+        this.formInline.SupplierID == "" ? null : this.formInline.SupplierID;
       this.formInline.Status =
         this.formInline.Status == "" ? null : this.formInline.Status;
       this.$parent.$parent.$parent.$parent.$parent.$parent.$refs.table.conditionData = obj;
@@ -83,8 +98,12 @@ export default {
   }
 };
 </script>
-<style scoped lang="scss">
+<style scoped>
 .toolbar .el-form-item {
   margin-bottom: 0;
+}
+
+.el-form>>>.el-input {
+  width: 140px;
 }
 </style>
