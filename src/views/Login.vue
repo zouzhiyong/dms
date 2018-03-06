@@ -82,7 +82,7 @@ export default {
     },
     GetMenuData(data) {
       data.map(item => {
-        item.component = resolve => require([`./Home.vue`], resolve);
+        item.component = resolve => require([`./Home`], resolve);
         item.children.map(_item => {
           _item.component = resolve =>
             require(["./" + _item.MenuPath], resolve);
