@@ -31,7 +31,7 @@
                 <i :class="item.iconCls"></i>
                 <span slot="title">{{item.meta.name}}</span>
               </template>
-              <el-menu-item v-for="child in item.children" :index="child.path" :key="child.path" v-if="!child.hidden">{{child.meta.name}}</el-menu-item>
+              <el-menu-item v-for="child in item.children" :index="child.routeObj.path" :key="child.path" :route="child.routeObj" v-if="!child.hidden">{{child.meta.name}}</el-menu-item>
             </el-submenu>
             <el-menu-item v-if="item.leaf&&item.children.length>0" :index="item.children[0].path" :key="index">
               <i :class="item.iconCls"></i>

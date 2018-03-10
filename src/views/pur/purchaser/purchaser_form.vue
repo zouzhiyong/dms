@@ -1,6 +1,6 @@
 <template>
   <el-form :inline="true" size="small" :model="formInline" label-width="70px" class="demo-form-inline" style="height:100%">
-    <el-row style="padding: 5px 0;">
+    <el-row>
       <el-form-item label="供 应 商">
         <el-select :disabled="disabled" ref="SupplierID" v-model="formInline.SupplierID" placeholder="供应商">
           <el-option v-for="item in formInline.SupplierIDList" :key="item.value" :label="item.label" :value="item.value">
@@ -451,8 +451,13 @@ export default {
 };
 </script>
 <style scoped>
+.el-form>>>.el-row {
+  padding: 5px 0;
+  background: #eee;
+  margin-bottom: 5px;
+}
 .el-form-item {
-  margin-bottom: 10px;
+  margin: 2px 5px;
 }
 
 .el-form>>>.el-input--suffix>>>.el-input__inner {

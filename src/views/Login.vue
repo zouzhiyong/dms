@@ -86,6 +86,10 @@ export default {
         item.children.map(_item => {
           _item.component = resolve =>
             require(["./" + _item.MenuPath], resolve);
+          _item.routeObj = {
+            path: _item.path,
+            name: _item.name
+          };
         });
 
         this.$router.options.routes.push(item);

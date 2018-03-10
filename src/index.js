@@ -51,6 +51,10 @@ if (localRoutes) {
         item.children.map(_item => {
             _item.component = resolve =>
                 require(["./views/" + _item.MenuPath], resolve);
+            _item.routeObj = {
+                path: _item.path,
+                name: _item.name
+            };
         });
         // console.log(item);
         router.options.routes.push(item);
