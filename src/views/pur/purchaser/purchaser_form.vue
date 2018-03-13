@@ -464,7 +464,7 @@ export default {
   padding-right: 15px;
 }
 
-.el-form>>>.el-input {
+.el-form>>>.el-row .el-input {
   width: 155px;
 }
 </style>

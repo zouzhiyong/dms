@@ -1,20 +1,8 @@
 <template>
   <el-form :inline="true" size="small" :model="formInline" label-width="70px" class="demo-form-inline" style="height:100%">
     <el-row>
-      <el-form-item label="供 应 商">
-        <el-select :disabled="disabled" ref="SupplierID" v-model="formInline.SupplierID" placeholder="供应商">
-          <el-option v-for="item in formInline.SupplierIDList" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="采 购 员">
-        <el-select :disabled="disabled" ref="PurchaserID" v-model="formInline.PurchaserID" placeholder="采购员">
-          <el-option v-for="item in formInline.PurchaserIDList" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="订单类型">
-        <el-select :disabled="true" v-model="formInline.BillType" placeholder="订单类型">
+      <el-form-item label="单据类型">
+        <el-select :disabled="true" v-model="formInline.BillType" placeholder="单据类型">
           <el-option v-for="item in formInline.BillTypeList" :key="item.value" :label="item.label" :value="item.value">
           </el-option>
         </el-select>
@@ -40,9 +28,9 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="是否发货">
-        <el-select :disabled="true" v-model="formInline.IsStockFinished" placeholder="是否发货">
-          <el-option v-for="item in formInline.IsStockFinishedList" :key="item.value" :label="item.label" :value="item.value">
+      <el-form-item label="是否收货">
+        <el-select :disabled="true" v-model="formInline.IsReceipted" placeholder="是否收货">
+          <el-option v-for="item in formInline.IsReceiptedList" :key="item.value" :label="item.label" :value="item.value">
           </el-option>
         </el-select>
       </el-form-item>
@@ -64,17 +52,14 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="审 批 人">
-        <el-select :disabled="true" v-model="formInline.ConfirmUserID " placeholder="审批人">
-          <el-option v-for="item in formInline.CustList" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
       <el-form-item label="备　　注">
         <el-input :disabled="disabled" ref="Remark" v-model="formInline.Remark" placeholder="备注" @keyup.enter.native="enter($refs.tablebill.$refs.table.$refs[ 'Code0'][0])" style="width: 632px;"></el-input>
       </el-form-item>
       <el-form-item label="单 据 号" v-if="formInline.Code!=null">
         {{formInline.Code}}
+      </el-form-item>
+      <el-form-item label=" ">
+        <el-button type="primary" size="small" plain icon="el-icon-download" style="width:155px;" @click="handleGetPurOrder">来源单据</el-button>
       </el-form-item>
     </el-row>
     <div style="height:calc(100% - 195px) ">
@@ -92,7 +77,7 @@
 
 <script>
 import {
-  FindPurOrderForm,
+  FindWareOrderForm,
   FindPurOrderItem,
   SavePurOrderForm,
   AuditPurOrderForm
@@ -112,18 +97,14 @@ export default {
       },
       disabled: false,
       BillTypeList: [
-        { label: "采购订单", value: 1 },
-        { label: "采购退货单", value: -1 }
+        { label: "采购入库单", value: 1 },
+        { label: "采购出库单", value: -1 }
       ],
       StatusList: [
         { label: "打开", value: 0 },
         { label: "保存", value: 1 },
         { label: "审核", value: 2 },
         { label: "完成", value: 3 }
-      ],
-      IsStockFinishedList: [
-        { label: "未完成", value: 0 },
-        { label: "已完成", value: 1 }
       ],
       formInline: {},
       columns: [
@@ -143,13 +124,6 @@ export default {
           label: "商品名称",
           width: "250",
           align: ""
-        },
-        {
-          prop: "IsGift",
-          label: "是否赠品",
-          width: "100",
-          align: "",
-          types: "switch"
         },
         {
           prop: "UomID",
@@ -185,27 +159,32 @@ export default {
           placeholder: "订单数量"
         },
         {
-          prop: "OperQty",
-          label: "操作数量",
+          prop: "ReceiptQty",
+          label: "计划数量",
           width: "80",
           align: "right",
           placeholder: "操作数量",
           formatter: (row, column) => {
-            let OperQty = row.OperQty == null ? 0 : row.OperQty;
-            return OperQty.toFixed(2); //.replace(/(\d)(?=(\d{3})+\.)/g, "$1,"); //使用正则替换，每隔三个数加一个','
+            let ReceiptQty = row.ReceiptQty == null ? 0 : row.ReceiptQty;
+            return ReceiptQty.toFixed(2); //.replace(/(\d)(?=(\d{3})+\.)/g, "$1,"); //使用正则替换，每隔三个数加一个','
           }
         },
         {
           prop: "BalanceQty",
-          label: "剩余数量",
+          label: "已收数量",
           width: "80",
           align: "right",
           placeholder: "操作数量",
           formatter: (row, column) => {
-            row.BalanceQty = Number(row.BillQty) - Number(row.OperQty);
             let BalanceQty = row.BalanceQty == null ? 0 : row.BalanceQty;
-            return BalanceQty.toFixed(2); //使用正则替换，每隔三个数加一个','
+            return BalanceQty.toFixed(2); //.replace(/(\d)(?=(\d{3})+\.)/g, "$1,"); //使用正则替换，每隔三个数加一个','
           }
+        },
+        {
+          prop: "BatchCode",
+          label: "批次",
+          width: "80",
+          align: "right"
         },
         {
           prop: "WarehouseID",
@@ -262,20 +241,17 @@ export default {
     }
   },
   created() {
-    let row = { POID: 0 };
+    let row = { ReceiptID: 0 };
     this.iniData(row);
   },
   methods: {
     iniData(row) {
       row.BillType = this.billtype;
-      FindPurOrderForm(row).then(result => {
+      FindWareOrderForm(row).then(result => {
         result.data.BillTypeList = this.BillTypeList;
         result.data.StatusList = this.StatusList;
-        result.data.IsStockFinishedList = this.IsStockFinishedList;
-        result.data.SupplierIDList.splice(0, 0, this.obj);
         result.data.TruckIDList.splice(0, 0, this.obj);
         result.data.DriverIDList.splice(0, 0, this.obj);
-        result.data.PurchaserIDList.splice(0, 0, this.obj);
         this.formInline = result.data;
 
         //如果为状态为保存，则明细新增空行
@@ -292,17 +268,12 @@ export default {
         }
       });
     },
+    handleGetPurOrder() {},
     handleNew() {
       let row = { POID: 0 };
       this.iniData(row);
     },
     handleSave() {
-      //判断供应商是否为空
-      if (this.formInline.SupplierID == null) {
-        this.$message.error("供应商不能为空");
-        return;
-      }
-
       //判断是否有明细
       if (this.OrderDetail.length == 0) {
         this.$message.error("单据明细不能为空");
@@ -464,7 +435,7 @@ export default {
   padding-right: 15px;
 }
 
-.el-form>>>.el-input {
+.el-form>>>.el-row .el-input {
   width: 155px;
 }
 </style>

@@ -39,7 +39,7 @@ export default {
         },
         {
           prop: "PostDate",
-          label: "过账日期",
+          label: "收货日期",
           width: "",
           align: "right",
           formatter: function(row, column) {

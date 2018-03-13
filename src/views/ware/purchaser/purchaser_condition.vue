@@ -3,12 +3,12 @@
     <el-form-item label="单据编码">
       <el-input :clearable="true" v-model="formInline.Code" placeholder="单据编码"></el-input>
     </el-form-item>
-    <el-form-item label="仓库">
+    <!-- <el-form-item label="仓库">
       <el-select :clearable="true" v-model="formInline.WarehouseID" placeholder="仓库">
         <el-option v-for="item in formInline.WarehouseIDList" :key="item.value" :label="item.label" :value="item.value">
         </el-option>
       </el-select>
-    </el-form-item>
+    </el-form-item> -->
     <el-form-item label="单据状态">
       <el-select :clearable="true" v-model="formInline.Status" placeholder="单据状态">
         <el-option v-for="item in formInline.StatusList" :key="item.value" :label="item.label" :value="item.value">
@@ -31,17 +31,13 @@ export default {
   data() {
     return {
       formInline: {
-        WarehouseID: null,
-        WarehouseIDList: [],
+        // WarehouseID: null,
+        // WarehouseIDList: [],
         SupplierID: null,
         SupplierIDList: [],
         Code: null,
         Status: null,
-        StatusList: [
-          { label: "保存", value: 1 },
-          { label: "审核", value: 2 },
-          { label: "完成", value: 3 }
-        ],
+        StatusList: [{ label: "保存", value: 1 }, { label: "审核", value: 2 }],
         Date: [new Date().Format("yyyy-MM-dd"), new Date().Format("yyyy-MM-dd")]
       },
       pickerOptions: {
@@ -78,9 +74,9 @@ export default {
     };
   },
   created() {
-    FindWarehouseList().then(result => {
-      this.formInline.WarehouseIDList = result.data;
-    });
+    // FindWarehouseList().then(result => {
+    //   this.formInline.WarehouseIDList = result.data;
+    // });
   },
   mounted() {
     // this.$parent.$parent.$parent.$parent.$parent.$parent.$refs.table.$refs.table.conditionData = this.formInline;

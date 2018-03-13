@@ -166,3 +166,6 @@ export const FindPurOrderTable = params => { return axios.post(`/api/Purchaser/F
 export const DeletePurOrderRow = params => { return axios.post(`/api/Purchaser/DeletePurOrderRow`, params).then(res => res.data); };
 //仓库管理页面
 export const FindWarehouseList = params => { return axios.post(`/api/WareHouseReceipt/FindWarehouseList`).then(res => res.data); };
+export const FindWareOrderForm = params => { return axios.post(`/api/WareHouseReceipt/FindWareOrderForm`, params).then(res => res.data); };
+export const FindWareOrderTable = params => { return axios.post(`/api/WareHouseReceipt/FindWareOrderTable`, params).then(res => res.data); };
+export const DeleteWareOrderRow = params => { return axios.post(`/api/WareHouseReceipt/DeleteWareOrderRow`, params).then(res => res.data); };
